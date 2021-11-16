@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Grid, Typography, Divider, Button } from '@mui/material';
+import { Grid, Typography, Divider, Button, Autocomplete } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import DateRangePicker from '@mui/lab/DateRangePicker';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
@@ -24,11 +24,11 @@ const BookingContainer = ({ hotel }) => {
     const [typesSelected, setTypesSelected] = useState({});
     const [childrensSelected, setChildrensSelected] = useState({});
 
-    const handleRoom = (event) => {
-        if (event.target.value) {
-            setRoom(event.target.value);
-            let types = hotel.rooms.find(d => d.id === event.target.value).types;
-            let childrens = hotel.rooms.find(d => d.id === event.target.value).childrens;
+    const handleRoom = (value) => {
+        if (value) {
+            setRoom(value);
+            let types = hotel.rooms.find(d => d.id === value).types;
+            let childrens = hotel.rooms.find(d => d.id === value).childrens;
             setTypes(types);
             setTypesSelected(getTypes(types));
             setChildrens(childrens);
@@ -51,8 +51,8 @@ const BookingContainer = ({ hotel }) => {
         return types.map(item => obj[item.description] = 0);
     }
 
-    const handleChildren = e => {
-        setChildrensSelected(e.target.value);
+    const handleChildren = value => {
+        setChildrensSelected(value);
     }
 
     return (
@@ -80,68 +80,63 @@ const BookingContainer = ({ hotel }) => {
                 </LocalizationProvider>
             </Grid>
             <Grid item xs={12} md={3} mt={2}>
-                <FormControl fullWidth margin={'normal'}>
-                    <InputLabel id="room-select-label">{'Habitación'}</InputLabel>
-                    <Select
-                        labelId="room-select-label"
-                        value={room}
-                        label="Habitación"
-                        size={'small'}
-                        onChange={handleRoom}
-                    >
-                        {
-                            hotel.rooms.map(item => <MenuItem key={item.id} value={item.id}>{item.name}</MenuItem>)
-                        }
-                    </Select>
-                </FormControl>
+                <Autocomplete
+                    disablePortal
+                    id="combo-box-demo"
+                    options={hotel.rooms}
+                    size={'small'}
+                    onChange={(event, room) => {
+                        handleRoom(room?.id);
+                    }}
+                    getOptionLabel={(option) => option.name}
+                    renderInput={(params) => <TextField fullWidth {...params} label="Habitación" />}
+                />
                 {
-                    types.length > 0 && <Divider>{'Cantidad'}</Divider>
+                    types.length > 0 && <Divider sx={{ mt: 2 }}>{'Cantidad'}</Divider>
                 }
                 {
                     types.map((item, index) =>
-                        <FormControl key={index} fullWidth margin={'normal'}>
-                            <InputLabel id="single-select-label">{item.description}</InputLabel>
-                            <Select
-                                labelId="single-select-label"
-                                value={typesSelected[item.description]}
-                                label={item.description}
-                                size={'small'}
-                                onChange={e => handleChange(item.description, e.target.value)}
-                            >
-                                {
-                                    selector.map(item => <MenuItem key={item} value={item}>{item}</MenuItem>)
-                                }
-                            </Select>
-                        </FormControl>
+
+                        <Autocomplete
+                            sx={{ mt: 2 }}
+                            key={index}
+                            disablePortal
+                            id="combo-box-demo"
+                            options={selector}
+                            size={'small'}
+                            onChange={(event, op) => {
+                                handleChange(item.description, typesSelected[item.description]);
+                            }}
+                            getOptionLabel={(option) => option}
+                            renderInput={(params) => <TextField fullWidth {...params} label={item.description} />}
+                        />
                     )}
                 {
                     childrens.length > 0 &&
 
-                    <FormControl key={'children'} fullWidth margin={'normal'}>
-                        <InputLabel id="single-select-label">{'Niños'}</InputLabel>
-                        <Select
-                            labelId="single-select-label"
-                            value={childrensSelected}
-                            label={'Niños'}
-                            size={'small'}
-                            onChange={handleChildren}
-                        >
-                            {
-                                childrens.map(item => <MenuItem key={item.count} value={item.count}>{item.count}</MenuItem>)
-                            }
-                        </Select>
-                    </FormControl>
+                    <Autocomplete
+                        sx={{ mt: 2 }}
+                        disablePortal
+                        id="combo-box-demo"
+                        options={childrens}
+                        size={'small'}
+                        onChange={(event, op) => {
+                            handleChildren(op.count);
+                        }}
+                        getOptionLabel={(option) => option.count}
+                        renderInput={(params) => <TextField fullWidth {...params} label={'Niños'} />}
+                    />
                 }
                 {
                     types.length > 0 &&
-                    <Button variant={'contained'} fullWidth>
+                    <Button variant={'contained'} fullWidth sx={{mt: 3}}>
                         {'Agregar'}
                     </Button>
                 }
 
             </Grid>
-            <Grid item xs={12} md={9} p={3}>
-                 <BookingTable />   
+            <Grid item xs={12} md={9} p={2}>
+                <BookingTable />
             </Grid>
 
         </Grid>
