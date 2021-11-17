@@ -10,6 +10,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import BookingTable from './components/BookingTable';
+import { differenceInDays } from 'date-fns'
 
 
 const selector = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
@@ -60,8 +61,9 @@ const BookingContainer = ({ hotel }) => {
 
     const add = () => {
         let upd = bookings.find(d => d.room.id === room);
-        if (!upd) {
+        if (!upd && value[0]) {
             setBookings(bookings => [...bookings, {
+                date: value,
                 room: hotel.rooms.find(d => d.id === room),
                 types: typesSelected,
                 childrens: childrensSelected,
@@ -73,7 +75,7 @@ const BookingContainer = ({ hotel }) => {
     function getTotal() {
         let currentRoom = hotel.rooms.find(d => d.id === room);
         let currentTypes = Object.keys(typesSelected);
-
+        
         let total = 0;
         currentTypes.forEach(item => {
             if (typesSelected[item] > 0) {
@@ -87,7 +89,8 @@ const BookingContainer = ({ hotel }) => {
             childrensPrice = currentRoom.childrens.find(d => d.count === parseInt(childrensSelected)).price;
         }
 
-        return total + childrensPrice;
+        const days = differenceInDays(value[1], value[0]);
+        return (total + childrensPrice) * days;
     }
 
     const removeBooking = room => {

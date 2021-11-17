@@ -10,6 +10,7 @@ import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
 import { Typography, IconButton } from '@mui/material';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+import { format } from 'date-fns'
 
 export default function BookingTable({ data, remove}) {
 
@@ -17,11 +18,13 @@ export default function BookingTable({ data, remove}) {
         return data.reduce((a, c) => (a + c.total), 0);
     }
 
+    console.log(data[0]);
     return (
         <TableContainer component={Paper}>
             <Table sx={{ minWidth: 700 }} aria-label="spanning table">
                 <TableHead>
                     <TableRow>
+                        <TableCell align="center">{'Fecha'}</TableCell>
                         <TableCell align="center">{'Habitación'}</TableCell>
                         <TableCell align="left">{'Cantidad'}</TableCell>
                         <TableCell align="center">{'Niños'}</TableCell>
@@ -32,6 +35,7 @@ export default function BookingTable({ data, remove}) {
                 <TableBody>
                     {data.map((row, index) => (
                         <TableRow key={index} align="center">
+                            <TableCell align="center">{format(row.date[0], 'dd/MM/yyyy')} - {format(row.date[1], 'dd/MM/yyyy')}</TableCell>
                             <TableCell align="center">{row.room.name}</TableCell>
                             <TableCell align="left">
                                 <Stack direction="row" spacing={1}>
