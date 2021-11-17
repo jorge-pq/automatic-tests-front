@@ -6,24 +6,12 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemText from '@mui/material/ListItemText';
-import List from '@mui/material/List';
+import Chip from '@mui/material/Chip';
+import Stack from '@mui/material/Stack';
 
 
-function createRow(desc, qty, unit) {
-    const price = 2100;
-    return { desc, qty, unit, price };
-}
+export default function BookingTable({ data }) {
 
-
-const rows = [
-    createRow('Luxury', [{ key: 'Sencilla', value: 1 }, { key: 'Doble', value: 1 }], 0),
-];
-
-
-export default function BookingTable() {
     return (
         <TableContainer component={Paper}>
             <Table sx={{ minWidth: 700 }} aria-label="spanning table">
@@ -36,24 +24,17 @@ export default function BookingTable() {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {rows.map((row) => (
-                        <TableRow key={row.desc} align="center">
-                            <TableCell align="center">{row.desc}</TableCell>
+                    {data.map((row, index) => (
+                        <TableRow key={index} align="center">
+                            <TableCell align="center">{row.room.name}</TableCell>
                             <TableCell align="left">
-                                <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
-
-                                    {
-                                        row.qty.map(item =>
-                                            <ListItem component="div" disablePadding>
-                                                <ListItemButton>
-                                                    <ListItemText primary={`${item.key}: ${item.value}`} />
-                                                </ListItemButton>
-                                            </ListItem>
-                                        )
-                                    }
-                                </List>
+                                <Stack direction="row" spacing={1}>
+                                    {Object.keys(row.types).map((item, index) =>
+                                      row.types[item] > 0 &&  <Chip key={index} label={`${item}: ${row.types[item]}`} color="primary" />
+                                    )}
+                                </Stack>
                             </TableCell>
-                            <TableCell align="center">{row.unit}</TableCell>
+                            <TableCell align="center">{row.childrens || '-'}</TableCell>
                             <TableCell align="center">{row.price}</TableCell>
                         </TableRow>
                     ))}
@@ -61,15 +42,15 @@ export default function BookingTable() {
                     <TableRow>
                         <TableCell rowSpan={3} />
                         <TableCell colSpan={2}>Subtotal</TableCell>
-                        <TableCell align="right">{2100}</TableCell>
+                        <TableCell align="center">{2100}</TableCell>
                     </TableRow>
                     <TableRow>
                         <TableCell colSpan={2}>Costos</TableCell>
-                        <TableCell align="right">{1100}</TableCell>
+                        <TableCell align="center">{1100}</TableCell>
                     </TableRow>
                     <TableRow>
                         <TableCell colSpan={2}>Total</TableCell>
-                        <TableCell align="right">{2500}</TableCell>
+                        <TableCell align="center">{2500}</TableCell>
                     </TableRow>
                 </TableBody>
             </Table>

@@ -12,7 +12,7 @@ import Select from '@mui/material/Select';
 import BookingTable from './components/BookingTable';
 
 
-const selector = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+const selector = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
 
 const BookingContainer = ({ hotel }) => {
 
@@ -22,7 +22,9 @@ const BookingContainer = ({ hotel }) => {
     const [types, setTypes] = useState([]);
     const [childrens, setChildrens] = useState([]);
     const [typesSelected, setTypesSelected] = useState({});
-    const [childrensSelected, setChildrensSelected] = useState({});
+    const [childrensSelected, setChildrensSelected] = useState(0);
+
+    const [bookings, setBookings] = useState([]);
 
     const handleRoom = (value) => {
         if (value) {
@@ -47,12 +49,21 @@ const BookingContainer = ({ hotel }) => {
     };
 
     function getTypes(types) {
-        let obj = {}
-        return types.map(item => obj[item.description] = 0);
+        let obj = {};
+        types.map(item => obj[item.description] = 0);
+        return obj;
     }
 
     const handleChildren = value => {
         setChildrensSelected(value);
+    }
+
+    const add = () => {
+        setBookings(bookings => [...bookings, {
+            room: hotel.rooms.find(d => d.id === room),
+            types: typesSelected,
+            childrens: childrensSelected
+        }]);
     }
 
     return (
@@ -105,7 +116,7 @@ const BookingContainer = ({ hotel }) => {
                             options={selector}
                             size={'small'}
                             onChange={(event, op) => {
-                                handleChange(item.description, typesSelected[item.description]);
+                                handleChange(item.description, op);
                             }}
                             getOptionLabel={(option) => option}
                             renderInput={(params) => <TextField fullWidth {...params} label={item.description} />}
@@ -121,22 +132,22 @@ const BookingContainer = ({ hotel }) => {
                         options={childrens}
                         size={'small'}
                         onChange={(event, op) => {
-                            handleChildren(op.count);
+                            handleChildren(op?.count);
                         }}
-                        getOptionLabel={(option) => option.count}
+                        getOptionLabel={(option) => String(option.count)}
                         renderInput={(params) => <TextField fullWidth {...params} label={'Niños'} />}
                     />
                 }
                 {
                     types.length > 0 &&
-                    <Button variant={'contained'} fullWidth sx={{mt: 3}}>
+                    <Button variant={'contained'} fullWidth sx={{mt: 3}} onClick={add}>
                         {'Agregar'}
                     </Button>
                 }
 
             </Grid>
             <Grid item xs={12} md={9} p={2}>
-                <BookingTable />
+                <BookingTable data={bookings} />
             </Grid>
 
         </Grid>
