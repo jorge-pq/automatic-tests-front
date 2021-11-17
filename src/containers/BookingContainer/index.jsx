@@ -59,11 +59,40 @@ const BookingContainer = ({ hotel }) => {
     }
 
     const add = () => {
-        setBookings(bookings => [...bookings, {
-            room: hotel.rooms.find(d => d.id === room),
-            types: typesSelected,
-            childrens: childrensSelected
-        }]);
+        let upd = bookings.find(d => d.room.id === room);
+        if (!upd) {
+            setBookings(bookings => [...bookings, {
+                room: hotel.rooms.find(d => d.id === room),
+                types: typesSelected,
+                childrens: childrensSelected,
+                total: getTotal()
+            }]);
+        }
+    }
+
+    function getTotal() {
+        let currentRoom = hotel.rooms.find(d => d.id === room);
+        let currentTypes = Object.keys(typesSelected);
+
+        let total = 0;
+        currentTypes.forEach(item => {
+            if (typesSelected[item] > 0) {
+                let t = currentRoom.types.find(d => d.description == item);
+                total += t.price * typesSelected[item];
+            }
+        });
+
+        let childrensPrice = 0;
+        if (parseInt(childrensSelected) > 0) {
+            childrensPrice = currentRoom.childrens.find(d => d.count === parseInt(childrensSelected)).price;
+        }
+
+        return total + childrensPrice;
+    }
+
+    const removeBooking = room => {
+        let upd = bookings.filter(d => d.room.name !== room);
+        setBookings(upd);
     }
 
     return (
@@ -140,14 +169,14 @@ const BookingContainer = ({ hotel }) => {
                 }
                 {
                     types.length > 0 &&
-                    <Button variant={'contained'} fullWidth sx={{mt: 3}} onClick={add}>
+                    <Button variant={'contained'} fullWidth sx={{ mt: 3 }} onClick={add}>
                         {'Agregar'}
                     </Button>
                 }
 
             </Grid>
             <Grid item xs={12} md={9} p={2}>
-                <BookingTable data={bookings} />
+                <BookingTable data={bookings} remove={removeBooking} />
             </Grid>
 
         </Grid>
