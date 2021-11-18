@@ -7,27 +7,27 @@ export const hotels = [{
                 name: 'Luxury Room',
                 types: [{
                         description: 'Sencilla',
-                        price: 1500,
+                        price: 1524,
                         offers: []
                     },
                     {
                         description: 'Doble',
-                        price: 1700,
+                        price: 1196,
                         offers: []
                     },
                     {
                         description: 'Triple',
-                        price: 1900,
+                        price: 1147,
                         offers: []
                     },
                 ],
                 childrens: [{
                         count: 1,
-                        price: 450
+                        price: 932
                     },
                     {
                         count: 2,
-                        price: 800
+                        price: 1002
                     },
                 ]
             },
@@ -36,27 +36,27 @@ export const hotels = [{
                 name: 'Luxury Family Suite',
                 types: [{
                         description: 'Sencilla',
-                        price: 1500,
+                        price: 1705,
                         offers: []
                     },
                     {
                         description: 'Doble',
-                        price: 1500,
+                        price: 1316,
                         offers: []
                     },
                     {
                         description: 'Triple',
-                        price: 0,
+                        price: 1257,
                         offers: []
                     },
                 ],
                 childrens: [{
                         count: 1,
-                        price: 450
+                        price: 1004
                     },
                     {
                         count: 2,
-                        price: 800
+                        price: 1080
                     },
                 ]
             }, {
@@ -64,27 +64,27 @@ export const hotels = [{
                 name: 'Luxury Room DC',
                 types: [{
                         description: 'Sencilla',
-                        price: 1500,
+                        price: 1795,
                         offers: []
                     },
                     {
                         description: 'Doble',
-                        price: 1700,
+                        price: 1376,
                         offers: []
                     },
                     {
                         description: 'Triple',
-                        price: 1900,
+                        price: 1312,
                         offers: []
                     },
                 ],
                 childrens: [{
                         count: 1,
-                        price: 450
+                        price: 1040
                     },
                     {
                         count: 2,
-                        price: 800
+                        price: 1119
                     },
                 ]
             },
@@ -93,27 +93,27 @@ export const hotels = [{
                 name: 'Luxury Jacuzzi Junior Suite DC',
                 types: [{
                         description: 'Sencilla',
-                        price: 1500,
+                        price: 1885,
                         offers: []
                     },
                     {
                         description: 'Doble',
-                        price: 1700,
+                        price: 1436,
                         offers: []
                     },
                     {
                         description: 'Triple',
-                        price: 1900,
+                        price: 1367,
                         offers: []
                     },
                 ],
                 childrens: [{
                         count: 1,
-                        price: 450
+                        price: 1076
                     },
                     {
                         count: 2,
-                        price: 800
+                        price: 1158
                     },
                 ]
             },
@@ -122,27 +122,27 @@ export const hotels = [{
                 name: 'Luxury Presindential Jacuzzi One Bedroom Suite DC',
                 types: [{
                         description: 'Sencilla',
-                        price: 1500,
+                        price: 2065,
                         offers: []
                     },
                     {
                         description: 'Doble',
-                        price: 1700,
+                        price: 1557,
                         offers: []
                     },
                     {
                         description: 'Triple',
-                        price: 1900,
+                        price: 1477,
                         offers: []
                     },
                 ],
                 childrens: [{
                         count: 1,
-                        price: 450
+                        price: 1148
                     },
                     {
                         count: 2,
-                        price: 800
+                        price: 1236
                     },
                 ]
             }
@@ -157,27 +157,27 @@ export const hotels = [{
                 name: 'Luxury Room',
                 types: [{
                         description: 'Sencilla',
-                        price: 1500,
+                        price: 1862,
                         offers: []
                     },
                     {
                         description: 'Doble',
-                        price: 1700,
+                        price: 1386,
                         offers: []
                     },
                     {
                         description: 'Triple',
-                        price: 1900,
+                        price: 1353,
                         offers: []
                     },
                 ],
                 childrens: [{
                         count: 1,
-                        price: 450
+                        price: 1067
                     },
                     {
                         count: 2,
-                        price: 800
+                        price: 1148
                     },
                 ]
             },
@@ -186,27 +186,27 @@ export const hotels = [{
                 name: 'Luxury Room DC',
                 types: [{
                         description: 'Sencilla',
-                        price: 1500,
+                        price: 2108,
                         offers: []
                     },
                     {
                         description: 'Doble',
-                        price: 1700,
+                        price: 1543,
                         offers: []
                     },
                     {
                         description: 'Triple',
-                        price: 1900,
+                        price: 1503,
                         offers: []
                     },
                 ],
                 childrens: [{
                         count: 1,
-                        price: 450
+                        price: 1165
                     },
                     {
                         count: 2,
-                        price: 800
+                        price: 1254
                     },
                 ]
             }, {
@@ -214,27 +214,27 @@ export const hotels = [{
                 name: 'Luxury Ocean View Room DC',
                 types: [{
                         description: 'Sencilla',
-                        price: 1500,
+                        price: 2213,
                         offers: []
                     },
                     {
                         description: 'Doble',
-                        price: 1700,
+                        price: 1611,
                         offers: []
                     },
                     {
                         description: 'Triple',
-                        price: 1900,
+                        price: 1568,
                         offers: []
                     },
                 ],
                 childrens: [{
                         count: 1,
-                        price: 450
+                        price: 1207
                     },
                     {
                         count: 2,
-                        price: 800
+                        price: 1300
                     },
                 ]
             },
@@ -243,27 +243,27 @@ export const hotels = [{
                 name: 'Honeymoon Jacizzi Suite DC',
                 types: [{
                         description: 'Sencilla',
-                        price: 1500,
+                        price: 2301,
                         offers: []
                     },
                     {
                         description: 'Doble',
-                        price: 1700,
+                        price: 1667,
                         offers: []
                     },
                     {
                         description: 'Triple',
-                        price: 1900,
+                        price: 1621,
                         offers: []
                     },
                 ],
                 childrens: [{
                         count: 1,
-                        price: 450
+                        price: 1242
                     },
                     {
                         count: 2,
-                        price: 800
+                        price: 1338
                     },
                 ]
             },
@@ -272,27 +272,27 @@ export const hotels = [{
                 name: 'Luxury Swim Out Room DC',
                 types: [{
                         description: 'Sencilla',
-                        price: 1500,
+                        price: 2330,
                         offers: []
                     },
                     {
                         description: 'Doble',
-                        price: 1700,
+                        price: 1685,
                         offers: []
                     },
                     {
                         description: 'Triple',
-                        price: 1900,
+                        price: 1639,
                         offers: []
                     },
                 ],
                 childrens: [{
                         count: 1,
-                        price: 450
+                        price: 1254
                     },
                     {
                         count: 2,
-                        price: 800
+                        price: 1351
                     },
                 ]
             },
@@ -301,27 +301,27 @@ export const hotels = [{
                 name: 'LLuxury Presidential Jacizzi 1 Bedroom Suite DC',
                 types: [{
                         description: 'Sencilla',
-                        price: 1500,
+                        price: 2916,
                         offers: []
                     },
                     {
                         description: 'Doble',
-                        price: 1700,
+                        price: 2061,
                         offers: []
                     },
                     {
                         description: 'Triple',
-                        price: 1900,
+                        price: 1997,
                         offers: []
                     },
                 ],
                 childrens: [{
                         count: 1,
-                        price: 450
+                        price: 1487
                     },
                     {
                         count: 2,
-                        price: 800
+                        price: 1605
                     },
                 ]
             },
@@ -330,27 +330,27 @@ export const hotels = [{
                 name: 'Luxury Presidential Jacizzi 2 Bedroom Suite DC',
                 types: [{
                         description: 'Sencilla',
-                        price: 1500,
+                        price: 3443,
                         offers: []
                     },
                     {
                         description: 'Doble',
-                        price: 1700,
+                        price: 2319,
                         offers: []
                     },
                     {
                         description: 'Triple',
-                        price: 1900,
+                        price: 2398,
                         offers: []
                     },
                 ],
                 childrens: [{
                         count: 1,
-                        price: 450
+                        price: 1697
                     },
                     {
                         count: 2,
-                        price: 800
+                        price: 1833
                     },
                 ]
             },
@@ -359,27 +359,27 @@ export const hotels = [{
                 name: 'Luxury Presindential Jacuzzi Swim Out 1 Bedroom Suite DC',
                 types: [{
                         description: 'Sencilla',
-                        price: 1500,
+                        price: 2951,
                         offers: []
                     },
                     {
                         description: 'Doble',
-                        price: 1900,
+                        price: 2083,
                         offers: []
                     },
                     {
                         description: 'Triple',
-                        price: 2200,
+                        price: 2019,
                         offers: []
                     },
                 ],
                 childrens: [{
                         count: 1,
-                        price: 450
+                        price: 1501
                     },
                     {
                         count: 2,
-                        price: 800
+                        price: 1620
                     },
                 ]
             },
@@ -388,27 +388,27 @@ export const hotels = [{
                 name: 'Luxury Presindential Jacuzzi Swim Out 2 Bedroom Suite DC',
                 types: [{
                         description: 'Sencilla',
-                        price: 1300,
+                        price: 3619,
                         offers: []
                     },
                     {
                         description: 'Doble',
-                        price: 1600,
+                        price: 2511,
                         offers: []
                     },
                     {
                         description: 'Triple',
-                        price: 2000,
+                        price: 2427,
                         offers: []
                     },
                 ],
                 childrens: [{
                         count: 1,
-                        price: 450
+                        price: 1767
                     },
                     {
                         count: 2,
-                        price: 800
+                        price: 1909
                     },
                 ]
             }
