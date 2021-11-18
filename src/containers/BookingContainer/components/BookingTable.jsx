@@ -54,17 +54,18 @@ export default function BookingTable({ data, remove}) {
                         </TableRow>
                     ))}
 
-                    <TableRow>
+                    {/* <TableRow>
                         <TableCell rowSpan={3} />
-                        <TableCell colSpan={2}>Subtotal</TableCell>
+                        <TableCell colSpan={3}>Subtotal</TableCell>
                         <TableCell align="center">${getTotal()}</TableCell>
                     </TableRow>
                     <TableRow>
                         <TableCell colSpan={2}>Costos</TableCell>
                         <TableCell align="center">{0}</TableCell>
-                    </TableRow>
+                    </TableRow> */}
                     <TableRow>
-                        <TableCell colSpan={2}>Total</TableCell>
+                        <TableCell rowSpan={1} />
+                        <TableCell colSpan={3}><strong>{'TOTAL'}</strong></TableCell>
                         <TableCell align="center"><Typography variant={'h5'}>${getTotal()}</Typography></TableCell>
                     </TableRow>
                 </TableBody>
