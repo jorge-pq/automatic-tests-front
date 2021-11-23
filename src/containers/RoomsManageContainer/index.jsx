@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { Grid, Typography, Button } from '@mui/material';
-import HotelsTable from './components/HotelsTable';
-import { hotels } from '../../../data/hotels';
-import HotelsCreateDialog from './components/HotelsCreateDialog';
+import RoomsTable from './components/RoomsTable';
+import RoomCreateDialog from './components/RoomCreateDialog';
 
-const HotelsManageContainer = () => {
+const RoomsManageContainer = ({hotel}) => {
 
     const [openDialog, setOpenDialog] = useState(false);
 
@@ -23,21 +22,21 @@ const HotelsManageContainer = () => {
     return (
         <Grid container>
             <Grid item xs={6}>
-                <Typography variant={'h6'}>{'Lista de hoteles'}</Typography>
+                <Typography variant={'h6'}>{hotel.name}</Typography>
             </Grid>
             <Grid item xs={6}>
                 <Grid container justifyContent={'flex-end'}>
-                    <Button variant={'contained'} onClick={openCreateDialog}>{'Agregar hotel'}</Button>
+                    <Button variant={'contained'} onClick={openCreateDialog}>{'Agregar habitacion'}</Button>
                 </Grid>
             </Grid>
             <Grid xs={12}>
-                <HotelsTable data={hotels} />
+                <RoomsTable data={hotel.rooms} />
             </Grid>
 
-            <HotelsCreateDialog open={openDialog} close={closeCreateDialog} save={save} />
+            <RoomCreateDialog open={openDialog} close={closeCreateDialog} save={save} />
 
         </Grid>
     );
 };
 
-export default HotelsManageContainer;
+export default RoomsManageContainer;
