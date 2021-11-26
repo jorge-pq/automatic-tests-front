@@ -15,8 +15,8 @@ const RoomsManageContainer = ({hotel}) => {
         setOpenDialog(false);
     }
 
-    const save = () => {
-
+    const save = data => {
+        console.log(data);
     }
 
     return (
@@ -29,7 +29,7 @@ const RoomsManageContainer = ({hotel}) => {
                     <Button variant={'contained'} onClick={openCreateDialog}>{'Agregar habitacion'}</Button>
                 </Grid>
             </Grid>
-            <Grid xs={12}>
+            <Grid xs={12} mt={2}>
                 <RoomsTable data={hotel.rooms} />
             </Grid>
 

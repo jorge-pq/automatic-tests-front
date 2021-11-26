@@ -30,7 +30,7 @@ const HotelsManageContainer = () => {
                     <Button variant={'contained'} onClick={openCreateDialog}>{'Agregar hotel'}</Button>
                 </Grid>
             </Grid>
-            <Grid xs={12}>
+            <Grid xs={12} mt={2}>
                 <HotelsTable data={hotels} />
             </Grid>
 
