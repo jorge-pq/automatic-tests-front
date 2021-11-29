@@ -23,7 +23,7 @@ import ChildrensTable from './ChildrensTable';
 const types = ["Sencilla", "Doble", "Triple"];
 const childrens = [1, 2];
 
-const RoomCreateDialog = ({ open, close, save }) => {
+const RoomCreateDialog = ({id, open, close, save }) => {
 
   const [room, setRoom] = useState('');
   const [typeSelected, setTypeSelected] = useState('');
@@ -110,6 +110,7 @@ const RoomCreateDialog = ({ open, close, save }) => {
 
   const handleSubmit = () => {
       const data = {
+        hotelId: id,
         name: room,
         types: typesAdded,
         childrens: childrensAdded

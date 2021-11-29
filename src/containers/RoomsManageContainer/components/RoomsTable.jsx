@@ -20,9 +20,9 @@ const RoomsTable = ({data}) => {
                 </TableRow>
             </TableHead>
             <TableBody>
-                {data.map((row) => (
+                {data.map((row, index) => (
                     <TableRow
-                        key={row.id}
+                        key={index}
                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                     >
                         <TableCell component="th" scope="row">

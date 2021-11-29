@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
@@ -8,7 +8,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import {getSlug} from '../../../utils/util';
 
-export default function HotelsCreateDialog({open, close, save}) {
+export default function HotelsEditDialog({open, close, item, save}) {
 
   const [name, setName] = useState('');
 
@@ -16,6 +16,7 @@ export default function HotelsCreateDialog({open, close, save}) {
 
   const handleSubmit = () => {
     const data = {
+      id: item._id,
       name: name,
       slug: getSlug(name)
     }
@@ -23,9 +24,16 @@ export default function HotelsCreateDialog({open, close, save}) {
     save(data);
   }
 
+  useEffect(() => {
+    setName(item.name);
+    return () => {
+      setName('');
+    };
+  }, [item]);
+
   return (
       <Dialog open={open} onClose={close}>
-        <DialogTitle>{'Nuevo Hotel'}</DialogTitle>
+        <DialogTitle>{'Editar Hotel'}</DialogTitle>
         <DialogContent>
           <TextField
             autoFocus

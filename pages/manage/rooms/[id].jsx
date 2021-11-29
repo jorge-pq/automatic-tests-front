@@ -1,5 +1,5 @@
 import React from 'react';
-import {getHotelById} from '../../../src/utils/hotel-service';
+import {getHotelById} from '../../../src/services/hotels.service';
 import RoomsManageContainer from '../../../src/containers/RoomsManageContainer';
 
 const RoomsManage = ({hotel}) => {
@@ -10,10 +10,21 @@ const RoomsManage = ({hotel}) => {
     );
 };
 
+
 export async function getServerSideProps(ctx) {
 
-    
-    const hotel = getHotelById(ctx.params.id);
+    // let jwt = getCookie("accessToken", ctx.req);
+
+    // if (!jwt) {
+    //     return {
+    //         redirect: {
+    //             destination: '/',
+    //             permanent: false,
+    //         },
+    //     }
+    // }
+
+    const hotel = await getHotelById(ctx.params.id);
    
     return {
         props: {

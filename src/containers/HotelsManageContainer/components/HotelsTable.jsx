@@ -6,11 +6,11 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { Edit, LocalHotel } from '@mui/icons-material';
+import { Edit, LocalHotel, Delete } from '@mui/icons-material';
 import { IconButton, Tooltip } from '@mui/material'
-import {useRouter} from 'next/router';
+import { useRouter } from 'next/router';
 
-export default function HotelsTable({ data }) {
+export default function HotelsTable({ data, showEdit }) {
 
     const router = useRouter();
 
@@ -28,21 +28,27 @@ export default function HotelsTable({ data }) {
                 <TableBody>
                     {data.map((row) => (
                         <TableRow
-                            key={row.id}
+                            key={row._id}
                             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                         >
                             <TableCell component="th" scope="row">
                                 {row.name}
                             </TableCell>
                             <TableCell align="right">
+
+                                <Tooltip title="Ver Habitaciones">
+                                    <IconButton onClick={() => goToRoomsByHotel(row._id)}>
+                                        <LocalHotel />
+                                    </IconButton>
+                                </Tooltip>
                                 <Tooltip title="Editar">
-                                    <IconButton>
+                                    <IconButton onClick={()=>showEdit(row._id)}>
                                         <Edit />
                                     </IconButton>
                                 </Tooltip>
-                                <Tooltip title="Ver Habitaciones">
-                                    <IconButton onClick={()=>goToRoomsByHotel(row.id)}>
-                                        <LocalHotel />
+                                <Tooltip title="Eliminar">
+                                    <IconButton>
+                                        <Delete />
                                     </IconButton>
                                 </Tooltip>
                             </TableCell>

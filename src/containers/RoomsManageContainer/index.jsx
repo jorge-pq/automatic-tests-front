@@ -2,10 +2,24 @@ import React, { useState } from 'react';
 import { Grid, Typography, Button } from '@mui/material';
 import RoomsTable from './components/RoomsTable';
 import RoomCreateDialog from './components/RoomCreateDialog';
+import {addRoom} from '../../services/hotels.service';
+import { useMutation } from 'react-query';
+
 
 const RoomsManageContainer = ({hotel}) => {
 
     const [openDialog, setOpenDialog] = useState(false);
+
+    const { mutate: save, isLoading, isError } = useMutation(addRoom, {
+        onSuccess: (data) => {
+            setOpenDialog(false);
+            router.reload();
+        },
+        onError: (error) => {
+          alert('Error! ');
+        }
+      });
+
 
     const openCreateDialog = () => {
         setOpenDialog(true);
@@ -15,9 +29,7 @@ const RoomsManageContainer = ({hotel}) => {
         setOpenDialog(false);
     }
 
-    const save = data => {
-        console.log(data);
-    }
+    console.log(hotel);
 
     return (
         <Grid container>
@@ -29,11 +41,11 @@ const RoomsManageContainer = ({hotel}) => {
                     <Button variant={'contained'} onClick={openCreateDialog}>{'Agregar habitacion'}</Button>
                 </Grid>
             </Grid>
-            <Grid xs={12} mt={2}>
+            <Grid item xs={12} mt={2}>
                 <RoomsTable data={hotel.rooms} />
             </Grid>
 
-            <RoomCreateDialog open={openDialog} close={closeCreateDialog} save={save} />
+            <RoomCreateDialog id={hotel._id} open={openDialog} close={closeCreateDialog} save={save} />
 
         </Grid>
     );
