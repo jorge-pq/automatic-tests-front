@@ -16,7 +16,9 @@ import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import Link from 'next/link';
-import {useRouter} from 'next/router';
+import { useRouter } from 'next/router';
+import cookie from 'js-cookie';
+import AuthContext from '../../providers/AuthContext';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -61,7 +63,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 export default function PrimarySearchAppBar() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
-
+  const { isAuth, setAuth } = React.useContext(AuthContext);
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
@@ -88,6 +90,12 @@ export default function PrimarySearchAppBar() {
     router.push('/manage/hotels');
   }
 
+  const logout = () => {
+    setAuth(false);
+    cookie.remove('token');
+    router.push('/');
+  }
+
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
     <Menu
@@ -106,7 +114,7 @@ export default function PrimarySearchAppBar() {
       onClose={handleMenuClose}
     >
       <MenuItem onClick={goToManage}>{'Administracion'}</MenuItem>
-      <MenuItem onClick={handleMenuClose}>{'Salir'}</MenuItem>
+      <MenuItem onClick={logout}>{'Salir'}</MenuItem>
     </Menu>
   );
 
@@ -176,7 +184,7 @@ export default function PrimarySearchAppBar() {
             <MenuIcon />
           </IconButton> */}
           <Link href="/">
-            <a style={{textDecoration: 'none', color: 'white'}}>
+            <a style={{ textDecoration: 'none', color: 'white' }}>
               <Typography
                 variant="h6"
                 noWrap
@@ -212,17 +220,22 @@ export default function PrimarySearchAppBar() {
                 <NotificationsIcon />
               </Badge>
             </IconButton> */}
-            <IconButton
-              size="large"
-              edge="end"
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
-              color="inherit"
-            >
-              <AccountCircle />
-            </IconButton>
+
+            {
+              isAuth &&
+              <IconButton
+                size="large"
+                edge="end"
+                aria-label="account of current user"
+                aria-controls={menuId}
+                aria-haspopup="true"
+                onClick={handleProfileMenuOpen}
+                color="inherit"
+              >
+                <AccountCircle />
+              </IconButton>
+            }
+
           </Box>
           <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
             <IconButton

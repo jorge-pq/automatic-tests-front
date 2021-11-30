@@ -18,7 +18,6 @@ export default function BookingTable({ data, remove}) {
         return data.reduce((a, c) => (a + c.total), 0);
     }
 
-    console.log(data[0]);
     return (
         <TableContainer component={Paper}>
             <Table sx={{ minWidth: 700 }} aria-label="spanning table">

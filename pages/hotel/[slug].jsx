@@ -1,5 +1,5 @@
 import React from 'react';
-import {getHotel} from '../../src/utils/hotel-service';
+import {getHotelBySlug} from '../../src/services/hotels.service';
 import BookingContainer from '../../src/containers/BookingContainer';
 
 const Hotel = ({hotel}) => {
@@ -13,7 +13,7 @@ const Hotel = ({hotel}) => {
 
 export async function getServerSideProps(ctx) {
 
-    const hotel = getHotel(ctx.params.slug);
+    const hotel = await getHotelBySlug(ctx.params.slug);
     return {
         props: {
             hotel: hotel,

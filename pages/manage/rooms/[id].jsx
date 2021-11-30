@@ -1,6 +1,7 @@
 import React from 'react';
 import {getHotelById} from '../../../src/services/hotels.service';
 import RoomsManageContainer from '../../../src/containers/RoomsManageContainer';
+import {getCookie} from '../../../src/lib/session';
 
 const RoomsManage = ({hotel}) => {
     return (
@@ -13,16 +14,16 @@ const RoomsManage = ({hotel}) => {
 
 export async function getServerSideProps(ctx) {
 
-    // let jwt = getCookie("accessToken", ctx.req);
+    let jwt = getCookie("token", ctx.req);
 
-    // if (!jwt) {
-    //     return {
-    //         redirect: {
-    //             destination: '/',
-    //             permanent: false,
-    //         },
-    //     }
-    // }
+    if (!jwt) {
+        return {
+            redirect: {
+                destination: '/login',
+                permanent: false,
+            },
+        }
+    }
 
     const hotel = await getHotelById(ctx.params.id);
    

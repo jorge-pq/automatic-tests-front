@@ -1,7 +1,7 @@
 import React from 'react';
 import HotelsManageContainer from '../../src/containers/HotelsManageContainer';
 import {getHotels} from '../../src/services/hotels.service';
-
+import {getCookie} from '../../src/lib/session';
 
 const hotels = ({data}) => {
     return (
@@ -13,16 +13,16 @@ const hotels = ({data}) => {
 
 export async function getServerSideProps(ctx) {
 
-    // let jwt = getCookie("accessToken", ctx.req);
+    let jwt = getCookie("token", ctx.req);
 
-    // if (!jwt) {
-    //     return {
-    //         redirect: {
-    //             destination: '/',
-    //             permanent: false,
-    //         },
-    //     }
-    // }
+    if (!jwt) {
+        return {
+            redirect: {
+                destination: '/login',
+                permanent: false,
+            },
+        }
+    }
 
     const data = await getHotels();
     return { props: { data } }

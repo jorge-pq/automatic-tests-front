@@ -44,3 +44,8 @@ export const updateRoom = async (values) => {
     return data;
 }
 
+
+export const getHotelBySlug = async (slug) => {
+    const {data} = await rget('api/hotel/slug/'+ slug);
+    return data;
+}

@@ -30,8 +30,8 @@ const BookingContainer = ({ hotel }) => {
     const handleRoom = (value) => {
         if (value) {
             setRoom(value);
-            let types = hotel.rooms.find(d => d.id === value).types;
-            let childrens = hotel.rooms.find(d => d.id === value).childrens;
+            let types = hotel.rooms.find(d => d.name === value).types;
+            let childrens = hotel.rooms.find(d => d.name === value).childrens;
             setTypes(types);
             setTypesSelected(getTypes(types));
             setChildrens(childrens);
@@ -64,7 +64,7 @@ const BookingContainer = ({ hotel }) => {
         if (!upd && value[0]) {
             setBookings(bookings => [...bookings, {
                 date: value,
-                room: hotel.rooms.find(d => d.id === room),
+                room: hotel.rooms.find(d => d.name === room),
                 types: typesSelected,
                 childrens: childrensSelected,
                 total: getTotal()
@@ -73,7 +73,7 @@ const BookingContainer = ({ hotel }) => {
     }
 
     function getTotal() {
-        let currentRoom = hotel.rooms.find(d => d.id === room);
+        let currentRoom = hotel.rooms.find(d => d.name === room);
         let currentTypes = Object.keys(typesSelected);
         
         let total = 0;
@@ -90,7 +90,7 @@ const BookingContainer = ({ hotel }) => {
         }
 
         const days = differenceInDays(value[1], value[0]);
-        return (total + childrensPrice) * days;
+        return (parseFloat(total) + parseFloat(childrensPrice)) * parseInt(days);
     }
 
     const removeBooking = room => {
@@ -129,7 +129,7 @@ const BookingContainer = ({ hotel }) => {
                     options={hotel.rooms}
                     size={'small'}
                     onChange={(event, room) => {
-                        handleRoom(room?.id);
+                        handleRoom(room?.name);
                     }}
                     getOptionLabel={(option) => option.name}
                     renderInput={(params) => <TextField fullWidth {...params} label="Habitación" />}

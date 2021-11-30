@@ -3,11 +3,11 @@ import HotelCard from './components/HotelCard';
 import { Grid } from '@mui/material';
 import { hotels } from '../../../data/hotels';
 
-const HotelsContainer = () => {
+const HotelsContainer = ({data}) => {
     return (
         <Grid container pb={4}>
             {
-                hotels.map((item, index) =>
+                data.map((item, index) =>
                     <Grid key={index} item xs={4} mt={2}>
                         <HotelCard
                             id={1}
