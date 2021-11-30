@@ -49,3 +49,8 @@ export const getHotelBySlug = async (slug) => {
     const {data} = await rget('api/hotel/slug/'+ slug);
     return data;
 }
+
+
+export const test = async () => {
+  
+}
