@@ -9,7 +9,7 @@ import Paper from '@mui/material/Paper';
 import { Edit, Delete } from '@mui/icons-material';
 import { IconButton, Tooltip } from '@mui/material'
 
-const RoomsTable = ({data}) => {
+const RoomsTable = ({data, showEdit, removeRoom}) => {
     return (
         <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -30,12 +30,12 @@ const RoomsTable = ({data}) => {
                         </TableCell>
                         <TableCell align="right">
                             <Tooltip title="Editar">
-                                <IconButton>
+                                <IconButton onClick={()=>showEdit(row.name)}>
                                     <Edit />
                                 </IconButton>
                             </Tooltip>
                             <Tooltip title="Eliminar">
-                                <IconButton>
+                                <IconButton onClick={()=>removeRoom(row.name)}>
                                     <Delete />
                                 </IconButton>
                             </Tooltip>

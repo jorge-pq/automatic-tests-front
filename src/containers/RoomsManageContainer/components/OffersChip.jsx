@@ -4,8 +4,15 @@ import Stack from '@mui/material/Stack';
 import { format } from 'date-fns'
 
 
-function getFormatDate(value){
-    return value ? format(value[0], 'dd/MM/yyyy') +' - '+ format(value[1], 'dd/MM/yyyy'): '';
+function getFormatDate(value) {
+    const dt = '';
+    try {
+        dt = value ? format(value[0], 'dd/MM/yyyy') + ' - ' + format(value[1], 'dd/MM/yyyy') : '';
+    } catch (error) {
+        dt = value ? format(new Date(value[0]), 'dd/MM/yyyy') + ' - ' + format(new Date(value[1]), 'dd/MM/yyyy') : '';
+    }
+
+    return dt;
 }
 
 const OffersChip = ({data, handleDeleteOffer}) => {

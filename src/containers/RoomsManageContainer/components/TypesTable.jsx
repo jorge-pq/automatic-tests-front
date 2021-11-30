@@ -34,7 +34,9 @@ export default function TypesTable({data, removeType}) {
               <TableCell align="center" scope="row">
                 {row.price}
               </TableCell>
-              <TableCell align="left"><OffersChip data={row.offers} /></TableCell>
+              <TableCell align="left">
+                <OffersChip data={row.offers} />
+              </TableCell>
               <TableCell align="center">
                 <IconButton onClick={()=>removeType(row.description)}>
                     <DeleteIcon />

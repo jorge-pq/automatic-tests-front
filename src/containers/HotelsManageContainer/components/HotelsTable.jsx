@@ -10,7 +10,7 @@ import { Edit, LocalHotel, Delete } from '@mui/icons-material';
 import { IconButton, Tooltip } from '@mui/material'
 import { useRouter } from 'next/router';
 
-export default function HotelsTable({ data, showEdit }) {
+export default function HotelsTable({ data, showEdit, removeHotel }) {
 
     const router = useRouter();
 
@@ -46,8 +46,8 @@ export default function HotelsTable({ data, showEdit }) {
                                         <Edit />
                                     </IconButton>
                                 </Tooltip>
-                                <Tooltip title="Eliminar">
-                                    <IconButton>
+                                <Tooltip title="Eliminar" >
+                                    <IconButton onClick={()=>removeHotel(row._id)}>
                                         <Delete />
                                     </IconButton>
                                 </Tooltip>

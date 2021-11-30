@@ -17,6 +17,12 @@ export const updateHotel = async (values) => {
     return data;
 }
 
+export const removeHotel = async (id) => {
+    const {data} = await rdelete('api/hotel/'+ id, cookie.get('token'));
+    return data;
+}
+
+
 export const getHotelById = async (id) => {
     const {data} = await rget('api/hotel/'+id, cookie.get('token'));
     return data;
@@ -24,6 +30,17 @@ export const getHotelById = async (id) => {
 
 export const addRoom = async (values) => {
     const {data} = await rput('api/room/add/'+values.hotelId, values, cookie.get('token'));
+    return data;
+}
+
+
+export const removeRoom = async (values) => {
+    const {data} = await rput('api/room/remove', values, cookie.get('token'));
+    return data;
+}
+
+export const updateRoom = async (values) => {
+    const {data} = await rput('api/room/update/'+values.hotelId, values, cookie.get('token'));
     return data;
 }
 

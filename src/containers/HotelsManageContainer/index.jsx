@@ -4,7 +4,7 @@ import HotelsTable from './components/HotelsTable';
 import HotelsCreateDialog from './components/HotelsCreateDialog';
 import HotelsEditDialog from './components/HotelsEditDialog';
 import { useMutation } from 'react-query';
-import {addHotel, updateHotel} from '../../services/hotels.service';
+import {addHotel, updateHotel, removeHotel} from '../../services/hotels.service';
 import {useRouter} from 'next/router';
 
 
@@ -35,6 +35,16 @@ const HotelsManageContainer = ({data}) => {
         }
       });
 
+      const { mutate: remove} = useMutation(removeHotel, {
+        onSuccess: (data) => {
+            router.reload();
+        },
+        onError: (error) => {
+          alert('Error! ');
+        }
+      });
+      
+
     const openCreateDialog = () => {
         setOpenDialog(true);
     }
@@ -51,6 +61,7 @@ const HotelsManageContainer = ({data}) => {
         setOpenDialogEdit(true);
     }
 
+
     return (
         <Grid container>
             <Grid item xs={6}>
@@ -62,7 +73,7 @@ const HotelsManageContainer = ({data}) => {
                 </Grid>
             </Grid>
             <Grid item xs={12} mt={2}>
-                <HotelsTable data={data} showEdit={showEdit} />
+                <HotelsTable data={data} showEdit={showEdit} removeHotel={remove} />
             </Grid>
 
             <HotelsCreateDialog open={openDialog} close={closeCreateDialog} save={save} />
