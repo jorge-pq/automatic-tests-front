@@ -139,7 +139,7 @@ const RoomEditDialog = ({selected, id, open, close, save }) => {
   }
 
   return (
-    <Dialog open={open} onClose={close} maxWidth={'lg'}>
+    <Dialog open={open} maxWidth={'lg'}>
       <DialogTitle>
         {'Nueva Habitacion'}
         <IconButton
@@ -251,7 +251,7 @@ const RoomEditDialog = ({selected, id, open, close, save }) => {
           </Grid>
           <Grid item xs={12} mt={2}>
             <Grid container justifyContent={'center'}>
-              <Button variant={'contained'} disabled={offersType.length===0} onClick={addType}>{'Agregar tipo'}</Button>
+              <Button variant={'contained'} disabled={offersType.length===0} onClick={addType}>{'Agregar tipo habitación'}</Button>
             </Grid>
           </Grid>
           <Grid item xs={12} mt={2}>
