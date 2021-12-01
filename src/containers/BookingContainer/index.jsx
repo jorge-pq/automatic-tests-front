@@ -12,6 +12,15 @@ import Select from '@mui/material/Select';
 import BookingTable from './components/BookingTable';
 import { differenceInDays } from 'date-fns'
 
+function getOfferPrice(offers, dateSelected, defaultPrice){
+    let price = defaultPrice ? defaultPrice : 0;
+    offers.forEach(item => {
+        if(new Date(item.date[0]) < dateSelected[0] && new Date(item.date[1]) > dateSelected[1]){
+            price = item.price;
+        }
+    });
+    return price;
+}
 
 const selector = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
 
@@ -72,6 +81,7 @@ const BookingContainer = ({ hotel }) => {
         }
     }
 
+
     function getTotal() {
         let currentRoom = hotel.rooms.find(d => d.name === room);
         let currentTypes = Object.keys(typesSelected);
@@ -80,13 +90,15 @@ const BookingContainer = ({ hotel }) => {
         currentTypes.forEach(item => {
             if (typesSelected[item] > 0) {
                 let t = currentRoom.types.find(d => d.description == item);
-                total += t.price * typesSelected[item];
+                let prc = getOfferPrice(t.offers, value, t.price);
+                total += prc * typesSelected[item];
             }
         });
 
         let childrensPrice = 0;
         if (parseInt(childrensSelected) > 0) {
-            childrensPrice = currentRoom.childrens.find(d => d.count === parseInt(childrensSelected)).price;
+            let c = currentRoom.childrens.find(d => d.count === parseInt(childrensSelected));
+            childrensPrice = getOfferPrice(c.offers, value, c.price);
         }
 
         const days = differenceInDays(value[1], value[0]);
@@ -135,10 +147,10 @@ const BookingContainer = ({ hotel }) => {
                     renderInput={(params) => <TextField fullWidth {...params} label="Habitación" />}
                 />
                 {
-                    types.length > 0 && <Divider sx={{ mt: 2 }}>{'Cantidad'}</Divider>
+                    types.length > 0 && value[0] && <Divider sx={{ mt: 2 }}>{'Cantidad'}</Divider>
                 }
                 {
-                    types.map((item, index) =>
+                   value[0] && types.map((item, index) =>
 
                         <Autocomplete
                             sx={{ mt: 2 }}
@@ -155,7 +167,7 @@ const BookingContainer = ({ hotel }) => {
                         />
                     )}
                 {
-                    childrens.length > 0 &&
+                    childrens.length > 0 && value[0] && 
 
                     <Autocomplete
                         sx={{ mt: 2 }}
@@ -171,7 +183,7 @@ const BookingContainer = ({ hotel }) => {
                     />
                 }
                 {
-                    types.length > 0 &&
+                    types.length > 0 && value[0] &&
                     <Button variant={'contained'} fullWidth sx={{ mt: 3 }} onClick={add}>
                         {'Agregar'}
                     </Button>

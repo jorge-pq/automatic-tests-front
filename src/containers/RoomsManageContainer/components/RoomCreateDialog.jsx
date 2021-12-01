@@ -54,6 +54,8 @@ const RoomCreateDialog = ({id, open, close, save }) => {
       date: dateOfferType,
       price: typeOfferPrice,
     }]);
+    setTypeOfferPrice(0);
+    setDateOfferType([null, null]);
   }
 
   const removeTypeOffer = item => {
@@ -68,8 +70,6 @@ const RoomCreateDialog = ({id, open, close, save }) => {
     }]);
 
     setOffersType([]);
-    setTypeOfferPrice(0);
-    setDateOfferType([null, null]);
   }
   const removeType = item => {
     setTypesAdded(typesAdded.filter(d => d.description != item));
@@ -86,6 +86,8 @@ const RoomCreateDialog = ({id, open, close, save }) => {
       date: dateOfferChildren,
       price: childrenOfferPrice,
     }]);
+    setChildrenOfferPrice(0);
+    setDateOfferChildren([null, null]);
   }
 
   const removeChildrenOffer = item => {
@@ -100,8 +102,6 @@ const RoomCreateDialog = ({id, open, close, save }) => {
     }]);
 
     setOffersChildren([]);
-    setChildrenOfferPrice(0);
-    setDateOfferChildren([null, null]);
   }
 
   const removeChildren = item => {
@@ -170,7 +170,7 @@ const RoomCreateDialog = ({id, open, close, save }) => {
 
               </Grid>
               <Grid item xs={12} md={6}>
-                <TextField
+                {/* <TextField
                   autoFocus
                   margin="dense"
                   id="name"
@@ -181,7 +181,7 @@ const RoomCreateDialog = ({id, open, close, save }) => {
                   inputProps={{ min: 0 }}
                   fullWidth
                   variant="standard"
-                />
+                /> */}
               </Grid>
             </Grid>
           </Grid>
@@ -232,7 +232,7 @@ const RoomCreateDialog = ({id, open, close, save }) => {
           </Grid>
           <Grid item xs={12} mt={2}>
             <Grid container justifyContent={'center'}>
-              <Button variant={'contained'} onClick={addType}>{'Agregar tipo'}</Button>
+              <Button variant={'contained'} disabled={offersType.length===0} onClick={addType}>{'Agregar tipo'}</Button>
             </Grid>
           </Grid>
           <Grid item xs={12} mt={2}>
@@ -265,7 +265,7 @@ const RoomCreateDialog = ({id, open, close, save }) => {
 
               </Grid>
               <Grid item xs={12} md={6}>
-                <TextField
+                {/* <TextField
                   autoFocus
                   margin="dense"
                   id="name"
@@ -276,7 +276,7 @@ const RoomCreateDialog = ({id, open, close, save }) => {
                   onChange={handleChildrenPrice}
                   fullWidth
                   variant="standard"
-                />
+                /> */}
               </Grid>
             </Grid>
           </Grid>
@@ -327,7 +327,7 @@ const RoomCreateDialog = ({id, open, close, save }) => {
           </Grid>
           <Grid item xs={12} mt={2}>
             <Grid container justifyContent={'center'}>
-              <Button variant={'contained'} onClick={addChildren}>{'Agregar Niño'}</Button>
+              <Button variant={'contained'} disabled={offersChildren.length===0} onClick={addChildren}>{'Agregar Niño'}</Button>
             </Grid>
           </Grid>
           <Grid item xs={12} mt={2}>
