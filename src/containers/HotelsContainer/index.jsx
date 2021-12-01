@@ -8,7 +8,7 @@ const HotelsContainer = ({data}) => {
         <Grid container pb={4}>
             {
                 data.map((item, index) =>
-                    <Grid key={index} item xs={4} mt={2}>
+                    <Grid key={index} item xs={12} md={4} mt={2}>
                         <HotelCard
                             id={1}
                             item={item}

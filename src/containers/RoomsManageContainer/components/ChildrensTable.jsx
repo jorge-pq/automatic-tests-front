@@ -14,7 +14,7 @@ import OffersChip from './OffersChip';
 export default function ChildrensTable({data, removeChildren}) {
   return (
     <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+      <Table sx={{ minWidth: 300 }} size="small" aria-label="a dense table">
         <TableHead>
           <TableRow>
             <TableCell align="center">{'Cant. niño'}</TableCell>

@@ -154,7 +154,7 @@ const RoomCreateDialog = ({id, open, close, save }) => {
 
           <Grid item xs={12}>
             <Grid container spacing={2}>
-              <Grid item xs={6} mt={2}>
+              <Grid item xs={12} md={6} mt={2}>
                 <Autocomplete
                   disablePortal
                   id="combo-box-demo"
@@ -169,7 +169,7 @@ const RoomCreateDialog = ({id, open, close, save }) => {
                 />
 
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={12} md={6}>
                 <TextField
                   autoFocus
                   margin="dense"
@@ -188,7 +188,7 @@ const RoomCreateDialog = ({id, open, close, save }) => {
 
           <Grid item xs={12} mt={2}>
             <Grid container>
-              <Grid xs={6} mt={3} item>
+              <Grid md={6} xs={12} mt={3} item>
                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                   <DateRangePicker
                     startText="Desde"
@@ -208,7 +208,7 @@ const RoomCreateDialog = ({id, open, close, save }) => {
                   />
                 </LocalizationProvider>
               </Grid>
-              <Grid xs={4} item>
+              <Grid md={4} xs={12} item>
                 <TextField
                   autoFocus
                   margin="dense"
@@ -222,7 +222,7 @@ const RoomCreateDialog = ({id, open, close, save }) => {
                   variant="standard"
                 />
               </Grid>
-              <Grid xs={2} mt={3} pl={3} item>
+              <Grid xs={12} md={2} mt={3} pl={3} item>
                 <Button variant={'contained'} onClick={addOfferToType}>{'Agregar oferta'}</Button>
               </Grid>
             </Grid>
@@ -249,7 +249,7 @@ const RoomCreateDialog = ({id, open, close, save }) => {
           </Divider>
           <Grid item xs={12}>
             <Grid container spacing={2}>
-              <Grid item xs={6} mt={2}>
+              <Grid item xs={12} md={6} mt={2}>
                 <Autocomplete
                   disablePortal
                   id="combo-box-demo"
@@ -264,7 +264,7 @@ const RoomCreateDialog = ({id, open, close, save }) => {
                 />
 
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={12} md={6}>
                 <TextField
                   autoFocus
                   margin="dense"
@@ -283,7 +283,7 @@ const RoomCreateDialog = ({id, open, close, save }) => {
 
           <Grid item xs={12} mt={2}>
             <Grid container>
-              <Grid xs={6} mt={3} item>
+              <Grid xs={12} md={6} mt={3} item>
                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                   <DateRangePicker
                     startText="Desde"
@@ -303,7 +303,7 @@ const RoomCreateDialog = ({id, open, close, save }) => {
                   />
                 </LocalizationProvider>
               </Grid>
-              <Grid xs={4} item>
+              <Grid xs={12} md={4} item>
                 <TextField
                   autoFocus
                   margin="dense"
@@ -317,7 +317,7 @@ const RoomCreateDialog = ({id, open, close, save }) => {
                   variant="standard"
                 />
               </Grid>
-              <Grid xs={2} mt={3} pl={3} item>
+              <Grid xs={12} md={2} mt={3} pl={3} item>
                 <Button variant={'contained'} onClick={addOfferToChildren}>{'Agregar oferta'}</Button>
               </Grid>
             </Grid>

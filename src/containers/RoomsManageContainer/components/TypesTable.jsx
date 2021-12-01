@@ -13,7 +13,7 @@ import OffersChip from './OffersChip';
 export default function TypesTable({data, removeType}) {
   return (
     <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+      <Table sx={{ minWidth: 300 }} size="small" aria-label="a dense table">
         <TableHead>
           <TableRow>
             <TableCell align="center">{'Tipo'}</TableCell>

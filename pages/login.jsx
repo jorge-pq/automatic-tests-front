@@ -24,7 +24,7 @@ const login = () => {
 
     return (
         <Grid container justifyContent={'center'}>
-            <Grid item xs={6} pt={10}>
+            <Grid item xs={12} md={6} pt={10}>
                 <TextField
                     margin={'normal'}
                     fullWidth
