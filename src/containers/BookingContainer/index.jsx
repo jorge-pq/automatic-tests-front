@@ -22,6 +22,19 @@ function getOfferPrice(offers, dateSelected, defaultPrice){
     return price;
 }
 
+function getAdults(type) {
+    switch (type) {
+        case "Sencilla":
+            return 1;
+        case "Doble":
+            return 2;
+        case "Triple":
+            return 3;
+        default:
+            return 1;
+    }
+}    
+
 const selector = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
 
 const BookingContainer = ({ hotel }) => {
@@ -64,36 +77,70 @@ const BookingContainer = ({ hotel }) => {
         return obj;
     }
 
-    const handleChildren = value => {
-        setChildrensSelected(value);
+    // const handleChildren = value => {
+    //     setChildrensSelected(value);
+    // }
+
+    const handleChildren = ( room, cout, pos ) => {
+        let currentRoom = hotel.rooms.find(d => d.name === room);
+        let c = currentRoom.childrens.find(d => d.count === parseInt(cout));
+      
+        let childrensPrice = c ? getOfferPrice(c.offers, value, c.price) : 0;
+        const days = differenceInDays(value[1], value[0]);
+        let total = parseFloat(childrensPrice) * parseInt(days);
+
+        let upd = [...bookings];
+        let book = upd[pos];
+        book.childrenTotal = total > 0 ? total : 0; 
+        upd[pos] = book;
+        setBookings(upd);
     }
 
     const add = () => {
         let upd = bookings.find(d => d.room.id === room);
+
         if (!upd && value[0]) {
-            setBookings(bookings => [...bookings, {
-                date: value,
-                room: hotel.rooms.find(d => d.name === room),
-                types: typesSelected,
-                childrens: childrensSelected,
-                total: getTotal()
-            }]);
+            let currentTypes = Object.keys(typesSelected);
+            currentTypes.forEach(item => {
+                for (let index = 0; index < typesSelected[item]; index++) {
+                    let rm = hotel.rooms.find(d => d.name === room);
+                   setBookings(bookings => [...bookings, {
+                        date: value,
+                        room: rm,
+                        type: item,
+                        adults: getAdults(item),
+                        childrens: rm.childrens,
+                        childrenTotal: 0,
+                        total: getTotal(item)
+                    }]);
+                }
+            });
         }
+        // if (!upd && value[0]) {
+        //     setBookings(bookings => [...bookings, {
+        //         date: value,
+        //         room: hotel.rooms.find(d => d.name === room),
+        //         types: typesSelected,
+        //         childrens: childrensSelected,
+        //         total: getTotal()
+        //     }]);
+        // }
+
     }
 
 
-    function getTotal() {
+    function getTotal(type) {
         let currentRoom = hotel.rooms.find(d => d.name === room);
-        let currentTypes = Object.keys(typesSelected);
+        // let currentTypes = Object.keys(typesSelected);
         
         let total = 0;
-        currentTypes.forEach(item => {
-            if (typesSelected[item] > 0) {
-                let t = currentRoom.types.find(d => d.description == item);
-                let prc = getOfferPrice(t.offers, value, t.price);
-                total += prc * typesSelected[item];
-            }
-        });
+        // currentTypes.forEach(item => {
+        if (typesSelected[type] > 0) {
+            let t = currentRoom.types.find(d => d.description == type);
+            let prc = getOfferPrice(t.offers, value, t.price);
+            total += prc * getAdults(type);
+        }
+        // });
 
         let childrensPrice = 0;
         if (parseInt(childrensSelected) > 0) {
@@ -105,9 +152,10 @@ const BookingContainer = ({ hotel }) => {
         return (parseFloat(total) + parseFloat(childrensPrice)) * parseInt(days);
     }
 
-    const removeBooking = room => {
-        let upd = bookings.filter(d => d.room.name !== room);
-        setBookings(upd);
+    const removeBooking = pos => {
+        let arr = [...bookings];
+        arr.splice(pos, 1);
+        setBookings(arr);
     }
 
     return (
@@ -166,7 +214,7 @@ const BookingContainer = ({ hotel }) => {
                             renderInput={(params) => <TextField fullWidth {...params} label={item.description} />}
                         />
                     )}
-                {
+                {/* {
                     childrens.length > 0 && value[0] && 
 
                     <Autocomplete
@@ -181,7 +229,7 @@ const BookingContainer = ({ hotel }) => {
                         getOptionLabel={(option) => String(option.count)}
                         renderInput={(params) => <TextField fullWidth {...params} label={'Niños'} />}
                     />
-                }
+                } */}
                 {
                     types.length > 0 && value[0] &&
                     <Button variant={'contained'} fullWidth sx={{ mt: 3 }} onClick={add}>
@@ -191,7 +239,7 @@ const BookingContainer = ({ hotel }) => {
 
             </Grid>
             <Grid item xs={12} md={9} p={2}>
-                <BookingTable data={bookings} remove={removeBooking} />
+                <BookingTable data={bookings} remove={removeBooking} handleChildren={handleChildren} />
             </Grid>
 
         </Grid>
