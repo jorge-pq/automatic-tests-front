@@ -26,6 +26,7 @@ export default function BookingTable({ data, remove, handleChildren}) {
                         <TableCell align="center">{'Fecha'}</TableCell>
                         <TableCell align="center">{'Habitación'}</TableCell>
                         <TableCell align="center">{'Tipo'}</TableCell>
+                        <TableCell align="center">{'Adultos'}</TableCell>
                         <TableCell align="center">{'Niños'}</TableCell>
                         <TableCell align="center">{'Total'}</TableCell>
                         <TableCell align="center">{'Eliminar'}</TableCell>
@@ -44,6 +45,7 @@ export default function BookingTable({ data, remove, handleChildren}) {
                                 </Stack>
                             </TableCell> */}
                             <TableCell align="center">{row.type}</TableCell>
+                            <TableCell align="center">{row.adults}</TableCell>
                             <TableCell align="center" width={'130px'}>
                                 <Autocomplete
                                     sx={{ mt: 2 }}
