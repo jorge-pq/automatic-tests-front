@@ -17,6 +17,14 @@ export default function BookingTable({ data, remove, handleChildren}) {
     const getTotal = () => {
         return data.reduce((a, c) => (a + c.total + c.childrenTotal), 0);
     }
+    const getTotalAdults = () => {
+        return data.reduce((a, c) => (a + c.adults), 0);
+    }
+    
+    const getTotalChildrens = () => {
+        return data.reduce((a, c) => (a + c.childrensCount), 0);
+    }
+    
 
     return (
         <TableContainer component={Paper}>
@@ -81,7 +89,9 @@ export default function BookingTable({ data, remove, handleChildren}) {
                     </TableRow> */}
                     <TableRow>
                         <TableCell rowSpan={1} />
-                        <TableCell colSpan={3}><strong>{'TOTAL'}</strong></TableCell>
+                        <TableCell colSpan={2}><strong>{'TOTAL'}</strong></TableCell>
+                        <TableCell align="center"><Typography variant={'h5'}>{getTotalAdults()}</Typography></TableCell>
+                        <TableCell align="center"><Typography variant={'h5'}>{getTotalChildrens()}</Typography></TableCell>
                         <TableCell align="center"><Typography variant={'h5'}>${getTotal()}</Typography></TableCell>
                     </TableRow>
                 </TableBody>

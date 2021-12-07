@@ -81,9 +81,9 @@ const BookingContainer = ({ hotel }) => {
     //     setChildrensSelected(value);
     // }
 
-    const handleChildren = ( room, cout, pos ) => {
+    const handleChildren = ( room, count, pos ) => {
         let currentRoom = hotel.rooms.find(d => d.name === room);
-        let c = currentRoom.childrens.find(d => d.count === parseInt(cout));
+        let c = currentRoom.childrens.find(d => d.count === parseInt(count));
       
         let childrensPrice = c ? getOfferPrice(c.offers, value, c.price) : 0;
         const days = differenceInDays(value[1], value[0]);
@@ -92,6 +92,7 @@ const BookingContainer = ({ hotel }) => {
         let upd = [...bookings];
         let book = upd[pos];
         book.childrenTotal = total > 0 ? total : 0; 
+        book.childrensCount = count ? count : 0;
         upd[pos] = book;
         setBookings(upd);
     }
@@ -110,6 +111,7 @@ const BookingContainer = ({ hotel }) => {
                         type: item,
                         adults: getAdults(item),
                         childrens: rm.childrens,
+                        childrensCount: 0,
                         childrenTotal: 0,
                         total: getTotal(item)
                     }]);
