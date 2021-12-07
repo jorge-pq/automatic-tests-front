@@ -138,6 +138,11 @@ const RoomEditDialog = ({selected, id, open, close, save }) => {
       save(data);
   }
 
+  const removeTypeOfferAdded = (offer, type) => {
+    console.log(offer);
+    console.log(type);
+  }
+
   return (
     <Dialog open={open} maxWidth={'lg'}>
       <DialogTitle>
@@ -255,7 +260,7 @@ const RoomEditDialog = ({selected, id, open, close, save }) => {
             </Grid>
           </Grid>
           <Grid item xs={12} mt={2}>
-            <TypesTable data={typesAdded} removeType={removeType} />
+            <TypesTable data={typesAdded} removeType={removeType} removeTypeOfferAdded={removeTypeOfferAdded} />
           </Grid>
 
           {/* ------------ Childrens ------------------------- */}

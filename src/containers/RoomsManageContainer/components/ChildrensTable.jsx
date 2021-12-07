@@ -18,7 +18,7 @@ export default function ChildrensTable({data, removeChildren}) {
         <TableHead>
           <TableRow>
             <TableCell align="center">{'Cant. niño'}</TableCell>
-            <TableCell align="center">{'Precio standard'}</TableCell>
+            {/* <TableCell align="center">{'Precio standard'}</TableCell> */}
             <TableCell align="left">{'Ofertas'}</TableCell>
             <TableCell align="center">{'Eliminar'}</TableCell>
           </TableRow>
@@ -32,7 +32,7 @@ export default function ChildrensTable({data, removeChildren}) {
               <TableCell align="center" scope="row">
                 {row.count}
               </TableCell>
-              <TableCell align="center">{row.price}</TableCell>
+              {/* <TableCell align="center">{row.price}</TableCell> */}
               <TableCell align="left">
                 <OffersChip data={row.offers} />
               </TableCell>

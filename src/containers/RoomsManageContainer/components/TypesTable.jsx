@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -10,14 +10,15 @@ import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/DeleteOutline';
 import OffersChip from './OffersChip';
 
-export default function TypesTable({data, removeType}) {
+export default function TypesTable({data, removeType, removeTypeOfferAdded}) {
+
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 300 }} size="small" aria-label="a dense table">
         <TableHead>
           <TableRow>
             <TableCell align="center">{'Tipo'}</TableCell>
-            <TableCell align="center">{'Precio standard'}</TableCell>
+            {/* <TableCell align="center">{'Precio standard'}</TableCell> */}
             <TableCell align="left">{'Ofertas'}</TableCell>
             <TableCell align="center">{'Eliminar'}</TableCell>
           </TableRow>
@@ -31,11 +32,11 @@ export default function TypesTable({data, removeType}) {
               <TableCell align="center"scope="row">
                 {row.description}
               </TableCell>
-              <TableCell align="center" scope="row">
+              {/* <TableCell align="center" scope="row">
                 {row.price}
-              </TableCell>
+              </TableCell> */}
               <TableCell align="left">
-                <OffersChip data={row.offers} />
+                <OffersChip data={row.offers} handleDeleteOffer={(item)=>removeTypeOfferAdded(item, row.description)} />
               </TableCell>
               <TableCell align="center">
                 <IconButton onClick={()=>removeType(row.description)}>
