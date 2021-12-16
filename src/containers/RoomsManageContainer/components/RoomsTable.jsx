@@ -8,14 +8,20 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { Edit, Delete } from '@mui/icons-material';
 import { IconButton, Tooltip } from '@mui/material'
+import { format } from 'date-fns'
+
 
 const RoomsTable = ({data, showEdit, removeRoom}) => {
+
+    console.log(data)
     return (
         <TableContainer component={Paper}>
         <Table sx={{ minWidth: 300 }} aria-label="simple table">
             <TableHead>
                 <TableRow>
                     <TableCell>{'Habitacion'}</TableCell>
+                    <TableCell>{'Tipo'}</TableCell>
+                    <TableCell>{'Niños'}</TableCell>
                     <TableCell align="right">{'Accion'}</TableCell>
                 </TableRow>
             </TableHead>
@@ -27,6 +33,50 @@ const RoomsTable = ({data, showEdit, removeRoom}) => {
                     >
                         <TableCell component="th" scope="row">
                             {row.name}
+                        </TableCell>
+                        <TableCell component="th" scope="row">
+                            <ul>
+                                {
+                                    row.types.map((item, i) =>
+
+                                        <li key={i}>
+                                            {item.description}
+                                            <ul>
+                                                {
+                                                    item.offers.map((o, k) => 
+                                                        <li key={k}>
+                                                            {`${format(new Date(o.date[0]), 'dd/MM/yyyy')} - ${format(new Date(o.date[1]), 'dd/MM/yyyy')} - $${o.price}`}
+                                                        </li>
+                                                    )
+                                                }
+                                            </ul>
+                                        </li>
+
+                                    )
+                                }
+                            </ul>
+                        </TableCell>
+                        <TableCell component="th" scope="row">
+                            <ul>
+                                {
+                                    row.childrens.map((item, i) =>
+
+                                        <li key={i}>
+                                            {item.count}
+                                            <ul>
+                                                {
+                                                    item.offers.map((o, k) => 
+                                                        <li key={k}>
+                                                            {`${format(new Date(o.date[0]), 'dd/MM/yyyy')} - ${format(new Date(o.date[1]), 'dd/MM/yyyy')} - $${o.price}`}
+                                                        </li>
+                                                    )
+                                                }
+                                            </ul>
+                                        </li>
+
+                                    )
+                                }
+                            </ul>
                         </TableCell>
                         <TableCell align="right">
                             <Tooltip title="Editar">
