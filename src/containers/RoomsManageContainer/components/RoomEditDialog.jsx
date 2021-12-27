@@ -139,14 +139,18 @@ const RoomEditDialog = ({selected, id, open, close, save }) => {
   }
 
   const removeTypeOfferAdded = (offer, type) => {
-    console.log(offer);
-    console.log(type);
+    let index = typesAdded.findIndex(d => d.description == type);
+    let offers = typesAdded[index].offers;
+    let offersUpd = offers.filter(d=>d!=offer); 
+    let upd = [...typesAdded];
+    upd[index].offers = offersUpd;
+    setTypesAdded(upd);
   }
 
   return (
     <Dialog open={open} maxWidth={'lg'}>
       <DialogTitle>
-        {'Nueva Habitacion'}
+        {'Editar Habitacion'}
         <IconButton
           aria-label="close"
           onClick={close}
