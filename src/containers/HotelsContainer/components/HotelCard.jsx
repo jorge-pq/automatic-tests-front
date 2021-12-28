@@ -20,7 +20,7 @@ export default function HotelCard({item}) {
         <CardMedia
           component="img"
           height="140"
-          image="/9252_v3.webp"
+          image="https://raw.githubusercontent.com/djorg-solutions/booking/main/public/9252_v3.webp?token=AGMCAUP6I7CG5TL3N77OVHLBZOCN4"
           alt="green iguana"
         />
         <CardContent>

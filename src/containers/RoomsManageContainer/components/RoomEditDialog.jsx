@@ -86,6 +86,7 @@ const RoomEditDialog = ({selected, id, open, close, save }) => {
       offers: offersType
     }]);
 
+    setTypeSelected('');  
     setOffersType([]);
   }
   const removeType = item => {
@@ -119,6 +120,7 @@ const RoomEditDialog = ({selected, id, open, close, save }) => {
       offers: offersChildren
     }]);
 
+    setChildrensSelected('');
     setOffersChildren([]);
   }
 
@@ -145,6 +147,24 @@ const RoomEditDialog = ({selected, id, open, close, save }) => {
     let upd = [...typesAdded];
     upd[index].offers = offersUpd;
     setTypesAdded(upd);
+  }
+
+  const typesFiltered = item => {
+    if(typesAdded.findIndex(d=>d.description == item)== -1){
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
+
+  const childrenFiltered = item => {
+    if(childrensAdded.findIndex(d=>d.count == item)== -1){
+      return true;
+    }
+    else{
+      return false;
+    }
   }
 
   return (
@@ -186,7 +206,7 @@ const RoomEditDialog = ({selected, id, open, close, save }) => {
                 <Autocomplete
                   disablePortal
                   id="combo-box-demo"
-                  options={types}
+                  options={types.filter(typesFiltered)}
                   size={'small'}
                   value={typeSelected}
                   onChange={(event, type) => {
@@ -281,7 +301,7 @@ const RoomEditDialog = ({selected, id, open, close, save }) => {
                 <Autocomplete
                   disablePortal
                   id="combo-box-demo"
-                  options={childrens}
+                  options={childrens.filter(childrenFiltered)}
                   size={'small'}
                   value={childrensSelected}
                   onChange={(event, count) => {

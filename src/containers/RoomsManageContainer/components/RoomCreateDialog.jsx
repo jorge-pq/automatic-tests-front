@@ -68,9 +68,11 @@ const RoomCreateDialog = ({id, open, close, save }) => {
       price: typePrice,
       offers: offersType
     }]);
-
+    setTypeSelected('');
     setOffersType([]);
   }
+
+
   const removeType = item => {
     setTypesAdded(typesAdded.filter(d => d.description != item));
   }
@@ -101,6 +103,7 @@ const RoomCreateDialog = ({id, open, close, save }) => {
       offers: offersChildren
     }]);
 
+    setChildrensSelected('');
     setOffersChildren([]);
   }
 
@@ -117,6 +120,33 @@ const RoomCreateDialog = ({id, open, close, save }) => {
       }
 
       save(data);
+  }
+
+  const removeTypeOfferAdded = (offer, type) => {
+    let index = typesAdded.findIndex(d => d.description == type);
+    let offers = typesAdded[index].offers;
+    let offersUpd = offers.filter(d=>d!=offer); 
+    let upd = [...typesAdded];
+    upd[index].offers = offersUpd;
+    setTypesAdded(upd);
+  }
+
+  const typesFiltered = item => {
+    if(typesAdded.findIndex(d=>d.description == item)== -1){
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
+
+  const childrenFiltered = item => {
+    if(childrensAdded.findIndex(d=>d.count == item)== -1){
+      return true;
+    }
+    else{
+      return false;
+    }
   }
 
   return (
@@ -158,7 +188,7 @@ const RoomCreateDialog = ({id, open, close, save }) => {
                 <Autocomplete
                   disablePortal
                   id="combo-box-demo"
-                  options={types}
+                  options={types.filter(typesFiltered)}
                   size={'small'}
                   value={typeSelected}
                   onChange={(event, type) => {
@@ -236,7 +266,7 @@ const RoomCreateDialog = ({id, open, close, save }) => {
             </Grid>
           </Grid>
           <Grid item xs={12} mt={2}>
-            <TypesTable data={typesAdded} removeType={removeType} />
+            <TypesTable data={typesAdded} removeType={removeType} removeTypeOfferAdded={removeTypeOfferAdded} />
           </Grid>
 
           {/* ------------ Childrens ------------------------- */}
@@ -253,7 +283,7 @@ const RoomCreateDialog = ({id, open, close, save }) => {
                 <Autocomplete
                   disablePortal
                   id="combo-box-demo"
-                  options={childrens}
+                  options={childrens.filter(childrenFiltered)}
                   size={'small'}
                   value={childrensSelected}
                   onChange={(event, count) => {
