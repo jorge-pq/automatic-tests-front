@@ -15,7 +15,7 @@ import { format } from 'date-fns'
 export default function BookingTable({ data, remove, handleChildren}) {
 
     const getTotal = () => {
-        return data.reduce((a, c) => (a + c.total + c.childrenTotal), 0);
+        return parseFloat(data.reduce((a, c) => (a + c.total + c.childrenTotal), 0)).toFixed(2);
     }
     const getTotalAdults = () => {
         return data.reduce((a, c) => (a + c.adults), 0);
@@ -69,7 +69,7 @@ export default function BookingTable({ data, remove, handleChildren}) {
                                     renderInput={(params) => <TextField fullWidth {...params} label={'Niños'} />}
                                 />
                             </TableCell>
-                            <TableCell align="center">${row.total + row.childrenTotal}</TableCell>
+                            <TableCell align="center">${parseFloat(row.total + row.childrenTotal).toFixed(2)}</TableCell>
                             <TableCell align="center">
                                 <IconButton onClick={()=>remove(index)}>
                                     <HighlightOffIcon />
