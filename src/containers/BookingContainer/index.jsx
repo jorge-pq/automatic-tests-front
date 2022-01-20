@@ -19,7 +19,7 @@ function getOfferPrice(offers, dateSelected, defaultPrice){
             price = item.price;
         }
     });
-    return price;
+    return parseFloat(price);
 }
 
 function getAdults(type) {
@@ -84,8 +84,13 @@ const BookingContainer = ({ hotel }) => {
     const handleChildren = ( room, count, pos ) => {
         let currentRoom = hotel.rooms.find(d => d.name === room);
         let c = currentRoom.childrens.find(d => d.count === parseInt(count));
-      
         let childrensPrice = c ? getOfferPrice(c.offers, value, c.price) : 0;
+
+        if(parseInt(count)===2){
+            let firstChildren = currentRoom.childrens.find(d => d.count === 1);
+            childrensPrice += firstChildren ? getOfferPrice(firstChildren.offers, value, c.price) : 0;
+        }
+
         const days = differenceInDays(value[1], value[0]);
         let total = parseFloat(childrensPrice) * parseInt(days);
 
