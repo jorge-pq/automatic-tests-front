@@ -15,7 +15,8 @@ import { differenceInDays } from 'date-fns'
 function getOfferPrice(offers, dateSelected, defaultPrice){
     let price = defaultPrice ? defaultPrice : 0;
     offers.forEach(item => {
-        if(new Date(item.date[0]) < dateSelected[0] && new Date(item.date[1]) > dateSelected[1]){
+        // if(new Date(item.date[0]) <= dateSelected[0] && new Date(item.date[1]) >= dateSelected[1]){
+        if(new Date(item.date[0]) <= dateSelected[1] && new Date(item.date[1]) >= dateSelected[1]){
             price = item.price;
         }
     });
