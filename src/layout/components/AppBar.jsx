@@ -19,6 +19,8 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import cookie from 'js-cookie';
 import AuthContext from '../../providers/AuthContext';
+import {useFilter} from '../../providers/FilterProvider';
+
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -66,7 +68,7 @@ export default function PrimarySearchAppBar() {
   const { isAuth, setAuth } = React.useContext(AuthContext);
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-
+  const {filter, setFilter} = useFilter();
   const router = useRouter();
 
   const handleProfileMenuOpen = (event) => {
@@ -200,7 +202,9 @@ export default function PrimarySearchAppBar() {
               <SearchIcon />
             </SearchIconWrapper>
             <StyledInputBase
-              placeholder="Search…"
+              placeholder="Buscar..."
+              value={filter}
+              onChange={e=>setFilter(e.target.value)}
               inputProps={{ 'aria-label': 'search' }}
             />
           </Search>

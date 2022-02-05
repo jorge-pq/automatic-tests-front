@@ -10,6 +10,8 @@ import theme from '../src/utils/theme';
 import createEmotionCache from '../src/utils/createEmotionCache';
 import Layout from '../src/layout';
 import AuthProvider from '../src/providers/AuthProvider';
+import FilterProvider from '../src/providers/FilterProvider';
+
 
 const defaultQueryFn = async ({ queryKey }) => {
   const { data } = await rget(queryKey[0]);
@@ -36,19 +38,21 @@ export default function MyApp(props) {
     <QueryClientProvider client={queryClient}>
       <Hydrate state={pageProps.dehydratedState}>
         <AuthProvider>
-          <CacheProvider value={emotionCache}>
-            <Layout>
-              <Head>
-                <title>Booking</title>
-                <meta name="viewport" content="initial-scale=1, width=device-width" />
-              </Head>
-              <ThemeProvider theme={theme}>
-                {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-                <CssBaseline />
-                <Component {...pageProps} />
-              </ThemeProvider>
-            </Layout>
-          </CacheProvider>
+          <FilterProvider>
+            <CacheProvider value={emotionCache}>
+              <Layout>
+                <Head>
+                  <title>Booking</title>
+                  <meta name="viewport" content="initial-scale=1, width=device-width" />
+                </Head>
+                <ThemeProvider theme={theme}>
+                  {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+                  <CssBaseline />
+                  <Component {...pageProps} />
+                </ThemeProvider>
+              </Layout>
+            </CacheProvider>
+          </FilterProvider>
        </AuthProvider>
       </Hydrate>
     </QueryClientProvider>
