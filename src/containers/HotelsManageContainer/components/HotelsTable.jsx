@@ -6,7 +6,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { Edit, LocalHotel, Delete } from '@mui/icons-material';
+import { Edit, LocalHotel, Delete, Image as ImageIcon } from '@mui/icons-material';
 import { IconButton, Tooltip } from '@mui/material'
 import { useRouter } from 'next/router';
 
@@ -15,6 +15,8 @@ export default function HotelsTable({ data, showEdit, removeHotel }) {
     const router = useRouter();
 
     const goToRoomsByHotel = (id) => router.push(`/manage/rooms/${id}`);
+
+    const goToGallery = (id) => router.push(`/manage/gallery/${id}`);
 
     return (
         <TableContainer component={Paper}>
@@ -35,7 +37,12 @@ export default function HotelsTable({ data, showEdit, removeHotel }) {
                                 {row.name}
                             </TableCell>
                             <TableCell align="right">
-
+                            <Tooltip title="Ver Habitaciones">
+                                    <IconButton onClick={() => goToGallery(row._id)}>
+                                        <ImageIcon />
+                                    </IconButton>
+                                </Tooltip>
+                                
                                 <Tooltip title="Ver Habitaciones">
                                     <IconButton onClick={() => goToRoomsByHotel(row._id)}>
                                         <LocalHotel />

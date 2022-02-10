@@ -1,4 +1,4 @@
-import {rget, rpost, rput, rdelete} from '../lib/request';
+import {rget, rpost, rput, rdelete, rpostFormData} from '../lib/request';
 import cookie from 'js-cookie'
 
 
@@ -47,6 +47,12 @@ export const updateRoom = async (values) => {
 
 export const getHotelBySlug = async (slug) => {
     const {data} = await rget('api/hotel/slug/'+ slug);
+    return data;
+}
+
+
+export const upload = async (values) => {
+    const {data} = await rpost('api/hotels/gallery',values, cookie.get('token'));
     return data;
 }
 

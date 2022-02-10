@@ -39,3 +39,12 @@ export const rdelete = async (endpoint, jwt) => {
         : null;
     return await axios.delete(getUrl(endpoint), headers);
 };
+
+export const rpostFormData = async (endpoint, data, jwt) => {
+
+    const headers = jwt
+        ? {headers: {'Content-Type': `multipart/form-data`, 'Authorization': `Bearer ${jwt}` }}
+        : {headers: {'Content-Type': `multipart/form-data` }}
+    ;
+    return await axios.post(getUrl(endpoint), data, headers);
+};
