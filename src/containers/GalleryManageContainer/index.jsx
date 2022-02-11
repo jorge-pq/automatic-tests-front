@@ -1,9 +1,9 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { Grid, Typography, Divider, Stack, Button } from '@mui/material';
 import { upload } from '../../services/hotels.service';
 import { useMutation } from 'react-query';
 import { useRouter } from 'next/router';
-
+import ImageCard from './ImageCard';
 
 const GalleryManageContainer = ({ hotel }) => {
 
@@ -28,16 +28,13 @@ const GalleryManageContainer = ({ hotel }) => {
         let form = new FormData();
         form.append("id", hotel._id);
         form.append("main", imageMain);
-        if(images){
+        if (images) {
             Array.from(images).forEach(item => {
-                form.append("images", item);    
+                form.append("images", item);
             });
         }
         save(form);
     }
-
-
-    console.log(hotel);
 
     return (
         <Grid container>
@@ -55,12 +52,21 @@ const GalleryManageContainer = ({ hotel }) => {
                         <input type={'file'} size={'small'} onChange={handleImageMain} />
                         <label>Imagenes</label>
                         <input type={'file'} size={'small'} multiple onChange={handleImages} />
-                        <Button variant='contained' disabled={imageMain ? false : true} onClick={submit}>{'Subir'}</Button>
+                        <Button variant='contained' disabled={(imageMain || images) ? false : true} onClick={submit}>{'Subir'}</Button>
                     </Stack>
                 </Grid>
             </Grid>
             <Grid item xs={12} mt={2}>
-                Images
+                <Typography variant='h6'>{'Imagenes'}</Typography>
+                <Divider />
+                <Grid container pb={4}>
+                    {
+                        hotel.images?.map((item, index) =>
+                            <Grid key={index} item xs={12} md={4} mt={2}>
+                                <ImageCard item={item.path} />
+                            </Grid>
+                        )}
+                </Grid>
             </Grid>
         </Grid>
     );

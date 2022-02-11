@@ -4,6 +4,8 @@ const API_HOST = process.env.NEXT_PUBLIC_API;
 
 const getUrl = endpoint => `${API_HOST}/${endpoint}`;
 
+export const getUrlImage = () => `${process.env.NEXT_PUBLIC_API}/public/`;
+
 export const rget = async (endpoint, jwt) => {
     const headers = jwt
         ? {
