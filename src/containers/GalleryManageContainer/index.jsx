@@ -17,6 +17,7 @@ const GalleryManageContainer = ({ hotel }) => {
             router.reload();
         },
         onError: (error) => {
+            console.log(error);
             alert('Error!');
         }
     });
@@ -52,7 +53,7 @@ const GalleryManageContainer = ({ hotel }) => {
                         <input type={'file'} size={'small'} onChange={handleImageMain} />
                         <label>Imagenes</label>
                         <input type={'file'} size={'small'} multiple onChange={handleImages} />
-                        <Button variant='contained' disabled={(imageMain || images) ? false : true} onClick={submit}>{'Subir'}</Button>
+                        <Button variant='contained' disabled={(imageMain || images || isLoading) ? false : true} onClick={submit}>{isLoading?'Cargando...':'Subir'}</Button>
                     </Stack>
                 </Grid>
             </Grid>
