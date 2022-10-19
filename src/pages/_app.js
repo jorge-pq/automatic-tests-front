@@ -6,11 +6,11 @@ import Head from 'next/head';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { CacheProvider } from '@emotion/react';
-import theme from '../src/utils/theme';
-import createEmotionCache from '../src/utils/createEmotionCache';
-import Layout from '../src/layout';
-import AuthProvider from '../src/providers/AuthProvider';
-import FilterProvider from '../src/providers/FilterProvider';
+import theme from '../utils/theme';
+import createEmotionCache from '../utils/createEmotionCache';
+import Layout from '../layout';
+import AuthProvider from '../providers/AuthProvider';
+import FilterProvider from '../providers/FilterProvider';
 
 
 const defaultQueryFn = async ({ queryKey }) => {

@@ -37,7 +37,7 @@ export default function HotelsTable({ data, showEdit, removeHotel }) {
                                 {row.name}
                             </TableCell>
                             <TableCell align="right">
-                            <Tooltip title="Ver Habitaciones">
+                            <Tooltip title="Ver Imágenes">
                                     <IconButton onClick={() => goToGallery(row._id)}>
                                         <ImageIcon />
                                     </IconButton>

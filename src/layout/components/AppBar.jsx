@@ -65,7 +65,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 export default function PrimarySearchAppBar() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
-  const { isAuth, setAuth } = React.useContext(AuthContext);
+  const { isAuth, setAuth, user } = React.useContext(AuthContext);
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
   const {filter, setFilter} = useFilter();
@@ -92,30 +92,44 @@ export default function PrimarySearchAppBar() {
     router.push('/manage/hotels');
   }
 
+  const goToCreateTenant = () => {
+    router.push('/create_tenant');
+  }
+
+  const goToAddUser = () => {
+    router.push('/add_user');
+  }
+
+
   const logout = () => {
     setAuth(false);
     cookie.remove('token');
+    cookie.remove('user');
     router.push('/');
   }
+
 
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
     <Menu
       anchorEl={anchorEl}
       anchorOrigin={{
-        vertical: 'top',
+        vertical: 'bottom',
         horizontal: 'right',
       }}
       id={menuId}
       keepMounted
       transformOrigin={{
-        vertical: 'top',
+        vertical: 'bottom',
         horizontal: 'right',
       }}
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={goToManage}>{'Administracion'}</MenuItem>
+      <MenuItem onClick={goToManage}>{'Gestionar hoteles'}</MenuItem>
+      <MenuItem onClick={goToCreateTenant}>{'Agregar mayorista'}</MenuItem>
+      <MenuItem onClick={goToCreateTenant}>{'Agregar minorista'}</MenuItem>
+      <MenuItem onClick={goToAddUser}>{'Agregar usuario'}</MenuItem>
       <MenuItem onClick={logout}>{'Salir'}</MenuItem>
     </Menu>
   );
@@ -211,8 +225,8 @@ export default function PrimarySearchAppBar() {
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: 'flex' }}>
             {
-              isAuth &&
-              <IconButton
+              isAuth &&                
+                <IconButton
                 size="large"
                 edge="end"
                 aria-label="account of current user"
@@ -221,10 +235,10 @@ export default function PrimarySearchAppBar() {
                 onClick={handleProfileMenuOpen}
                 color="inherit"
               >
+                <Typography mr={2}>{user.fullname}</Typography>
                 <AccountCircle />
-              </IconButton>
+              </IconButton>              
             }
-
           </Box>
         </Toolbar>
       </AppBar>

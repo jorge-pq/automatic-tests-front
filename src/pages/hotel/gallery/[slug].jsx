@@ -1,11 +1,11 @@
 import React from 'react';
-import {getHotelBySlug} from '../../src/services/hotels.service';
-import BookingContainer from '../../src/containers/BookingContainer';
+import {getHotelBySlug} from '../../../services/hotels.service';
+import GalleryContainer from '../../../containers/GalleryContainer';
 
-const Hotel = ({hotel}) => {
+const Gallery = ({hotel}) => {
     return (
         <>
-            <BookingContainer hotel={hotel} />
+            <GalleryContainer hotel={hotel} />
         </>
     );
 };
@@ -22,4 +22,4 @@ export async function getServerSideProps(ctx) {
 
 }
 
-export default Hotel;
+export default Gallery;

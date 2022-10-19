@@ -1,12 +1,12 @@
 import React from 'react';
-import {getHotelById} from '../../../src/services/hotels.service';
-import GalleryManageContainer from '../../../src/containers/GalleryManageContainer';
-import {getCookie} from '../../../src/lib/session';
+import {getHotelById} from '../../../services/hotels.service';
+import RoomsManageContainer from '../../../containers/RoomsManageContainer';
+import {getCookie} from '../../../lib/session';
 
-const GalleryManage = ({hotel}) => {
+const RoomsManage = ({hotel}) => {
     return (
         <>
-            <GalleryManageContainer hotel={hotel} />
+            <RoomsManageContainer hotel={hotel} />
         </>
     );
 };
@@ -35,4 +35,4 @@ export async function getServerSideProps(ctx) {
 
 }
 
-export default GalleryManage;
+export default RoomsManage;

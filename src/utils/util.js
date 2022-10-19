@@ -9,3 +9,12 @@ export const getSlug = name => {
     .split(" ")
     .join("-");    
 } 
+
+export const redirectToLogin = () => {
+    return {
+        redirect: {
+            destination: '/login',
+            permanent: false,
+        }
+    }
+}
