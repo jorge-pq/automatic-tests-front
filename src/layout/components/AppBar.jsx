@@ -126,9 +126,9 @@ export default function PrimarySearchAppBar() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={goToManage}>{'Gestionar hoteles'}</MenuItem>
-      <MenuItem onClick={goToCreateTenant}>{'Agregar mayorista'}</MenuItem>
-      <MenuItem onClick={goToCreateTenant}>{'Agregar minorista'}</MenuItem>
+      {user?.tenant.type === "wholesaler" && <MenuItem onClick={goToManage}>{'Gestionar hoteles'}</MenuItem>}
+      {user.role === "super_admin" && <MenuItem onClick={goToCreateTenant}>{'Agregar mayorista'}</MenuItem>}
+      {user?.tenant.type === "wholesaler" && <MenuItem onClick={goToCreateTenant}>{'Agregar minorista'}</MenuItem>}
       <MenuItem onClick={goToAddUser}>{'Agregar usuario'}</MenuItem>
       <MenuItem onClick={logout}>{'Salir'}</MenuItem>
     </Menu>
