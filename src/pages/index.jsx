@@ -2,12 +2,11 @@ import * as React from 'react';
 import HotelsContainer from '../containers/HotelsContainer';
 import { getHotels } from '../services/hotels.service';
 import {getCookie} from '../lib/session';
-import {redirectToLogin} from '../utils/util';
+import {redirectToLogin, redirectToTenat} from '../utils/util';
 
-const Index = ({ data }) => {
+const Index = () => {
   return (
     <>
-      <HotelsContainer data={data} />
     </>
   );
 
@@ -21,9 +20,9 @@ export async function getServerSideProps(ctx) {
 	if (!jwt) {
 		return redirectToLogin();
 	}
-  
-  const data = await getHotels();
-  return { props: { data } }
+  let user = JSON.parse(getCookie('user', ctx.req));
+
+  return redirectToTenat(user.tenant.name);
 
 }
 

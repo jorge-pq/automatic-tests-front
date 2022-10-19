@@ -13,7 +13,16 @@ export const getSlug = name => {
 export const redirectToLogin = () => {
     return {
         redirect: {
-            destination: '/login',
+            destination: '/auth/login',
+            permanent: false,
+        }
+    }
+}
+
+export const redirectToTenat = (tenant) => {
+    return {
+        redirect: {
+            destination: `/${tenant}/home`,
             permanent: false,
         }
     }
