@@ -5,7 +5,7 @@ import { format } from 'date-fns'
 
 
 function getFormatDate(value) {
-    const dt = '';
+    let dt = '';
     try {
         dt = value ? format(value[0], 'dd/MM/yyyy') + ' - ' + format(value[1], 'dd/MM/yyyy') : '';
     } catch (error) {
