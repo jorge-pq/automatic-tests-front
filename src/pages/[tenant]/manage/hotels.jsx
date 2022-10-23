@@ -1,7 +1,7 @@
 import React from 'react';
-import HotelsManageContainer from '../../containers/HotelsManageContainer';
-import {getHotels} from '../../services/hotels.service';
-import {getCookie} from '../../lib/session';
+import HotelsManageContainer from '../../../containers/HotelsManageContainer';
+import {getHotels} from '../../../services/hotels.service';
+import {getCookie} from '../../../lib/session';
 
 const hotels = ({data}) => {
     return (

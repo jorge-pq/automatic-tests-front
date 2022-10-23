@@ -20,7 +20,7 @@ import { useRouter } from 'next/router';
 import cookie from 'js-cookie';
 import AuthContext from '../../providers/AuthContext';
 import {useFilter} from '../../providers/FilterProvider';
-
+import {getTenant} from '../../utils/util';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -89,19 +89,23 @@ export default function PrimarySearchAppBar() {
   };
 
   const goToManage = () => {
-    router.push('/manage/hotels');
+    setAnchorEl(null);
+    router.push(`/${getTenant()}/manage/hotels`);
   }
 
   const goToCreateTenant = () => {
-    router.push('/create_tenant');
+    setAnchorEl(null);
+    router.push(`/${getTenant()}/create_tenant`);
   }
 
   const goToAddUser = () => {
-    router.push('/add_user');
+    setAnchorEl(null);
+    router.push(`/${getTenant()}/add_user`);
   }
 
 
   const logout = () => {
+    setAnchorEl(null);
     setAuth(false);
     cookie.remove('token');
     cookie.remove('user');
@@ -126,9 +130,9 @@ export default function PrimarySearchAppBar() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      {user?.tenant.type === "wholesaler" && <MenuItem onClick={goToManage}>{'Gestionar hoteles'}</MenuItem>}
-      {user.role === "super_admin" && <MenuItem onClick={goToCreateTenant}>{'Agregar mayorista'}</MenuItem>}
-      {user?.tenant.type === "wholesaler" && <MenuItem onClick={goToCreateTenant}>{'Agregar minorista'}</MenuItem>}
+      {user?.tenant?.type === "Wholesaler" && <MenuItem onClick={goToManage}>{'Gestionar hoteles'}</MenuItem>}
+      {user?.role === "super_admin" && <MenuItem onClick={goToCreateTenant}>{'Agregar mayorista'}</MenuItem>}
+      {user?.tenant?.type === "Wholesaler" && <MenuItem onClick={goToCreateTenant}>{'Agregar minorista'}</MenuItem>}
       <MenuItem onClick={goToAddUser}>{'Agregar usuario'}</MenuItem>
       <MenuItem onClick={logout}>{'Salir'}</MenuItem>
     </Menu>
@@ -207,7 +211,7 @@ export default function PrimarySearchAppBar() {
                 component="div"
                 sx={{ display: 'block', mr: 2 }}
               >
-                {'Booking'}
+                {user?.tenant?.name || 'Booking - Administrator'}
               </Typography>
             </a>
           </Link>

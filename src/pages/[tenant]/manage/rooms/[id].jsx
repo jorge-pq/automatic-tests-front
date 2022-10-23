@@ -1,7 +1,7 @@
 import React from 'react';
-import {getHotelById} from '../../../services/hotels.service';
-import RoomsManageContainer from '../../../containers/RoomsManageContainer';
-import {getCookie} from '../../../lib/session';
+import {getHotelById} from '../../../../services/hotels.service';
+import RoomsManageContainer from '../../../../containers/RoomsManageContainer';
+import {getCookie} from '../../../../lib/session';
 
 const RoomsManage = ({hotel}) => {
     return (

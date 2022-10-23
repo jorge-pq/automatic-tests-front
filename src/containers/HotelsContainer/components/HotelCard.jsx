@@ -6,6 +6,7 @@ import Typography from '@mui/material/Typography';
 import { Button, CardActionArea, CardActions } from '@mui/material';
 import {useRouter} from 'next/router';
 import {getImage} from '../../../services/hotels.service';
+import {getTenant} from '../../../utils/util';
 
 
 const DEFAULT_IMAGE = 'https://www.blauhotels.com/cache/63/20/632054992db0d81ab98c4125df16c427.jpg';
@@ -15,11 +16,11 @@ export default function HotelCard({item}) {
   const router = useRouter();  
 
   const handleBooking = slug => {
-     router.push(`/hotel/${slug}`);
+     router.push(`/${getTenant()}/hotel/${slug}`);
   }  
 
   const handleGallery = slug => {
-    router.push(`/hotel/gallery/${slug}`);
+    router.push(`/${getTenant()}/hotel/gallery/${slug}`);
   }
 
   return (

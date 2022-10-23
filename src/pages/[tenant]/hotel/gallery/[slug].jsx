@@ -1,6 +1,6 @@
 import React from 'react';
-import {getHotelBySlug} from '../../../services/hotels.service';
-import GalleryContainer from '../../../containers/GalleryContainer';
+import {getHotelBySlug} from '../../../../services/hotels.service';
+import GalleryContainer from '../../../../containers/GalleryContainer';
 
 const Gallery = ({hotel}) => {
     return (

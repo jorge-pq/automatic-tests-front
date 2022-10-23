@@ -2,7 +2,7 @@ import * as React from 'react';
 import HotelsContainer from '../../containers/HotelsContainer';
 import { getHotels } from '../../services/hotels.service';
 import {getCookie} from '../../lib/session';
-import {redirectToLogin} from '../../utils/util';
+import {redirectToLogin, normalizeUserCookie, redirectToTenat} from '../../utils/util';
 
 const Home = ({ data }) => {
   return (
@@ -21,7 +21,7 @@ export async function getServerSideProps(ctx) {
 	if (!jwt) {
 		return redirectToLogin();
 	}
-  
+
   const data = await getHotels();
   return { props: { data } }
 

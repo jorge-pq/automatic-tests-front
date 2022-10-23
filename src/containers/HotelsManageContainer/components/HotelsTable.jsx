@@ -9,14 +9,16 @@ import Paper from '@mui/material/Paper';
 import { Edit, LocalHotel, Delete, Image as ImageIcon } from '@mui/icons-material';
 import { IconButton, Tooltip } from '@mui/material'
 import { useRouter } from 'next/router';
+import {getTenant} from '../../../utils/util';
+
 
 export default function HotelsTable({ data, showEdit, removeHotel }) {
 
     const router = useRouter();
 
-    const goToRoomsByHotel = (id) => router.push(`/manage/rooms/${id}`);
+    const goToRoomsByHotel = (id) => router.push(`/${getTenant()}/manage/rooms/${id}`);
 
-    const goToGallery = (id) => router.push(`/manage/gallery/${id}`);
+    const goToGallery = (id) => router.push(`/${getTenant()}/manage/gallery/${id}`);
 
     return (
         <TableContainer component={Paper}>

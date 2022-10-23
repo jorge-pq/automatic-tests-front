@@ -4,10 +4,10 @@ import { getHotels } from '../../services/hotels.service';
 import {getCookie} from '../../lib/session';
 import {redirectToLogin} from '../../utils/util';
 
-const CreateTenant = () => {
+const Business = () => {
   return (
     <>
-      <CreateTenantContainer />
+     My Business (pagina en construccion)
     </>
   );
 
@@ -26,4 +26,4 @@ export async function getServerSideProps(ctx) {
 }
 
 
-export default CreateTenant;
+export default Business;
