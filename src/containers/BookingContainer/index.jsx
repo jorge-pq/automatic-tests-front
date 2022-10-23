@@ -1,21 +1,15 @@
 import React, { useState } from 'react';
 import { Grid, Typography, Divider, Button, Autocomplete } from '@mui/material';
-import { styled, alpha } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import Box from '@mui/material/Box';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
 import BookingTable from './components/BookingTable';
 import { differenceInDays } from 'date-fns'
 
 function getOfferPrice(offers, dateSelected, defaultPrice) {
     let price = defaultPrice ? defaultPrice : 0;
     offers.forEach(item => {
-        // if(new Date(item.date[0]) <= dateSelected[0] && new Date(item.date[1]) >= dateSelected[1]){
         if (new Date(item.date[0]) <= dateSelected[1] && new Date(item.date[1]) >= dateSelected[1]) {
             price = item.price;
         }
@@ -39,7 +33,6 @@ function getAdults(type) {
 const selector = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
 
 const DatePickerCustom = styled(DatePicker)(({ theme }) => ({
-    // position: 'relative',
     border: '1px solid #bfbfbf',
     borderRadius: '3px',
     height: '40px',
@@ -88,10 +81,6 @@ const BookingContainer = ({ hotel }) => {
         return obj;
     }
 
-    // const handleChildren = value => {
-    //     setChildrensSelected(value);
-    // }
-
     const handleChildren = (room, count, pos) => {
         let currentRoom = hotel.rooms.find(d => d.name === room);
         let c = currentRoom.childrens.find(d => d.count === parseInt(count));
@@ -134,16 +123,6 @@ const BookingContainer = ({ hotel }) => {
                 }
             });
         }
-        // if (!upd && value[0]) {
-        //     setBookings(bookings => [...bookings, {
-        //         date: value,
-        //         room: hotel.rooms.find(d => d.name === room),
-        //         types: typesSelected,
-        //         childrens: childrensSelected,
-        //         total: getTotal()
-        //     }]);
-        // }
-
     }
 
 
@@ -152,14 +131,12 @@ const BookingContainer = ({ hotel }) => {
         // let currentTypes = Object.keys(typesSelected);
 
         let total = 0;
-        // currentTypes.forEach(item => {
         if (typesSelected[type] > 0) {
             let t = currentRoom.types.find(d => d.description == type);
             let prc = getOfferPrice(t.offers, value, t.price);
             total += prc * getAdults(type);
         }
-        // });
-
+      
         let childrensPrice = 0;
         if (parseInt(childrensSelected) > 0) {
             let c = currentRoom.childrens.find(d => d.count === parseInt(childrensSelected));
@@ -181,7 +158,7 @@ const BookingContainer = ({ hotel }) => {
             <Grid item xs={12}>
                 <Typography variant={'h4'}>{hotel.name}</Typography>
             </Grid>
-            <Grid xs={12} md={3}>
+            <Grid item xs={12} md={3}>
                 <Grid container mt={3}>
                     <Grid item xs={12}>
                         <DatePickerCustom
@@ -228,22 +205,6 @@ const BookingContainer = ({ hotel }) => {
                                     renderInput={(params) => <TextField fullWidth {...params} label={item.description} />}
                                 />
                             )}
-                        {/* {
-                    childrens.length > 0 && value[0] && 
-
-                    <Autocomplete
-                        sx={{ mt: 2 }}
-                        disablePortal
-                        id="combo-box-demo"
-                        options={childrens}
-                        size={'small'}
-                        onChange={(event, op) => {
-                            handleChildren(op?.count);
-                        }}
-                        getOptionLabel={(option) => String(option.count)}
-                        renderInput={(params) => <TextField fullWidth {...params} label={'Niños'} />}
-                    />
-                } */}
                         {
                             types.length > 0 && value[0] &&
                             <Button variant={'contained'} fullWidth sx={{ mt: 3 }} onClick={add}>
