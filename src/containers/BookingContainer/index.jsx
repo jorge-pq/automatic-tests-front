@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Grid, Typography, Divider, Button, Autocomplete } from '@mui/material';
+import { styled, alpha } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
-import DateRangePicker from '@mui/lab/DateRangePicker';
-import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 import Box from '@mui/material/Box';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -12,11 +12,11 @@ import Select from '@mui/material/Select';
 import BookingTable from './components/BookingTable';
 import { differenceInDays } from 'date-fns'
 
-function getOfferPrice(offers, dateSelected, defaultPrice){
+function getOfferPrice(offers, dateSelected, defaultPrice) {
     let price = defaultPrice ? defaultPrice : 0;
     offers.forEach(item => {
         // if(new Date(item.date[0]) <= dateSelected[0] && new Date(item.date[1]) >= dateSelected[1]){
-        if(new Date(item.date[0]) <= dateSelected[1] && new Date(item.date[1]) >= dateSelected[1]){
+        if (new Date(item.date[0]) <= dateSelected[1] && new Date(item.date[1]) >= dateSelected[1]) {
             price = item.price;
         }
     });
@@ -34,13 +34,23 @@ function getAdults(type) {
         default:
             return 1;
     }
-}    
+}
 
 const selector = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
 
+const DatePickerCustom = styled(DatePicker)(({ theme }) => ({
+    // position: 'relative',
+    border: '1px solid #bfbfbf',
+    borderRadius: '3px',
+    height: '40px',
+    padding: '2.5px 4px 2.5px 6px',
+    width: '100%'
+}));
+
 const BookingContainer = ({ hotel }) => {
 
-    const [value, setValue] = React.useState([null, null]);
+    const [value, setValue] = useState([null, null]);
+    const [startDate, endDate] = value;
 
     const [room, setRoom] = useState('');
     const [types, setTypes] = useState([]);
@@ -82,12 +92,12 @@ const BookingContainer = ({ hotel }) => {
     //     setChildrensSelected(value);
     // }
 
-    const handleChildren = ( room, count, pos ) => {
+    const handleChildren = (room, count, pos) => {
         let currentRoom = hotel.rooms.find(d => d.name === room);
         let c = currentRoom.childrens.find(d => d.count === parseInt(count));
         let childrensPrice = c ? getOfferPrice(c.offers, value, c.price) : 0;
 
-        if(parseInt(count)===2){
+        if (parseInt(count) === 2) {
             let firstChildren = currentRoom.childrens.find(d => d.count === 1);
             childrensPrice += firstChildren ? getOfferPrice(firstChildren.offers, value, c.price) : 0;
         }
@@ -97,7 +107,7 @@ const BookingContainer = ({ hotel }) => {
 
         let upd = [...bookings];
         let book = upd[pos];
-        book.childrenTotal = total > 0 ? total : 0; 
+        book.childrenTotal = total > 0 ? total : 0;
         book.childrensCount = count ? count : 0;
         upd[pos] = book;
         setBookings(upd);
@@ -111,7 +121,7 @@ const BookingContainer = ({ hotel }) => {
             currentTypes.forEach(item => {
                 for (let index = 0; index < typesSelected[item]; index++) {
                     let rm = hotel.rooms.find(d => d.name === room);
-                   setBookings(bookings => [...bookings, {
+                    setBookings(bookings => [...bookings, {
                         date: value,
                         room: rm,
                         type: item,
@@ -140,7 +150,7 @@ const BookingContainer = ({ hotel }) => {
     function getTotal(type) {
         let currentRoom = hotel.rooms.find(d => d.name === room);
         // let currentTypes = Object.keys(typesSelected);
-        
+
         let total = 0;
         // currentTypes.forEach(item => {
         if (typesSelected[type] > 0) {
@@ -171,58 +181,54 @@ const BookingContainer = ({ hotel }) => {
             <Grid item xs={12}>
                 <Typography variant={'h4'}>{hotel.name}</Typography>
             </Grid>
-            <Grid item xs={12} mt={3}>
-                <LocalizationProvider dateAdapter={AdapterDateFns}>
-                    <DateRangePicker
-                        startText="Check-in"
-                        endText="Check-out"
-                        value={value}
-                        onChange={(newValue) => {
-                            setValue(newValue);
-                        }}
-                        renderInput={(startProps, endProps) => (
-                            <React.Fragment>
-                                <TextField {...startProps} size={'small'} />
-                                <Box sx={{ mx: 2 }}> to </Box>
-                                <TextField {...endProps} size={'small'} />
-                            </React.Fragment>
-                        )}
-                    />
-                </LocalizationProvider>
-            </Grid>
-            <Grid item xs={12} md={3} mt={2}>
-                <Autocomplete
-                    disablePortal
-                    id="combo-box-demo"
-                    options={hotel.rooms}
-                    size={'small'}
-                    onChange={(event, room) => {
-                        handleRoom(room?.name);
-                    }}
-                    getOptionLabel={(option) => option.name}
-                    renderInput={(params) => <TextField fullWidth {...params} label="Habitación" />}
-                />
-                {
-                    types.length > 0 && value[0] && <Divider sx={{ mt: 2 }}>{'Cantidad'}</Divider>
-                }
-                {
-                   value[0] && types.map((item, index) =>
-
+            <Grid xs={12} md={3}>
+                <Grid container mt={3}>
+                    <Grid item xs={12}>
+                        <DatePickerCustom
+                            selectsRange={true}
+                            startDate={startDate}
+                            endDate={endDate}
+                            onChange={(update) => {
+                                setValue(update);
+                            }}
+                            placeholderText={'Fecha'}
+                            withPortal
+                            isClearable={true}
+                        />
+                    </Grid>
+                    <Grid item xs={12} mt={2}>
                         <Autocomplete
-                            sx={{ mt: 2 }}
-                            key={index}
                             disablePortal
                             id="combo-box-demo"
-                            options={selector}
+                            options={hotel.rooms}
                             size={'small'}
-                            onChange={(event, op) => {
-                                handleChange(item.description, op);
+                            onChange={(event, room) => {
+                                handleRoom(room?.name);
                             }}
-                            getOptionLabel={(option) => option}
-                            renderInput={(params) => <TextField fullWidth {...params} label={item.description} />}
+                            getOptionLabel={(option) => option.name}
+                            renderInput={(params) => <TextField fullWidth {...params} label="Habitación" />}
                         />
-                    )}
-                {/* {
+                        {
+                            types.length > 0 && value[0] && <Divider sx={{ mt: 2 }}>{'Cantidad'}</Divider>
+                        }
+                        {
+                            value[0] && types.map((item, index) =>
+
+                                <Autocomplete
+                                    sx={{ mt: 2 }}
+                                    key={index}
+                                    disablePortal
+                                    id="combo-box-demo"
+                                    options={selector}
+                                    size={'small'}
+                                    onChange={(event, op) => {
+                                        handleChange(item.description, op);
+                                    }}
+                                    getOptionLabel={(option) => option}
+                                    renderInput={(params) => <TextField fullWidth {...params} label={item.description} />}
+                                />
+                            )}
+                        {/* {
                     childrens.length > 0 && value[0] && 
 
                     <Autocomplete
@@ -238,14 +244,16 @@ const BookingContainer = ({ hotel }) => {
                         renderInput={(params) => <TextField fullWidth {...params} label={'Niños'} />}
                     />
                 } */}
-                {
-                    types.length > 0 && value[0] &&
-                    <Button variant={'contained'} fullWidth sx={{ mt: 3 }} onClick={add}>
-                        {'Agregar'}
-                    </Button>
-                }
-
+                        {
+                            types.length > 0 && value[0] &&
+                            <Button variant={'contained'} fullWidth sx={{ mt: 3 }} onClick={add}>
+                                {'Agregar'}
+                            </Button>
+                        }
+                    </Grid>
+                </Grid>
             </Grid>
+
             <Grid item xs={12} md={9} p={2}>
                 <BookingTable data={bookings} remove={removeBooking} handleChildren={handleChildren} />
             </Grid>
