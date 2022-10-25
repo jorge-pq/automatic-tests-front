@@ -20,7 +20,7 @@ const OffersChip = ({data, handleDeleteOffer}) => {
     return (
         <Stack direction="row" spacing={1}>
             {
-                data.map((item, index) => <Chip key={index} label={`${getFormatDate(item.date)} : $${item.price}`} onDelete={()=>handleDeleteOffer(item)} />)
+                data.map((item, index) => <Chip key={index} label={`${getFormatDate(item.date)} : $${item.price} - $${item.priceRetail}`} onDelete={()=>handleDeleteOffer(item)} />)
             }
         </Stack>
     );

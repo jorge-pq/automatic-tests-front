@@ -41,6 +41,8 @@ const RoomCreateDialog = ({id, open, close, save }) => {
   const [dateOfferType, setDateOfferType] = useState([null, null]);
   const [startDateOfferType, endDateOfferType] = dateOfferType;
   const [typeOfferPrice, setTypeOfferPrice] = useState();
+  const [typeOfferPriceRetail, setTypeOfferPriceRetail] = useState();
+  
   const [offersType, setOffersType] = useState([]);
   const [typesAdded, setTypesAdded] = useState([]);
 
@@ -49,6 +51,8 @@ const RoomCreateDialog = ({id, open, close, save }) => {
   const [dateOfferChildren, setDateOfferChildren] = useState([null, null]);
   const [startDateOfferChildren, endDateOfferTChildren] = dateOfferChildren;
   const [childrenOfferPrice, setChildrenOfferPrice] = useState();
+  const [childrenOfferPriceRetail, setChildrenOfferPriceRetail] = useState();
+  
   const [offersChildren, setOffersChildren] = useState([]);
   const [childrensAdded, setChildrensAdded] = useState([]);
 
@@ -60,13 +64,16 @@ const RoomCreateDialog = ({id, open, close, save }) => {
   }
   const handleTypePrice = e => setTypePrice(e.target.value);
   const handleTypeOfferPrice = e => setTypeOfferPrice(e.target.value);
+  const handleTypeOfferPriceRetail = e => setTypeOfferPriceRetail(e.target.value);
 
   const addOfferToType = () => {
     setOffersType(offersType => [...offersType, {
       date: dateOfferType,
       price: typeOfferPrice,
+      priceRetail: typeOfferPriceRetail
     }]);
     setTypeOfferPrice(0);
+    setTypeOfferPriceRetail(0);
     setDateOfferType([null, null]);
   }
 
@@ -94,13 +101,16 @@ const RoomCreateDialog = ({id, open, close, save }) => {
   }
   const handleChildrenPrice = e => setChildrenPrice(e.target.value);
   const handleChildrenOfferPrice = e => setChildrenOfferPrice(e.target.value);
+  const handleChildrenOfferPriceRetail = e => setChildrenOfferPriceRetail(e.target.value);
 
   const addOfferToChildren = () => {
     setOffersChildren(offersChildren => [...offersChildren, {
       date: dateOfferChildren,
       price: childrenOfferPrice,
+      priceRetail: childrenOfferPriceRetail
     }]);
     setChildrenOfferPrice(0);
+    setChildrenOfferPriceRetail(0);
     setDateOfferChildren([null, null]);
   }
 
@@ -210,21 +220,6 @@ const RoomCreateDialog = ({id, open, close, save }) => {
               />
             </Grid>
           </Stack>
-          
-              {/* <Grid item xs={12} md={6}>
-                <TextField
-                  autoFocus
-                  margin="dense"
-                  id="name"
-                  label="Precio standard"
-                  type="number"
-                  value={typePrice}
-                  onChange={handleTypePrice}
-                  inputProps={{ min: 0 }}
-                  fullWidth
-                  variant="standard"
-                />
-              </Grid> */}
        
           <Stack direction={'row'} spacing={1} sx={{ width: '100%' }} mt={2}>
             <Grid md={6} xs={6} item>
@@ -240,16 +235,30 @@ const RoomCreateDialog = ({id, open, close, save }) => {
                 isClearable={true}
               />
             </Grid>
-            <Grid md={4} xs={6} item pl={1}>
+            <Grid md={2} xs={6} item pl={1}>
               <TextField
                 autoFocus
                 id="name"
-                label="Precio oferta"
+                label="Precio mayorista"
                 inputProps={{ min: 0 }}
                 type="number"
                 size={'small'}
                 value={typeOfferPrice}
                 onChange={handleTypeOfferPrice}
+                fullWidth
+                variant="outlined"
+              />
+            </Grid>
+            <Grid md={2} xs={6} item pl={1}>
+              <TextField
+                autoFocus
+                id="name"
+                label="Precio minorista"
+                inputProps={{ min: 0 }}
+                type="number"
+                size={'small'}
+                value={typeOfferPriceRetail}
+                onChange={handleTypeOfferPriceRetail}
                 fullWidth
                 variant="outlined"
               />
@@ -296,20 +305,6 @@ const RoomCreateDialog = ({id, open, close, save }) => {
                 />
 
               </Grid>
-              {/* <Grid item xs={12} md={6}>
-                <TextField
-                  autoFocus
-                  margin="dense"
-                  id="name"
-                  label="Precio standard"
-                  type="number"
-                  inputProps={{ min: 0 }}
-                  value={childrenPrice}
-                  onChange={handleChildrenPrice}
-                  fullWidth
-                  variant="standard"
-                />
-              </Grid> */}
 
               <Grid item xs={6} md={3} mt={2}>
                 <DatePickerCustom
@@ -324,12 +319,12 @@ const RoomCreateDialog = ({id, open, close, save }) => {
                   isClearable={true}
                 />
               </Grid>
-              <Grid xs={6} md={3} item mt={2}>
+              <Grid xs={6} md={2} item mt={2}>
                 <TextField
                   autoFocus
                   id="name"
                   size={'small'}
-                  label="Precio oferta"
+                  label="Precio mayorista"
                   type="number"
                   inputProps={{ min: 0 }}
                   value={childrenOfferPrice}
@@ -338,7 +333,21 @@ const RoomCreateDialog = ({id, open, close, save }) => {
                   variant="outlined"
                 />
               </Grid>
-              <Grid xs={12} md={3} mt={2} pl={3} item>
+              <Grid xs={6} md={2} item mt={2}>
+                <TextField
+                  autoFocus
+                  id="name"
+                  size={'small'}
+                  label="Precio minorista"
+                  type="number"
+                  inputProps={{ min: 0 }}
+                  value={childrenOfferPriceRetail}
+                  onChange={handleChildrenOfferPriceRetail}
+                  fullWidth
+                  variant="outlined"
+                />
+              </Grid>
+              <Grid xs={12} md={2} mt={2} pl={3} item>
                 <Button variant={'contained'} onClick={addOfferToChildren}>{'Agregar oferta'}</Button>
               </Grid>
 

@@ -45,7 +45,7 @@ const RoomsTable = ({data, showEdit, removeRoom}) => {
                                                 {
                                                     item.offers.map((o, k) => 
                                                         <li key={k}>
-                                                            {`${format(new Date(o.date[0]), 'dd/MM/yyyy')} - ${format(new Date(o.date[1]), 'dd/MM/yyyy')} - $${o.price}`}
+                                                            {`${format(new Date(o.date[0]), 'dd/MM/yyyy')} - ${format(new Date(o.date[1]), 'dd/MM/yyyy')} - $${o.price} / $${o.priceRetail}`}
                                                         </li>
                                                     )
                                                 }
@@ -67,7 +67,7 @@ const RoomsTable = ({data, showEdit, removeRoom}) => {
                                                 {
                                                     item.offers.map((o, k) => 
                                                         <li key={k}>
-                                                            {`${format(new Date(o.date[0]), 'dd/MM/yyyy')} - ${format(new Date(o.date[1]), 'dd/MM/yyyy')} - $${o.price}`}
+                                                            {`${format(new Date(o.date[0]), 'dd/MM/yyyy')} - ${format(new Date(o.date[1]), 'dd/MM/yyyy')} - $${o.price} / $${o.priceRetail}`}
                                                         </li>
                                                     )
                                                 }
@@ -79,11 +79,11 @@ const RoomsTable = ({data, showEdit, removeRoom}) => {
                             </ul>
                         </TableCell>
                         <TableCell align="right">
-                            <Tooltip title="Editar">
+                            {/* <Tooltip title="Editar">
                                 <IconButton onClick={()=>showEdit(row.name)}>
                                     <Edit />
                                 </IconButton>
-                            </Tooltip>
+                            </Tooltip> */}
                             <Tooltip title="Eliminar">
                                 <IconButton onClick={()=>removeRoom(row.name)}>
                                     <Delete />
