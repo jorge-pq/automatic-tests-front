@@ -1,17 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Grid, Typography, Divider, Button, Autocomplete } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import BookingTable from './components/BookingTable';
-import { differenceInDays } from 'date-fns'
+import { differenceInDays } from 'date-fns';
+import AuthContext from '../../providers/AuthContext';
 
-function getOfferPrice(offers, dateSelected, defaultPrice) {
+function getOfferPrice(offers, dateSelected, defaultPrice, tenantType) {
     let price = defaultPrice ? defaultPrice : 0;
     offers.forEach(item => {
         if (new Date(item.date[0]) <= dateSelected[1] && new Date(item.date[1]) >= dateSelected[1]) {
-            price = item.price;
+            price = tenantType === "Wholesaler" ? item.price : item.priceRetail;
         }
     });
     return parseFloat(price);
@@ -42,6 +43,7 @@ const DatePickerCustom = styled(DatePicker)(({ theme }) => ({
 
 const BookingContainer = ({ hotel }) => {
 
+    const { user } = useContext(AuthContext);
     const [value, setValue] = useState([null, null]);
     const [startDate, endDate] = value;
 
@@ -133,14 +135,14 @@ const BookingContainer = ({ hotel }) => {
         let total = 0;
         if (typesSelected[type] > 0) {
             let t = currentRoom.types.find(d => d.description == type);
-            let prc = getOfferPrice(t.offers, value, t.price);
+            let prc = getOfferPrice(t.offers, value, t.price, user.tenant.type);
             total += prc * getAdults(type);
         }
       
         let childrensPrice = 0;
         if (parseInt(childrensSelected) > 0) {
             let c = currentRoom.childrens.find(d => d.count === parseInt(childrensSelected));
-            childrensPrice = getOfferPrice(c.offers, value, c.price);
+            childrensPrice = getOfferPrice(c.offers, value, c.price, user.tenant.type);
         }
 
         const days = differenceInDays(value[1], value[0]);
