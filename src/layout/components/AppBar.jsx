@@ -211,7 +211,7 @@ export default function PrimarySearchAppBar() {
                 component="div"
                 sx={{ display: 'block', mr: 2 }}
               >
-                {user?.tenant?.name || 'Booking - Administrator'}
+                {user?.tenant?.name || 'Booking'}
               </Typography>
             </a>
           </Link>

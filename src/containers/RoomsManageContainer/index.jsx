@@ -6,6 +6,8 @@ import RoomEditDialog from './components/RoomEditDialog';
 import { addRoom, removeRoom, updateRoom } from '../../services/hotels.service';
 import { useMutation } from 'react-query';
 import { useRouter } from 'next/router';
+import 'react-datepicker/dist/react-datepicker.css';
+
 
 const RoomsManageContainer = ({ hotel }) => {
 
@@ -78,7 +80,7 @@ const RoomsManageContainer = ({ hotel }) => {
             </Grid>
             <Grid item xs={6}>
                 <Grid container justifyContent={'flex-end'}>
-                    <Button variant={'contained'} onClick={openCreateDialog}>{'Agregar habitacion'}</Button>
+                    <Button variant={'contained'} onClick={openCreateDialog}>{'Agregar habitación'}</Button>
                 </Grid>
             </Grid>
             <Grid item xs={12} mt={2}>
