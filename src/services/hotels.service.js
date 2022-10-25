@@ -2,8 +2,8 @@ import {rget, rpost, rput, rdelete, rpostFormData, getUrlImage} from '../lib/req
 import cookie from 'js-cookie'
 
 
-export const getHotels = async () => {
-    const {data} = await rget('api/hotels');
+export const getHotels = async (jwt) => {
+    const {data} = await rget('api/hotels', jwt);
     return data;
 };
 
@@ -23,8 +23,8 @@ export const removeHotel = async (id) => {
 }
 
 
-export const getHotelById = async (id) => {
-    const {data} = await rget('api/hotel/'+id, cookie.get('token'));
+export const getHotelById = async (id, jwt) => {
+    const {data} = await rget('api/hotel/'+id, jwt);
     return data;
 };
 

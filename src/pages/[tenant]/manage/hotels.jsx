@@ -24,7 +24,7 @@ export async function getServerSideProps(ctx) {
         }
     }
 
-    const data = await getHotels();
+    const data = await getHotels(jwt);
     return { props: { data } }
 
 }
