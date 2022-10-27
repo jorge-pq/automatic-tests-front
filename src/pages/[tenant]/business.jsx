@@ -1,14 +1,12 @@
 import * as React from 'react';
-import CreateTenantContainer from '../../containers/CreateTenantContainer';
-import { getHotels } from '../../services/hotels.service';
+import TenantContainer from '../../containers/TenantContainer';
+import { getTenants } from '../../services/tenant.service';
 import {getCookie} from '../../lib/session';
 import {redirectToLogin} from '../../utils/util';
 
-const Business = () => {
+const Business = ({tenants}) => {
   return (
-    <>
-     My Business (pagina en construccion)
-    </>
+    <TenantContainer data={tenants}/>
   );
 
 }
@@ -22,7 +20,13 @@ export async function getServerSideProps(ctx) {
 		return redirectToLogin();
 	}
 
-  return { props: { } }
+  const tenants = await getTenants(jwt);
+  return {
+      props: {
+          tenants: tenants,
+      },
+  }
+
 }
 
 
