@@ -93,6 +93,11 @@ export default function PrimarySearchAppBar() {
     router.push(`/${getTenant()}/manage/hotels`);
   }
 
+  const goToBusiness = () => {
+    setAnchorEl(null);
+    router.push(`/${getTenant()}/business`);
+  }
+
   const goToCreateTenant = () => {
     setAnchorEl(null);
     router.push(`/${getTenant()}/create_tenant`);
@@ -131,6 +136,7 @@ export default function PrimarySearchAppBar() {
       onClose={handleMenuClose}
     >
       {user?.tenant?.type === "Wholesaler" && <MenuItem onClick={goToManage}>{'Gestionar hoteles'}</MenuItem>}
+      {user?.tenant?.type === "Wholesaler" && <MenuItem onClick={goToBusiness}>{'Lista de minoristas'}</MenuItem>}
       {user?.role === "super_admin" && <MenuItem onClick={goToCreateTenant}>{'Agregar mayorista'}</MenuItem>}
       {user?.tenant?.type === "Wholesaler" && <MenuItem onClick={goToCreateTenant}>{'Agregar minorista'}</MenuItem>}
       <MenuItem onClick={goToAddUser}>{'Agregar usuario'}</MenuItem>
