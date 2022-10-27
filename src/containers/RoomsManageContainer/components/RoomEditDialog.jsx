@@ -7,17 +7,27 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { Grid, Autocomplete } from '@mui/material';
-import DateRangePicker from '@mui/lab/DateRangePicker';
-import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
+import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import OffersChip from './OffersChip';
 import TypesTable from './TypesTable';
 import ChildrensTable from './ChildrensTable';
+import { styled } from '@mui/material/styles';
+import DatePicker from 'react-datepicker';
+
+
+const DatePickerCustom = styled(DatePicker)(({ theme }) => ({
+  border: '1px solid #bfbfbf',
+  borderRadius: '3px',
+  height: '40px',
+  padding: '2.5px 4px 2.5px 6px',
+  width: '100%'
+}));
+
 
 
 const types = ["Sencilla", "Doble", "Triple"];
@@ -30,14 +40,18 @@ const RoomEditDialog = ({selected, id, open, close, save }) => {
   const [typeSelected, setTypeSelected] = useState('');
   const [typePrice, setTypePrice] = useState();
   const [dateOfferType, setDateOfferType] = useState([null, null]);
+  const [startDateOfferType, endDateOfferType] = dateOfferType;
   const [typeOfferPrice, setTypeOfferPrice] = useState();
+  const [typeOfferPriceRetail, setTypeOfferPriceRetail] = useState();
   const [offersType, setOffersType] = useState([]);
   const [typesAdded, setTypesAdded] = useState([]);
 
   const [childrensSelected, setChildrensSelected] = useState('');
   const [childrenPrice, setChildrenPrice] = useState();
   const [dateOfferChildren, setDateOfferChildren] = useState([null, null]);
+  const [startDateOfferChildren, endDateOfferTChildren] = dateOfferChildren;
   const [childrenOfferPrice, setChildrenOfferPrice] = useState();
+  const [childrenOfferPriceRetail, setChildrenOfferPriceRetail] = useState();
   const [offersChildren, setOffersChildren] = useState([]);
   const [childrensAdded, setChildrensAdded] = useState([]);
 
@@ -49,7 +63,7 @@ const RoomEditDialog = ({selected, id, open, close, save }) => {
   }
   const handleTypePrice = e => setTypePrice(e.target.value);
   const handleTypeOfferPrice = e => setTypeOfferPrice(e.target.value);
-
+  const handleTypeOfferPriceRetail = e => setTypeOfferPriceRetail(e.target.value);
 
   useEffect(() => {
     setRoomOld(selected.name);
@@ -69,9 +83,11 @@ const RoomEditDialog = ({selected, id, open, close, save }) => {
     setOffersType(offersType => [...offersType, {
       date: dateOfferType,
       price: typeOfferPrice,
+      priceRetail: typeOfferPriceRetail
     }]);
 
     setTypeOfferPrice(0);
+    setTypeOfferPriceRetail(0);
     setDateOfferType([null, null]);
   }
 
@@ -98,14 +114,18 @@ const RoomEditDialog = ({selected, id, open, close, save }) => {
   }
   const handleChildrenPrice = e => setChildrenPrice(e.target.value);
   const handleChildrenOfferPrice = e => setChildrenOfferPrice(e.target.value);
+  const handleChildrenOfferPriceRetail = e => setChildrenOfferPriceRetail(e.target.value);
+
 
   const addOfferToChildren = () => {
     setOffersChildren(offersChildren => [...offersChildren, {
       date: dateOfferChildren,
       price: childrenOfferPrice,
+      priceRetail: childrenOfferPriceRetail
     }]);
 
     setChildrenOfferPrice(0);
+    setChildrenOfferPriceRetail(0);
     setDateOfferChildren([null, null]);
   }
 
@@ -185,96 +205,83 @@ const RoomEditDialog = ({selected, id, open, close, save }) => {
         </IconButton>
       </DialogTitle>
       <DialogContent>
-        <Grid container>
-          <Grid item xs={12}>
-            <TextField
-              autoFocus
-              margin="dense"
-              id="name"
-              label="Nombre"
-              value={room}
-              onChange={handleRoom}
-              type="text"
-              fullWidth
-              variant="standard"
-            />
-          </Grid>
-
-          <Grid item xs={12}>
-            <Grid container spacing={2}>
-              <Grid item xs={12} md={6} mt={2}>
-                <Autocomplete
-                  disablePortal
-                  id="combo-box-demo"
-                  options={types.filter(typesFiltered)}
-                  size={'small'}
-                  value={typeSelected}
-                  onChange={(event, type) => {
-                    handleType(type);
-                  }}
-                  getOptionLabel={(option) => option}
-                  renderInput={(params) => <TextField fullWidth {...params} label="Tipo" />}
-                />
-
-              </Grid>
-              <Grid item xs={12} md={6}>
-                {/* <TextField
-                  autoFocus
-                  margin="dense"
-                  id="name"
-                  label="Precio standard"
-                  type="number"
-                  value={typePrice}
-                  onChange={handleTypePrice}
-                  inputProps={{ min: 0 }}
-                  fullWidth
-                  variant="standard"
-                /> */}
-              </Grid>
+      <Grid container pt={2}>
+          <Stack direction={'row'} spacing={2} sx={{width: '100%'}}>
+          <Grid item xs={6}>
+              <TextField
+                autoFocus
+                id="name"
+                label="Nombre"
+                value={room}
+                onChange={handleRoom}
+                type="text"
+                fullWidth
+                size={'small'}
+                variant="outlined"
+              />
             </Grid>
-          </Grid>
-
-          <Grid item xs={12} mt={2}>
-            <Grid container>
-              <Grid xs={12} md={6} mt={3} item>
-                <LocalizationProvider dateAdapter={AdapterDateFns}>
-                  <DateRangePicker
-                    startText="Desde"
-                    endText="Hasta"
-                    inputFormat={'dd/MM/yyyy'}
-                    value={dateOfferType}
-                    onChange={(newValue) => {
-                      setDateOfferType(newValue);
-                    }}
-                    renderInput={(startProps, endProps) => (
-                      <React.Fragment>
-                        <TextField {...startProps} size={'small'} />
-                        <Box sx={{ mx: 2 }}> to </Box>
-                        <TextField {...endProps} size={'small'} />
-                      </React.Fragment>
-                    )}
-                  />
-                </LocalizationProvider>
-              </Grid>
-              <Grid xs={12} md={4} item>
-                <TextField
-                  autoFocus
-                  margin="dense"
-                  id="name"
-                  label="Precio oferta"
-                  inputProps={{ min: 0 }}
-                  type="number"
-                  value={typeOfferPrice}
-                  onChange={handleTypeOfferPrice}
-                  fullWidth
-                  variant="standard"
-                />
-              </Grid>
-              <Grid xs={12} md={2} mt={3} pl={3} item>
-                <Button variant={'contained'} onClick={addOfferToType}>{'Agregar oferta'}</Button>
-              </Grid>
+            <Grid item xs={6}>
+              <Autocomplete
+                disablePortal
+                id="combo-box-demo"
+                options={types.filter(typesFiltered)}
+                size={'small'}
+                value={typeSelected}
+                onChange={(event, type) => {
+                  handleType(type);
+                }}
+                getOptionLabel={(option) => option}
+                renderInput={(params) => <TextField fullWidth {...params} label="Tipo" />}
+              />
             </Grid>
-          </Grid>
+          </Stack>
+          <Stack direction={'row'} spacing={1} sx={{ width: '100%' }} mt={2}>
+            <Grid md={6} xs={6} item>
+              <DatePickerCustom
+                selectsRange={true}
+                startDate={startDateOfferType}
+                endDate={endDateOfferType}
+                onChange={(update) => {
+                  setDateOfferType(update);
+                }}
+                placeholderText={'Fecha'}
+                withPortal
+                isClearable={true}
+              />
+            </Grid>
+            <Grid md={2} xs={6} item pl={1}>
+              <TextField
+                autoFocus
+                id="name"
+                label="Precio mayorista"
+                inputProps={{ min: 0 }}
+                type="number"
+                size={'small'}
+                value={typeOfferPrice}
+                onChange={handleTypeOfferPrice}
+                fullWidth
+                variant="outlined"
+              />
+            </Grid>
+            <Grid md={2} xs={6} item pl={1}>
+              <TextField
+                autoFocus
+                id="name"
+                label="Precio minorista"
+                inputProps={{ min: 0 }}
+                type="number"
+                size={'small'}
+                value={typeOfferPriceRetail}
+                onChange={handleTypeOfferPriceRetail}
+                fullWidth
+                variant="outlined"
+              />
+            </Grid>
+            <Grid xs={6} md={2} mt={3} item>
+              <Button variant={'contained'} onClick={addOfferToType}>{'Agregar oferta'}</Button>
+            </Grid>
+          </Stack>
+
           <Grid item xs={12} mt={2}>
             <OffersChip data={offersType} handleDeleteOffer={removeTypeOffer} />
           </Grid>
@@ -297,7 +304,7 @@ const RoomEditDialog = ({selected, id, open, close, save }) => {
           </Divider>
           <Grid item xs={12}>
             <Grid container spacing={2}>
-              <Grid item xs={12} md={6} mt={2}>
+              <Grid item xs={6} md={3} mt={2}>
                 <Autocomplete
                   disablePortal
                   id="combo-box-demo"
@@ -310,66 +317,57 @@ const RoomEditDialog = ({selected, id, open, close, save }) => {
                   getOptionLabel={(option) => option}
                   renderInput={(params) => <TextField fullWidth {...params} label="Cantidad de niños" />}
                 />
+              </Grid>
 
+               <Grid item xs={6} md={3} mt={2}>
+                <DatePickerCustom
+                  selectsRange={true}
+                  startDate={startDateOfferChildren}
+                  endDate={endDateOfferTChildren}
+                  onChange={(update) => {
+                    setDateOfferChildren(update);
+                  }}
+                  placeholderText={'Fecha'}
+                  withPortal
+                  isClearable={true}
+                />
               </Grid>
-              <Grid item xs={12} md={6}>
-                {/* <TextField
-                  autoFocus
-                  margin="dense"
-                  id="name"
-                  label="Precio standard"
-                  type="number"
-                  inputProps={{ min: 0 }}
-                  value={childrenPrice}
-                  onChange={handleChildrenPrice}
-                  fullWidth
-                  variant="standard"
-                /> */}
-              </Grid>
-            </Grid>
-          </Grid>
 
-          <Grid item xs={12} mt={2}>
-            <Grid container>
-              <Grid xs={12} md={6} mt={3} item>
-                <LocalizationProvider dateAdapter={AdapterDateFns}>
-                  <DateRangePicker
-                    startText="Desde"
-                    endText="Hasta"
-                    inputFormat={'dd/MM/yyyy'}
-                    value={dateOfferChildren}
-                    onChange={(newValue) => {
-                      setDateOfferChildren(newValue);
-                    }}
-                    renderInput={(startProps, endProps) => (
-                      <React.Fragment>
-                        <TextField {...startProps} size={'small'} />
-                        <Box sx={{ mx: 2 }}> to </Box>
-                        <TextField {...endProps} size={'small'} />
-                      </React.Fragment>
-                    )}
-                  />
-                </LocalizationProvider>
-              </Grid>
-              <Grid xs={12} md={4} item>
+              <Grid xs={6} md={2} item mt={2}>
                 <TextField
                   autoFocus
-                  margin="dense"
                   id="name"
-                  label="Precio oferta"
+                  size={'small'}
+                  label="Precio mayorista"
                   type="number"
                   inputProps={{ min: 0 }}
                   value={childrenOfferPrice}
                   onChange={handleChildrenOfferPrice}
                   fullWidth
-                  variant="standard"
+                  variant="outlined"
                 />
               </Grid>
-              <Grid xs={12} md={2} mt={3} pl={3} item>
+              <Grid xs={6} md={2} item mt={2}>
+                <TextField
+                  autoFocus
+                  id="name"
+                  size={'small'}
+                  label="Precio minorista"
+                  type="number"
+                  inputProps={{ min: 0 }}
+                  value={childrenOfferPriceRetail}
+                  onChange={handleChildrenOfferPriceRetail}
+                  fullWidth
+                  variant="outlined"
+                />
+              </Grid>
+              <Grid xs={12} md={2} mt={2} pl={3} item>
                 <Button variant={'contained'} onClick={addOfferToChildren}>{'Agregar oferta'}</Button>
               </Grid>
             </Grid>
           </Grid>
+
+
           <Grid item xs={12} mt={2}>
             <OffersChip data={offersChildren} handleDeleteOffer={removeChildrenOffer} />
           </Grid>
@@ -381,7 +379,6 @@ const RoomEditDialog = ({selected, id, open, close, save }) => {
           <Grid item xs={12} mt={2}>
             <ChildrensTable data={childrensAdded} removeChildren={removeChildren} />
           </Grid>
-
 
         </Grid>
       </DialogContent>

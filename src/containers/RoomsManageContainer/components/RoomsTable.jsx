@@ -79,11 +79,11 @@ const RoomsTable = ({data, showEdit, removeRoom}) => {
                             </ul>
                         </TableCell>
                         <TableCell align="right">
-                            {/* <Tooltip title="Editar">
+                            <Tooltip title="Editar">
                                 <IconButton onClick={()=>showEdit(row.name)}>
                                     <Edit />
                                 </IconButton>
-                            </Tooltip> */}
+                            </Tooltip>
                             <Tooltip title="Eliminar">
                                 <IconButton onClick={()=>removeRoom(row.name)}>
                                     <Delete />
