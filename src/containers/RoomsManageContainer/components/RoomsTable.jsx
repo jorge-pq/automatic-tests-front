@@ -13,7 +13,6 @@ import { format } from 'date-fns'
 
 const RoomsTable = ({data, showEdit, removeRoom}) => {
 
-    console.log(data)
     return (
         <TableContainer component={Paper}>
         <Table sx={{ minWidth: 300 }} aria-label="simple table">

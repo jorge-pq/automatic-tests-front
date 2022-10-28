@@ -7,6 +7,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import BookingTable from './components/BookingTable';
 import { differenceInDays } from 'date-fns';
 import AuthContext from '../../providers/AuthContext';
+import CreateBooking from './components/CreateBooking';
 
 function getOfferPrice(offers, dateSelected, defaultPrice, tenantType) {
     let price = defaultPrice ? defaultPrice : 0;
@@ -44,6 +45,9 @@ const DatePickerCustom = styled(DatePicker)(({ theme }) => ({
 const BookingContainer = ({ hotel }) => {
 
     const { user } = useContext(AuthContext);
+
+    const [openBookingDialog, setOpenBookingDialog] = useState(false);
+
     const [value, setValue] = useState([null, null]);
     const [startDate, endDate] = value;
 
@@ -155,6 +159,18 @@ const BookingContainer = ({ hotel }) => {
         setBookings(arr);
     }
 
+    const handleBookingDialog = () => {
+        setOpenBookingDialog(true);
+    }
+
+    const closeBookingDialog = () => {
+        setOpenBookingDialog(false);
+    }
+
+    const save = () => {
+
+    }
+
     return (
         <Grid container>
             <Grid item xs={12}>
@@ -220,7 +236,16 @@ const BookingContainer = ({ hotel }) => {
             <Grid item xs={12} md={9} p={2}>
                 <BookingTable data={bookings} remove={removeBooking} handleChildren={handleChildren} />
             </Grid>
+            <Grid item xs={12} p={2}>
+                <Grid container justifyContent={'flex-end'}>
+                    <Button variant='contained' size='small' onClick={handleBookingDialog}>
+                        {'Reservar'}
+                    </Button>
+                </Grid>
+            </Grid>
 
+            <CreateBooking open={openBookingDialog} close={closeBookingDialog} save={save} />
+                        
         </Grid>
     );
 };
