@@ -1,8 +1,7 @@
 import * as React from 'react';
-import HotelsContainer from '../containers/HotelsContainer';
-import { getHotels } from '../services/hotels.service';
 import {getCookie} from '../lib/session';
 import {redirectToLogin, redirectToTenat, normalizeUserCookie} from '../utils/util';
+
 
 const Index = () => {
   return (

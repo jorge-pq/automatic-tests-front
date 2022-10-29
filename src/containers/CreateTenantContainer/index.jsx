@@ -1,10 +1,11 @@
 import React from 'react';
-import { Divider, Grid, TextField, Button } from '@mui/material';
+import { Divider, Grid, TextField, Button, Paper, Typography } from '@mui/material';
 import { Controller, useForm } from 'react-hook-form';
 import { create } from '../../services/tenant.service';
 import { useMutation } from 'react-query';
 import {useRouter} from 'next/router';
 import {getTenant} from '../../utils/util';
+
 
 const errorText = { color: '#E8530E' };
 
@@ -28,9 +29,10 @@ const CreateTenantContainer = () => {
   }
 
   return (
-    <Grid container p={4}>
+    <Grid container pt={6} justifyContent={'center'}>
+      <Paper elevation={3} sx={{pt:3}}>
       <form onSubmit={handleSubmit(onSubmit)} style={{ width: 'inherit' }}>
-        <Divider>{'Empresa'}</Divider>
+        <Divider><Typography variant='overline'>{'Empresa'}</Typography></Divider>
         <Grid item xs={12} my={3}>
           <Grid container justifyContent={'center'}>
             <Grid item md={7} xs={11}>
@@ -47,7 +49,7 @@ const CreateTenantContainer = () => {
           </Grid>
         </Grid>
 
-        <Divider>{'Usuario'}</Divider>
+        <Divider><Typography variant='overline'>{'Usuario'}</Typography></Divider>
 
         <Grid item xs={12} my={3}>
           <Grid container justifyContent={'center'} spacing={2}>
@@ -95,6 +97,7 @@ const CreateTenantContainer = () => {
           </Grid>
         </Grid>
       </form>
+      </Paper>
     </Grid>
   );
 };

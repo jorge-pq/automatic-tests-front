@@ -3,12 +3,14 @@ import {getHotelBySlug} from '../../../services/hotels.service';
 import BookingContainer from '../../../containers/BookingContainer';
 import {getCookie} from '../../../lib/session';
 import {redirectToLogin} from '../../../utils/util';
+import Layout from '../../../layout';
+
 
 const Hotel = ({hotel}) => {
     return (
-        <>
+        <Layout page={hotel.name}>
             <BookingContainer hotel={hotel} />
-        </>
+        </Layout>
     );
 };
 

@@ -2,12 +2,13 @@ import React from 'react';
 import HotelsManageContainer from '../../../containers/HotelsManageContainer';
 import {getHotels} from '../../../services/hotels.service';
 import {getCookie} from '../../../lib/session';
+import Layout from '../../../layout';
 
 const hotels = ({data}) => {
     return (
-        <div>
+        <Layout page={'Gestionar hoteles'}>
             <HotelsManageContainer data={data}/>
-        </div>
+        </Layout>
     );
 };
 

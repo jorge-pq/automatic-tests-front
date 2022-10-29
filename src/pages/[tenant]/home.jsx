@@ -3,12 +3,13 @@ import HotelsContainer from '../../containers/HotelsContainer';
 import { getHotels } from '../../services/hotels.service';
 import {getCookie} from '../../lib/session';
 import {redirectToLogin, normalizeUserCookie, redirectToTenat} from '../../utils/util';
+import Layout from '../../layout';
 
 const Home = ({ data }) => {
   return (
-    <>
+    <Layout page={'Hoteles'}>
       <HotelsContainer data={data} />
-    </>
+    </Layout>
   );
 
 }

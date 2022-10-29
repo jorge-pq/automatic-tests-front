@@ -3,12 +3,14 @@ import AddUserContainer from '../../containers/AddUserContainer';
 import { getHotels } from '../../services/hotels.service';
 import {getCookie} from '../../lib/session';
 import {redirectToLogin} from '../../utils/util';
+import Layout from '../../layout';
+
 
 const AddUser = () => {
   return (
-    <>
+    <Layout page={'Agregar usuario'}>
       <AddUserContainer />
-    </>
+    </Layout>
   );
 
 }

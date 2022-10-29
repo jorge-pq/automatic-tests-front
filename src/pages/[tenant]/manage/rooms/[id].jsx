@@ -2,12 +2,13 @@ import React from 'react';
 import {getHotelById} from '../../../../services/hotels.service';
 import RoomsManageContainer from '../../../../containers/RoomsManageContainer';
 import {getCookie} from '../../../../lib/session';
+import Layout from '../../../../layout';
 
 const RoomsManage = ({hotel}) => {
     return (
-        <>
+        <Layout page={'Gestionar habitaciones'}>
             <RoomsManageContainer hotel={hotel} />
-        </>
+        </Layout>
     );
 };
 

@@ -3,12 +3,14 @@ import CreateTenantContainer from '../../containers/CreateTenantContainer';
 import { getHotels } from '../../services/hotels.service';
 import {getCookie} from '../../lib/session';
 import {redirectToLogin} from '../../utils/util';
+import Layout from '../../layout';
+
 
 const CreateTenant = () => {
   return (
-    <>
+    <Layout page={'Crear empresa'}>
       <CreateTenantContainer />
-    </>
+    </Layout>
   );
 
 }
