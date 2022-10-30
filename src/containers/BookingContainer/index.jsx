@@ -167,6 +167,12 @@ const BookingContainer = ({ hotel }) => {
         setOpenBookingDialog(false);
     }
 
+    const getTotalPersons = () => {
+        let persons = bookings.reduce((a, c) => (a + c.adults), 0);
+        let childrens = bookings.reduce((a, c) => (a + c.childrensCount), 0);
+        return persons + childrens;
+    }
+
     const save = () => {
 
     }
@@ -238,13 +244,18 @@ const BookingContainer = ({ hotel }) => {
             </Grid>
             <Grid item xs={12} p={2}>
                 <Grid container justifyContent={'flex-end'}>
-                    <Button variant='contained' size='small' onClick={handleBookingDialog}>
+                    <Button variant='contained' size='small' onClick={handleBookingDialog} disabled={bookings.length===0}>
                         {'Reservar'}
                     </Button>
                 </Grid>
             </Grid>
 
-            <CreateBooking open={openBookingDialog} close={closeBookingDialog} save={save} />
+            <CreateBooking
+                open={openBookingDialog}
+                close={closeBookingDialog}
+                save={save}
+                totalGuests={getTotalPersons()}
+            />
                         
         </Grid>
     );
