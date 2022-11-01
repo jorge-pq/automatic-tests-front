@@ -18,6 +18,10 @@ import CloseIcon  from '@mui/icons-material/Close';
 import ClientInfo from './ClientInfo';
 import GuestInfo from './GuestInfo';
 import { useForm } from 'react-hook-form';
+import { addBooking } from '../../../services/booking.service';
+import { useMutation } from 'react-query';
+import { useRouter } from 'next/router';
+import {getTenant} from '../../../utils/util';
 
 
 const ColorlibConnector = styled(StepConnector)(({ theme }) => ({
@@ -89,18 +93,34 @@ function fieldsNotRequired(item){
 
 const CreateBooking = ({ open, close, save, totalGuests }) => {
 
+  const router = useRouter();
   const { getValues, formState: { errors }, setError, control, clearErrors } = useForm();
   const steps = ['Datos del Cliente', 'Datos de los Huéspedes', 'Pago'];
   const [activeStep, setActiveStep] = useState(0);
 
+  const { mutate: create } = useMutation(addBooking, {
+    onSuccess: (data) => {
+      router.push(`/${getTenant()}/orders`);
+    },
+    onError: (error) => {
+      alert(error.response.data.message);
+    }
+  });
+
+
   const handleNext = () => {
     if (activeStep === steps.length - 1) {
       alert('Complete!');
+      if (validate()) {
+        create({
+
+        })
+      }
     }
     else {
-       if(validate()){
-          setActiveStep((prevActiveStep) => prevActiveStep + 1);
-       }
+      if (validate()) {
+        setActiveStep((prevActiveStep) => prevActiveStep + 1);
+      }
     }
   };
 
@@ -152,6 +172,9 @@ const CreateBooking = ({ open, close, save, totalGuests }) => {
       case 1:
         isValidData = guests.length === totalGuests ? true : false;
         break;
+      case 2:
+        isValidData = true;
+      break;
       default:
         break;
     }
