@@ -29,16 +29,24 @@ const errorText = { color: '#E8530E' };
 
 const GuestInfo = ({ guests, addGuest, removeGuest, totalGuests }) => {
 
-    const { register, handleSubmit, formState: { errors }, reset, setValue, control } = useForm();
+    const { setError, handleSubmit, formState: { errors }, clearErrors, setValue, control } = useForm();
     const [birthday, setBirthday] = useState();
     const [expireDate, setExpireDate] = useState();
 
     const onSubmit = (data) => {
-        data.birthday = new Date(birthday).toLocaleDateString();
-        data.expireDate = new Date(expireDate).getFullYear() + '/' + (new Date(expireDate).getMonth()-1);
-        let result = addGuest(data);
-        if(result){
-            clear();
+        if(!birthday){
+            setError('birthday', {}, true)
+        }
+        if(!expireDate){
+            setError('expireDate', {}, true)
+        }
+        if(birthday && expireDate){
+            data.birthday = new Date(birthday).toLocaleDateString();
+            data.expireDate = new Date(expireDate).getFullYear() + '/' + (new Date(expireDate).getMonth()-1);
+            let result = addGuest(data);
+            if(result){
+                clear();
+            }
         }
     }
 
@@ -48,6 +56,16 @@ const GuestInfo = ({ guests, addGuest, removeGuest, totalGuests }) => {
         setValue('passport', '');
         setBirthday();
         setExpireDate();
+    }
+
+    const handleBirthday = date => {
+        setBirthday(date);
+        clearErrors();
+    }
+
+    const handleExpireDate = date => {
+        setExpireDate(date);
+        clearErrors();
     }
 
     return (
@@ -81,12 +99,15 @@ const GuestInfo = ({ guests, addGuest, removeGuest, totalGuests }) => {
                 <Grid item xs={4}>
                     <DatePickerCustom
                         selected={birthday}
-                        onChange={(date) => setBirthday(date)}
+                        onChange={(date) => handleBirthday(date)}
                         withPortal
                         isClearable={true}
                         showYearDropdown
                         placeholderText={'Fecha de nacimiento'}
                     />
+                    {
+                        errors.birthday && !birthday && <label style={errorText}>{'La fecha de nacimiento es requerida'}</label>
+                    }
                 </Grid>
                 <Grid item xs={4}>
                     <Controller
@@ -102,13 +123,16 @@ const GuestInfo = ({ guests, addGuest, removeGuest, totalGuests }) => {
                 <Grid item xs={4}>
                     <DatePickerCustom
                         selected={expireDate}
-                        onChange={(date) => setExpireDate(date)}
+                        onChange={(date) => handleExpireDate(date)}
                         withPortal
                         isClearable={true}
                         showMonthYearPicker
                         dateFormat="yyyy/MM"
                         placeholderText={'Vencimiento pasaporte'}
                     />
+                    {
+                        errors.expireDate && !expireDate && <label style={errorText}>{'La fecha de vencimiento del pasaporte es requerida'}</label>
+                    }
                 </Grid>
                 <Grid item xs={12}>
                     <Grid container justifyContent={'flex-end'}>

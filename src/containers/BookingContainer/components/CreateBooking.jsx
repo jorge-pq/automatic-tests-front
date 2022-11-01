@@ -112,11 +112,6 @@ const CreateBooking = ({ open, close, save, totalGuests }) => {
   const [expireDate, setExpireDate] = useState();
   const [guests, setGuests] = useState([]);
 
-
-  const addClient = (data) => {
-  
-  }
-
   const addGuest = (data) => {
     let index = guests.findIndex(d=>d.passport===data.passport);
     if(index===-1){
