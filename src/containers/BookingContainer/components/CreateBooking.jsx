@@ -83,6 +83,10 @@ function ColorlibStepIcon(props) {
   );
 }
 
+function fieldsNotRequired(item){
+  return item !== 'secondname' && item !== 'secondlastname'
+}  
+
 const CreateBooking = ({ open, close, save, totalGuests }) => {
 
   const { getValues, formState: { errors }, setError, control, clearErrors } = useForm();
@@ -94,8 +98,9 @@ const CreateBooking = ({ open, close, save, totalGuests }) => {
       alert('Complete!');
     }
     else {
-       validate()
-       //setActiveStep((prevActiveStep) => prevActiveStep + 1);
+       if(validate()){
+          setActiveStep((prevActiveStep) => prevActiveStep + 1);
+       }
     }
   };
 
@@ -131,13 +136,13 @@ const CreateBooking = ({ open, close, save, totalGuests }) => {
     setGuests(upd);
   }
 
-  const validate = async () => {
+  const validate = () => {
     clearErrors();
     let isValidData = false;
     switch (activeStep) {
       case 0:
         let noValid = 0;
-        Object.keys(getValues()).map((i)=>{
+        Object.keys(getValues()).filter(fieldsNotRequired).map((i)=>{
           if(!getValues()[i]){
             setError(i, {}, true);
             noValid++;
@@ -147,10 +152,10 @@ const CreateBooking = ({ open, close, save, totalGuests }) => {
           setError('birthday', {}, true)
           noValid++;
         }
-        isValidData = noValid===0 ? true : false;
+        isValidData = noValid === 0 ? true : false;
         break;
       case 1:
-      
+        isValidData = guests.length === totalGuests ? true : false;
         break;
       default:
         break;
