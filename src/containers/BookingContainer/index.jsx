@@ -8,6 +8,10 @@ import BookingTable from './components/BookingTable';
 import { differenceInDays } from 'date-fns';
 import AuthContext from '../../providers/AuthContext';
 import CreateBooking from './components/CreateBooking';
+import { addBooking } from '../../services/booking.service';
+import { useMutation } from 'react-query';
+import { useRouter } from 'next/router';
+import {getTenant} from '../../utils/util';
 
 function getOfferPrice(offers, dateSelected, defaultPrice, tenantType) {
     let price = defaultPrice ? defaultPrice : 0;
@@ -45,7 +49,7 @@ const DatePickerCustom = styled(DatePicker)(({ theme }) => ({
 const BookingContainer = ({ hotel }) => {
 
     const { user } = useContext(AuthContext);
-
+    const router = useRouter();
     const [openBookingDialog, setOpenBookingDialog] = useState(false);
 
     const [value, setValue] = useState([null, null]);
@@ -58,6 +62,17 @@ const BookingContainer = ({ hotel }) => {
     const [childrensSelected, setChildrensSelected] = useState(0);
 
     const [bookings, setBookings] = useState([]);
+
+    const { mutate: create } = useMutation(addBooking, {
+        onSuccess: (data) => {
+          router.push(`/${getTenant()}/orders`);
+        },
+        onError: (error) => {
+          alert(error.response.data.message);
+        }
+      });
+
+      
 
     const handleRoom = (value) => {
         if (value) {
@@ -173,8 +188,11 @@ const BookingContainer = ({ hotel }) => {
         return persons + childrens;
     }
 
-    const save = () => {
+    const save = (data) => {
+        // add booking info
+        create({
 
+        })
     }
 
     return (

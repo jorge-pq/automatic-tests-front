@@ -18,10 +18,6 @@ import CloseIcon  from '@mui/icons-material/Close';
 import ClientInfo from './ClientInfo';
 import GuestInfo from './GuestInfo';
 import { useForm } from 'react-hook-form';
-import { addBooking } from '../../../services/booking.service';
-import { useMutation } from 'react-query';
-import { useRouter } from 'next/router';
-import {getTenant} from '../../../utils/util';
 
 
 const ColorlibConnector = styled(StepConnector)(({ theme }) => ({
@@ -93,28 +89,20 @@ function fieldsNotRequired(item){
 
 const CreateBooking = ({ open, close, save, totalGuests }) => {
 
-  const router = useRouter();
   const { getValues, formState: { errors }, setError, control, clearErrors } = useForm();
+
+  const [birthday, setBirthday] = useState();
+  const [expireDate, setExpireDate] = useState();
+  const [guests, setGuests] = useState([]);
+
   const steps = ['Datos del Cliente', 'Datos de los Huéspedes', 'Pago'];
   const [activeStep, setActiveStep] = useState(0);
-
-  const { mutate: create } = useMutation(addBooking, {
-    onSuccess: (data) => {
-      router.push(`/${getTenant()}/orders`);
-    },
-    onError: (error) => {
-      alert(error.response.data.message);
-    }
-  });
-
 
   const handleNext = () => {
     if (activeStep === steps.length - 1) {
       alert('Complete!');
       if (validate()) {
-        create({
-
-        })
+       save({guests: guests, client:''});
       }
     }
     else {
@@ -128,10 +116,7 @@ const CreateBooking = ({ open, close, save, totalGuests }) => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
-  const [birthday, setBirthday] = useState();
-  const [expireDate, setExpireDate] = useState();
-  const [guests, setGuests] = useState([]);
-
+  
   const addGuest = (data) => {
     let index = guests.findIndex(d=>d.passport===data.passport);
     if(index===-1){
