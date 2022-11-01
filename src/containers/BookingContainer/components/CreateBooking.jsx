@@ -17,6 +17,8 @@ import PaymentIcon from '@mui/icons-material/Payment';
 import CloseIcon  from '@mui/icons-material/Close';
 import ClientInfo from './ClientInfo';
 import GuestInfo from './GuestInfo';
+import { useForm } from 'react-hook-form';
+
 
 const ColorlibConnector = styled(StepConnector)(({ theme }) => ({
   [`&.${stepConnectorClasses.alternativeLabel}`]: {
@@ -83,6 +85,7 @@ function ColorlibStepIcon(props) {
 
 const CreateBooking = ({ open, close, save, totalGuests }) => {
 
+  const { getValues, formState: { errors }, setError, control, clearErrors } = useForm();
   const steps = ['Datos del Cliente', 'Datos de los Huéspedes', 'Pago'];
   const [activeStep, setActiveStep] = useState(0);
 
@@ -91,7 +94,8 @@ const CreateBooking = ({ open, close, save, totalGuests }) => {
       alert('Complete!');
     }
     else {
-      setActiveStep((prevActiveStep) => prevActiveStep + 1);
+       validate()
+       //setActiveStep((prevActiveStep) => prevActiveStep + 1);
     }
   };
 
@@ -99,10 +103,14 @@ const CreateBooking = ({ open, close, save, totalGuests }) => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
-
   const [birthday, setBirthday] = useState();
   const [expireDate, setExpireDate] = useState();
   const [guests, setGuests] = useState([]);
+
+
+  const addClient = (data) => {
+  
+  }
 
   const addGuest = (data) => {
     let index = guests.findIndex(d=>d.passport===data.passport);
@@ -121,6 +129,33 @@ const CreateBooking = ({ open, close, save, totalGuests }) => {
     let upd = [...guests];
     upd.splice(index, 1);
     setGuests(upd);
+  }
+
+  const validate = async () => {
+    clearErrors();
+    let isValidData = false;
+    switch (activeStep) {
+      case 0:
+        let noValid = 0;
+        Object.keys(getValues()).map((i)=>{
+          if(!getValues()[i]){
+            setError(i, {}, true);
+            noValid++;
+          }
+        })
+        if(!birthday){
+          setError('birthday', {}, true)
+          noValid++;
+        }
+        isValidData = noValid===0 ? true : false;
+        break;
+      case 1:
+      
+        break;
+      default:
+        break;
+    }
+    return isValidData
   }
 
   return (
@@ -153,10 +188,12 @@ const CreateBooking = ({ open, close, save, totalGuests }) => {
           </Grid>
           <Grid item xs={12} mt={3}>
             {activeStep === 0 &&
-              <ClientInfo
-                birthday={birthday}
-                setBirthday={setBirthday}
-              />
+                <ClientInfo
+                  birthday={birthday}
+                  setBirthday={setBirthday}
+                  control={control}
+                  errors={errors}
+                />
             }
             {activeStep === 1 &&
               <GuestInfo
@@ -167,7 +204,7 @@ const CreateBooking = ({ open, close, save, totalGuests }) => {
               />
             }
             {activeStep === 2 &&
-              <>Pago</>
+              <></>
             }
           </Grid>
           <Grid item xs={12}>
