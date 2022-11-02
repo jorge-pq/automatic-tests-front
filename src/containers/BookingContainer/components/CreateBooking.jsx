@@ -100,9 +100,8 @@ const CreateBooking = ({ open, close, save, totalGuests }) => {
 
   const handleNext = () => {
     if (activeStep === steps.length - 1) {
-      alert('Complete!');
       if (validate()) {
-       save({guests: guests, client:''});
+       save({guests: guests, client: getValues()});
       }
     }
     else {

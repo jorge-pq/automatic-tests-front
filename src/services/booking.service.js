@@ -1,4 +1,4 @@
-import {rpost} from '../lib/request';
+import {rget, rpost} from '../lib/request';
 import cookie from 'js-cookie'
 
 

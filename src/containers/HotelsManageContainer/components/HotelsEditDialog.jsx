@@ -10,23 +10,27 @@ import {getSlug} from '../../../utils/util';
 
 export default function HotelsEditDialog({open, close, item, save}) {
 
+  const [code, setCode] = useState('');
   const [name, setName] = useState('');
 
   const handleName = e => setName(e.target.value);
+  const handleCode = e => setCode(e.target.value);
 
   const handleSubmit = () => {
     const data = {
       id: item._id,
+      code: code,
       name: name,
       slug: getSlug(name)
     }
-
     save(data);
   }
 
   useEffect(() => {
+    setName(item.code);
     setName(item.name);
     return () => {
+      setCode('');
       setName('');
     };
   }, [item]);
@@ -35,6 +39,17 @@ export default function HotelsEditDialog({open, close, item, save}) {
       <Dialog open={open} onClose={close}>
         <DialogTitle>{'Editar Hotel'}</DialogTitle>
         <DialogContent>
+        <TextField
+          autoFocus
+          margin="dense"
+          id="code"
+          label="Código"
+          value={code}
+          onChange={handleCode}
+          type="text"
+          fullWidth
+          variant="standard"
+        />
           <TextField
             autoFocus
             margin="dense"

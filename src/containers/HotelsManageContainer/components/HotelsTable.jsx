@@ -25,6 +25,7 @@ export default function HotelsTable({ data, showEdit, removeHotel }) {
             <Table sx={{ minWidth: 300 }} aria-label="simple table">
                 <TableHead>
                     <TableRow>
+                        <TableCell>{'Código'}</TableCell>
                         <TableCell>{'Hotel'}</TableCell>
                         <TableCell align="right">{'Accion'}</TableCell>
                     </TableRow>
@@ -35,6 +36,9 @@ export default function HotelsTable({ data, showEdit, removeHotel }) {
                             key={row._id}
                             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                         >
+                             <TableCell component="th" scope="row">
+                                {row.code}
+                            </TableCell>
                             <TableCell component="th" scope="row">
                                 {row.name}
                             </TableCell>
