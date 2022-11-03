@@ -96,13 +96,37 @@ const CreateBooking = ({ open, close, save, totalGuests, totalPrice }) => {
   const [expireDate, setExpireDate] = useState();
   const [guests, setGuests] = useState([]);
 
+  const [payType, setPayType] = useState('Cash');
+  const [discount, setDiscount] = useState(0);
+  const service = 1;
+  const [balance, setBalance] = useState(0);
+  const [paid, setPaid] = useState(0);
+
+  const handlePaid = e => setPaid(e.target.value);
+
+  const handleDiscount = (e) => {
+    setDiscount(e.target.value);
+  }
+
   const steps = ['Datos del Cliente', 'Datos de los Huéspedes', 'Pago'];
   const [activeStep, setActiveStep] = useState(0);
 
   const handleNext = () => {
     if (activeStep === steps.length - 1) {
       if (validate()) {
-       save({guests: guests, client: getValues()});
+        save({
+          guests: guests,
+          client: getValues(),
+          pay: {
+            payType: payType,
+            totalPrice: totalPrice,
+            service: service, 
+            discount: discount,
+            total: parseFloat(totalPrice+service-discount).toFixed(2),
+            paid: paid,
+            balance: balance
+          }
+        });
       }
     }
     else {
@@ -158,7 +182,7 @@ const CreateBooking = ({ open, close, save, totalGuests, totalPrice }) => {
         isValidData = guests.length === totalGuests ? true : false;
         break;
       case 2:
-        isValidData = true;
+        isValidData = payType ? true : false;
       break;
       default:
         break;
@@ -212,7 +236,20 @@ const CreateBooking = ({ open, close, save, totalGuests, totalPrice }) => {
               />
             }
             {activeStep === 2 &&
-              <PayInfo price={totalPrice} />
+              <PayInfo
+                price={totalPrice}
+                payType={payType}
+                setPayType={setPayType}
+                discount={discount}
+                setDiscount={setDiscount}
+                service={service}
+                balance={balance}
+                setBalance={setBalance}
+                paid={paid}
+                setPaid={setPaid}
+                handlePaid={handlePaid}
+                handleDiscount={handleDiscount}
+              />
             }
           </Grid>
           <Grid item xs={12}>

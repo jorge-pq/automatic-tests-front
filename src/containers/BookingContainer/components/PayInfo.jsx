@@ -22,9 +22,13 @@ const InputPrefix = styled('label')(({ theme }) => ({
     letterSpacing:'0.00735em'
 }));
 
+function getBalance(paid, price, service, discount){
+    let result =  parseFloat(paid-(price+service-discount)).toFixed(2);
+    return result.toString() === '-0.00' ? 0 : result;
+}
 
 
-const CardPay = ({ label, value, editable, onChange }) => {
+const CardPay = ({ label, value, editable, onChange, color }) => {
     return <>
         <Typography variant='body1' sx={{ color: 'gray' }}>{label}</Typography>
         {editable ?
@@ -32,25 +36,14 @@ const CardPay = ({ label, value, editable, onChange }) => {
                 <InputPrefix>{'$'}</ InputPrefix>
                 <CardEditableInput value={value} type={'number'} onChange={onChange} min={0} />
             </> :
-            <Typography variant='h4'>${value}</Typography>}
+            <Typography variant='h4' sx={{ color: color || 'black' }}>${value}</Typography>}
     </>
 }
 
 const types = ['Cash', 'Cash App', 'Zelle', 'Cheque', 'Crédito o Débito', 'Transferencia bancaria'];
 
-const PayInfo = ({price}) => {
-
-    const [payType, setPayType] = useState('');
-    const [discount, setDiscount] = useState(0);
-    const service = 1;
-    const [balance, setBalance] = useState(0);
-    const [paid, setPaid] = useState(0);
-
-    const handlePaid = e => setPaid(e.target.value);
-
-    const handleDiscount = (e) => {
-        setDiscount(e.target.value);
-    }
+const PayInfo = ({price, payType, setPayType, discount, setDiscount,
+     service, balance, setBalance, paid, setPaid, handlePaid, handleDiscount}) => {
 
     return (
         <>
@@ -66,7 +59,7 @@ const PayInfo = ({price}) => {
                         <CardPay label={'Descuento'} value={discount} editable onChange={handleDiscount}/>
                     </Grid>
                     <Grid item xs={2}>
-                        <CardPay label={'Total'} value={parseFloat(price+service-discount).toFixed(2)} />
+                        <CardPay label={'Total'} value={parseFloat(price+service-discount).toFixed(2)} color={'#1976d2'} />
                     </Grid>
                 </Grid>
             </Paper>
@@ -75,6 +68,7 @@ const PayInfo = ({price}) => {
                     <Grid item xs={4}>
                         <Autocomplete
                             disablePortal
+                            value={payType}
                             options={types}
                             size={'small'}
                             onChange={(event, op) => setPayType(op)}
@@ -87,7 +81,7 @@ const PayInfo = ({price}) => {
                     </Grid>
                     
                     <Grid item xs={2} sx={{padding: '0 !important'}}>
-                        <CardPay label={'Balance'} value={parseFloat(paid-(price+service-discount)).toFixed(2)} />
+                        <CardPay label={'Balance'} value={getBalance(paid,price,service,discount)} color={getBalance(paid,price,service,discount)>=0?'green': 'red'}/>
                     </Grid>
                 </Grid>
             </Paper>
