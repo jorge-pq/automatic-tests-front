@@ -88,7 +88,7 @@ function fieldsNotRequired(item){
   return item !== 'secondname' && item !== 'secondlastname'
 }  
 
-const CreateBooking = ({ open, close, save, totalGuests }) => {
+const CreateBooking = ({ open, close, save, totalGuests, totalPrice }) => {
 
   const { getValues, formState: { errors }, setError, control, clearErrors } = useForm();
 
@@ -212,7 +212,7 @@ const CreateBooking = ({ open, close, save, totalGuests }) => {
               />
             }
             {activeStep === 2 &&
-              <PayInfo />
+              <PayInfo price={totalPrice} />
             }
           </Grid>
           <Grid item xs={12}>

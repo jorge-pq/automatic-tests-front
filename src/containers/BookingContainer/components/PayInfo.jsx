@@ -38,12 +38,11 @@ const CardPay = ({ label, value, editable, onChange }) => {
 
 const types = ['Cash', 'Cash App', 'Zelle', 'Cheque', 'Crédito o Débito', 'Transferencia bancaria'];
 
-const PayInfo = () => {
+const PayInfo = ({price}) => {
 
     const [payType, setPayType] = useState('');
     const [discount, setDiscount] = useState(0);
-    const [service] = useState(1);
-    const [total, setTotal] = useState(1201);
+    const service = 1;
     const [balance, setBalance] = useState(0);
     const [paid, setPaid] = useState(0);
 
@@ -51,7 +50,6 @@ const PayInfo = () => {
 
     const handleDiscount = (e) => {
         setDiscount(e.target.value);
-        setTotal(parseFloat(total)-parseFloat(e.target.value));
     }
 
     return (
@@ -59,7 +57,7 @@ const PayInfo = () => {
             <Paper elevation={3}>
                 <Grid container justifyContent={'center'} p={3} textAlign={'center'}>
                     <Grid item xs={2}>
-                        <CardPay label={'Precio'} value={1200} />
+                        <CardPay label={'Precio'} value={price} />
                     </Grid>
                     <Grid item xs={2}>
                         <CardPay label={'C. Servicio'} value={service} />
@@ -68,7 +66,7 @@ const PayInfo = () => {
                         <CardPay label={'Descuento'} value={discount} editable onChange={handleDiscount}/>
                     </Grid>
                     <Grid item xs={2}>
-                        <CardPay label={'Total'} value={total} />
+                        <CardPay label={'Total'} value={parseFloat(price-service-discount).toFixed(2)} />
                     </Grid>
                     <Grid item xs={2}>
                         <CardPay label={'Balance'} value={balance} />

@@ -189,6 +189,10 @@ const BookingContainer = ({ hotel }) => {
         return persons + childrens;
     }
 
+    const getTotalPrice = () => {
+        return parseFloat(bookings.reduce((a, c) => (a + c.total + c.childrenTotal), 0)).toFixed(2);
+    }
+
     const save = (data) => {
         data.hotel = hotel;
         data.order = bookings;
@@ -273,6 +277,7 @@ const BookingContainer = ({ hotel }) => {
                 close={closeBookingDialog}
                 save={save}
                 totalGuests={getTotalPersons()}
+                totalPrice={getTotalPrice()}
             />
                         
         </Grid>
