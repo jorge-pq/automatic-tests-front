@@ -66,10 +66,7 @@ const PayInfo = ({price}) => {
                         <CardPay label={'Descuento'} value={discount} editable onChange={handleDiscount}/>
                     </Grid>
                     <Grid item xs={2}>
-                        <CardPay label={'Total'} value={parseFloat(price-service-discount).toFixed(2)} />
-                    </Grid>
-                    <Grid item xs={2}>
-                        <CardPay label={'Balance'} value={balance} />
+                        <CardPay label={'Total'} value={parseFloat(price+service-discount).toFixed(2)} />
                     </Grid>
                 </Grid>
             </Paper>
@@ -87,6 +84,10 @@ const PayInfo = ({price}) => {
                     </Grid>
                     <Grid item xs={4}>
                         <TextField type={'number'} value={paid} onChange={handlePaid} size={'small'} inputProps={{ min: 0 }} label={'Pagado'} />
+                    </Grid>
+                    
+                    <Grid item xs={2} sx={{padding: '0 !important'}}>
+                        <CardPay label={'Balance'} value={parseFloat(paid-(price+service-discount)).toFixed(2)} />
                     </Grid>
                 </Grid>
             </Paper>
