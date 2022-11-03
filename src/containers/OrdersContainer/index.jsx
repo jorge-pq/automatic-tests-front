@@ -8,7 +8,27 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { IconButton, Tooltip } from '@mui/material'
 import AssignmentIcon from '@mui/icons-material/Assignment';
+import EditIcon from '@mui/icons-material/Edit';
+import Chip from '@mui/material/Chip';
 
+
+function getColorStatus(state){
+    let color = 'default'
+    switch (state) {
+        case 'Pendiente':
+            color = 'info'
+            break;
+        case 'Confirmado':
+            color = 'success'
+            break;
+        case 'Cancelado':
+            color = 'error'
+            break;
+        default:
+            break;
+    }
+    return color;
+}
 
 const OrdersContainer = ({bookings}) => {
 
@@ -20,17 +40,22 @@ const OrdersContainer = ({bookings}) => {
 
     }
 
+    const changeState = id => {
+
+    }
+
     return (
         <TableContainer component={Paper}>
             <Table sx={{ minWidth: 300 }} aria-label="simple table">
                 <TableHead>
                     <TableRow>
-                        <TableCell>{'Código'}</TableCell>
-                        <TableCell>{'Hotel'}</TableCell>
-                        <TableCell>{'Cliente'}</TableCell>
-                        <TableCell>{'Fecha reservación'}</TableCell>
-                        <TableCell>{'Fecha reación'}</TableCell>
-                        <TableCell align="right">{'Accion'}</TableCell>
+                        <TableCell align="center">{'Código'}</TableCell>
+                        <TableCell align="center">{'Hotel'}</TableCell>
+                        <TableCell align="center">{'Cliente'}</TableCell>
+                        <TableCell align="center">{'Fecha reservación'}</TableCell>
+                        <TableCell align="center">{'Fecha creación'}</TableCell>
+                        <TableCell align="center">{'Estado'}</TableCell>
+                        <TableCell align="center">{'Acción'}</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -39,25 +64,33 @@ const OrdersContainer = ({bookings}) => {
                             key={row._id}
                             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                         >
-                            <TableCell component="th" scope="row">
+                            <TableCell component="th" scope="row" align="center">
                                 {row.code}
                             </TableCell>
-                            <TableCell component="th" scope="row">
+                            <TableCell component="th" scope="row" align="center">
                                 {row.hotel.name}
                             </TableCell>
-                            <TableCell component="th" scope="row">
+                            <TableCell component="th" scope="row" align="center">
                                 {`${row.client.name} ${row.client.lastname}`}
                             </TableCell>
-                            <TableCell component="th" scope="row">
+                            <TableCell component="th" scope="row" align="center">
                                 {getBookingDate(row.order[0].date)}
                             </TableCell>
-                            <TableCell component="th" scope="row">
+                            <TableCell component="th" scope="row" align="center">
                                 {new Date(row.creationDate).toLocaleDateString()}
                             </TableCell>
-                            <TableCell align="right">
+                            <TableCell component="th" scope="row" align="center">
+                               <Chip label={row.state} color={getColorStatus(row.state)}/>
+                            </TableCell>
+                            <TableCell align="center">
                                 <Tooltip title="DETALLES">
                                     <IconButton onClick={()=>details(row._id)}>
                                         <AssignmentIcon />
+                                    </IconButton>
+                                </Tooltip>
+                                <Tooltip title="CAMBIAR ESTADO">
+                                    <IconButton onClick={()=>changeState(row._id)}>
+                                        <EditIcon />
                                     </IconButton>
                                 </Tooltip>
                             </TableCell>
