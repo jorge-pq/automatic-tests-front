@@ -17,6 +17,7 @@ import PaymentIcon from '@mui/icons-material/Payment';
 import CloseIcon  from '@mui/icons-material/Close';
 import ClientInfo from './ClientInfo';
 import GuestInfo from './GuestInfo';
+import PayInfo from './PayInfo';
 import { useForm } from 'react-hook-form';
 
 
@@ -211,7 +212,7 @@ const CreateBooking = ({ open, close, save, totalGuests }) => {
               />
             }
             {activeStep === 2 &&
-              <></>
+              <PayInfo />
             }
           </Grid>
           <Grid item xs={12}>
