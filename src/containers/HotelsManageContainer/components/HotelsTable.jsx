@@ -10,7 +10,7 @@ import { Edit, LocalHotel, Delete, Image as ImageIcon } from '@mui/icons-materia
 import { IconButton, Tooltip } from '@mui/material'
 import { useRouter } from 'next/router';
 import {getTenant} from '../../../utils/util';
-
+import Chip from '@mui/material/Chip';
 
 export default function HotelsTable({ data, showEdit, removeHotel }) {
 
@@ -26,7 +26,13 @@ export default function HotelsTable({ data, showEdit, removeHotel }) {
                 <TableHead>
                     <TableRow>
                         <TableCell>{'Código'}</TableCell>
-                        <TableCell>{'Hotel'}</TableCell>
+                        <TableCell>{'Nombre'}</TableCell>
+                        <TableCell>{'País'}</TableCell>
+                        <TableCell>{'Estado'}</TableCell>
+                        <TableCell>{'Ciudad'}</TableCell>
+                        <TableCell>{'Dirección'}</TableCell>
+                        <TableCell>{'Código postal'}</TableCell>
+                        <TableCell>{'Activo'}</TableCell>
                         <TableCell align="right">{'Accion'}</TableCell>
                     </TableRow>
                 </TableHead>
@@ -36,11 +42,29 @@ export default function HotelsTable({ data, showEdit, removeHotel }) {
                             key={row._id}
                             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                         >
-                             <TableCell component="th" scope="row">
+                            <TableCell component="th" scope="row">
                                 {row.code}
                             </TableCell>
                             <TableCell component="th" scope="row">
                                 {row.name}
+                            </TableCell>
+                            <TableCell component="th" scope="row">
+                                {row.country}
+                            </TableCell>
+                            <TableCell component="th" scope="row">
+                                {row.state}
+                            </TableCell>
+                            <TableCell component="th" scope="row">
+                                {row.city}
+                            </TableCell>
+                            <TableCell component="th" scope="row">
+                                {row.address}
+                            </TableCell>
+                            <TableCell component="th" scope="row">
+                                {row.zipCode}
+                            </TableCell>
+                            <TableCell component="th" scope="row">
+                               <Chip label={row.active? 'Activo' : 'Inactivo'} color={row.active ? 'success' : 'error'} />
                             </TableCell>
                             <TableCell align="right">
                             <Tooltip title="Ver Imágenes">

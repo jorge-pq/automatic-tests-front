@@ -1,6 +1,6 @@
 import * as React from 'react';
 import HotelsContainer from '../../containers/HotelsContainer';
-import { getHotels } from '../../services/hotels.service';
+import { getHotelsActive } from '../../services/hotels.service';
 import {getCookie} from '../../lib/session';
 import {redirectToLogin, normalizeUserCookie, redirectToTenat} from '../../utils/util';
 import Layout from '../../layout';
@@ -23,7 +23,7 @@ export async function getServerSideProps(ctx) {
 		return redirectToLogin();
 	}
 
-  const data = await getHotels(jwt);
+  const data = await getHotelsActive(jwt);
   return { props: { data } }
 
 }

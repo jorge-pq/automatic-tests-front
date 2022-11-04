@@ -7,55 +7,113 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { getSlug } from '../../../utils/util';
+import { Controller, useForm } from 'react-hook-form';
+import Grid from '@mui/material/Grid';
+
+
+const errorText = { color: '#E8530E' };
+
 
 export default function HotelsCreateDialog({ open, close, save }) {
 
-  const [code, setCode] = useState('');
-  const [name, setName] = useState('');
+  const { register, handleSubmit, formState: { errors }, reset, setValue, control } = useForm();
 
-  const handleName = e => setName(e.target.value);
-  const handleCode = e => setCode(e.target.value);
-
-  const handleSubmit = () => {
-    const data = {
-      code: code,
-      name: name,
-      slug: getSlug(name)
-    }
+  const onSubmit = (data) => {
+    data.slug = getSlug(data.name)
     save(data);
   }
 
   return (
     <Dialog open={open} onClose={close}>
-      <DialogTitle>{'Nuevo Hotel'}</DialogTitle>
-      <DialogContent>
-        <TextField
-          autoFocus
-          margin="dense"
-          id="code"
-          label="Código"
-          value={code}
-          onChange={handleCode}
-          type="text"
-          fullWidth
-          variant="standard"
-        />
-        <TextField
-          autoFocus
-          margin="dense"
-          id="name"
-          label="Nombre"
-          value={name}
-          onChange={handleName}
-          type="text"
-          fullWidth
-          variant="standard"
-        />
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={close}>Cancel</Button>
-        <Button variant={'contained'} onClick={handleSubmit}>Guardar</Button>
-      </DialogActions>
+      <form onSubmit={handleSubmit(onSubmit)} style={{ width: 'inherit' }}>
+        <DialogTitle>{'Nuevo Hotel'}</DialogTitle>
+        <DialogContent>
+          <Grid container spacing={1}>
+            <Grid item xs={12}>
+              <Controller
+                control={control}
+                name="code"
+                rules={{ required: true }}
+                render={({ field }) => <TextField size={'small'} fullWidth placeholder={'Código *'} {...field} />}
+              />
+              {
+                errors.code && <label style={errorText}>{'El código es requerido'}</label>
+              }
+            </Grid>
+            <Grid item xs={12}>
+              <Controller
+                control={control}
+                name="name"
+                rules={{ required: true }}
+                render={({ field }) => <TextField size={'small'} fullWidth placeholder={'Nombre *'} {...field} />}
+              />
+              {
+                errors.name && <label style={errorText}>{'El nombre es requerido'}</label>
+              }
+            </Grid>
+
+            <Grid item xs={12}>
+              <Controller
+                control={control}
+                name="country"
+                rules={{ required: true }}
+                render={({ field }) => <TextField size={'small'} fullWidth placeholder={'País *'} {...field} />}
+              />
+              {
+                errors.country && <label style={errorText}>{'El país es requerido'}</label>
+              }
+            </Grid>
+            <Grid item xs={12}>
+              <Controller
+                control={control}
+                name="state"
+                rules={{ required: true }}
+                render={({ field }) => <TextField size={'small'} fullWidth placeholder={'Estado *'} {...field} />}
+              />
+              {
+                errors.state && <label style={errorText}>{'El estado es requerido'}</label>
+              }
+            </Grid>
+            <Grid item xs={12}>
+              <Controller
+                control={control}
+                name="city"
+                rules={{ required: true }}
+                render={({ field }) => <TextField size={'small'} fullWidth placeholder={'Ciudad *'} {...field} />}
+              />
+              {
+                errors.city && <label style={errorText}>{'La ciudad es requerida'}</label>
+              }
+            </Grid>
+            <Grid item xs={12}>
+              <Controller
+                control={control}
+                name="address"
+                rules={{ required: true }}
+                render={({ field }) => <TextField size={'small'} fullWidth placeholder={'Dirección *'} {...field} />}
+              />
+              {
+                errors.address && <label style={errorText}>{'La dirección es requerida'}</label>
+              }
+            </Grid>
+            <Grid item xs={12}>
+              <Controller
+                control={control}
+                name="zipCode"
+                rules={{ required: true }}
+                render={({ field }) => <TextField size={'small'} fullWidth placeholder={'Código postal *'} {...field} />}
+              />
+              {
+                errors.zipCode && <label style={errorText}>{'El código postal es requerido'}</label>
+              }
+            </Grid>
+          </Grid>
+        </DialogContent>
+        <DialogActions sx={{mr: 2}}>
+          <Button onClick={close}>Cancel</Button>
+          <Button variant={'contained'} type="submit">Guardar</Button>
+        </DialogActions>
+      </form>
     </Dialog>
   );
 }

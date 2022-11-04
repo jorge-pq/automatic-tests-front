@@ -7,6 +7,11 @@ export const getHotels = async (jwt) => {
     return data;
 };
 
+export const getHotelsActive = async (jwt) => {
+    const {data} = await rget('api/hotels/active', jwt);
+    return data;
+};
+
 export const addHotel = async (values) => {
     const {data} = await rpost('api/hotels/create',values, cookie.get('token'));
     return data;
