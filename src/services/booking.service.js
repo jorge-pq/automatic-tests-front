@@ -11,3 +11,8 @@ export const getBookings = async (jwt) => {
     const {data} = await rget('api/booking', jwt);
     return data;
 };
+
+export const getOrderById = async (id, jwt) => {
+    const {data} = await rget('api/booking/'+id, jwt);
+    return data;
+};

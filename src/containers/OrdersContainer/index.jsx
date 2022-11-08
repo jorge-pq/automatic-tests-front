@@ -10,7 +10,8 @@ import { IconButton, Tooltip } from '@mui/material'
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import EditIcon from '@mui/icons-material/Edit';
 import Chip from '@mui/material/Chip';
-
+import { useRouter } from 'next/router';
+import {getTenant} from '../../utils/util';
 
 function getColorStatus(state){
     let color = 'default'
@@ -32,12 +33,14 @@ function getColorStatus(state){
 
 const OrdersContainer = ({bookings}) => {
 
+    const router = useRouter();
+
     const getBookingDate = (range) => {
         return new Date(range[0]).toLocaleDateString() + ' - ' + new Date(range[1]).toLocaleDateString();
     }
 
     const details = id => {
-
+        router.push(`/${getTenant()}/order/${id}`)
     }
 
     const changeState = id => {

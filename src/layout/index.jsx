@@ -27,6 +27,8 @@ import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import PasswordIcon from '@mui/icons-material/Password';
 import LogoutIcon from '@mui/icons-material/Logout';
 import HomeIcon from '@mui/icons-material/Home';
+import AssignmentIcon from '@mui/icons-material/Assignment';
+
 
 const drawerWidth = 240;
 
@@ -105,6 +107,7 @@ export default function Layout({children, page}) {
   const goToHome = () => {
     router.push("/");
   }
+  const goToOrders = () => router.push(`/${getTenant()}/orders`);
 
   const logout = () => {
     setAuth(false);
@@ -199,6 +202,15 @@ export default function Layout({children, page}) {
                   <AddBusinessIcon />
                 </ListItemIcon>
                 <ListItemText primary="Agregar mayorista" />
+              </ListItemButton>
+            }
+            {
+              (user?.tenant?.type === "Wholesaler" || user?.tenant?.type === "Retail") &&
+              <ListItemButton onClick={goToOrders}>
+                <ListItemIcon>
+                  <AssignmentIcon />
+                </ListItemIcon>
+                <ListItemText primary="Facturas" />
               </ListItemButton>
             }
             <Divider sx={{ my: 1 }} />
