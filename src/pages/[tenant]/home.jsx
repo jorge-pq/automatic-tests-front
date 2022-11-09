@@ -2,7 +2,7 @@ import * as React from 'react';
 import HotelsContainer from '../../containers/HotelsContainer';
 import { getHotelsActive } from '../../services/hotels.service';
 import {getCookie} from '../../lib/session';
-import {redirectToLogin, normalizeUserCookie, redirectToTenat} from '../../utils/util';
+import {redirectToLogin} from '../../utils/util';
 import Layout from '../../layout';
 
 const Home = ({ data }) => {

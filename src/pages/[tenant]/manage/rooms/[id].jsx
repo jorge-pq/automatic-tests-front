@@ -1,8 +1,14 @@
 import React from 'react';
+import dynamic from 'next/dynamic';
 import {getHotelById} from '../../../../services/hotels.service';
-import RoomsManageContainer from '../../../../containers/RoomsManageContainer';
 import {getCookie} from '../../../../lib/session';
 import Layout from '../../../../layout';
+
+
+const RoomsManageContainer = dynamic(() => import('../../../../containers/RoomsManageContainer'), {
+    suspense: true,
+  }) 
+
 
 const RoomsManage = ({hotel}) => {
     return (

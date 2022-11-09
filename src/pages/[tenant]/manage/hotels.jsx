@@ -1,10 +1,16 @@
 import React from 'react';
-import HotelsManageContainer from '../../../containers/HotelsManageContainer';
+import dynamic from 'next/dynamic';
 import {getHotels} from '../../../services/hotels.service';
 import {getCookie} from '../../../lib/session';
 import Layout from '../../../layout';
+import {redirectToLogin} from '../../../utils/util';
 
-const hotels = ({data}) => {
+
+const HotelsManageContainer = dynamic(() => import('../../../containers/HotelsManageContainer'), {
+    suspense: true,
+  }) 
+
+const hotels = ({data = []}) => {
     return (
         <Layout page={'Gestionar hoteles'}>
             <HotelsManageContainer data={data}/>
@@ -17,12 +23,7 @@ export async function getServerSideProps(ctx) {
     let jwt = getCookie("token", ctx.req);
 
     if (!jwt) {
-        return {
-            redirect: {
-                destination: '/login',
-                permanent: false,
-            },
-        }
+        return redirectToLogin();
     }
 
     const data = await getHotels(jwt);
