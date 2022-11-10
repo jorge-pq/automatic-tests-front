@@ -7,6 +7,8 @@ import { CacheProvider } from '@emotion/react';
 import createEmotionCache from '../utils/createEmotionCache';
 import AuthProvider from '../providers/AuthProvider';
 import FilterProvider from '../providers/FilterProvider';
+import '../utils/_datepicker.css';
+import '../utils/react-datepicker.css';
 
 
 const defaultQueryFn = async ({ queryKey }) => {

@@ -1,9 +1,8 @@
 import React, { useState, useContext } from 'react';
 import { Grid, Typography, Divider, Button, Autocomplete } from '@mui/material';
-import { styled } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
+import "react-dates/initialize";
+import { DateRangePicker } from "react-dates";
 import BookingTable from './components/BookingTable';
 import { differenceInDays } from 'date-fns';
 import AuthContext from '../../providers/AuthContext';
@@ -38,22 +37,19 @@ function getAdults(type) {
 
 const selector = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
 
-const DatePickerCustom = styled(DatePicker)(({ theme }) => ({
-    border: '1px solid #bfbfbf',
-    borderRadius: '3px',
-    height: '40px',
-    padding: '2.5px 4px 2.5px 6px',
-    width: '100%'
-}));
-
 const BookingContainer = ({ hotel }) => {
 
     const { user } = useContext(AuthContext);
     const router = useRouter();
     const [openBookingDialog, setOpenBookingDialog] = useState(false);
 
-    const [value, setValue] = useState([null, null]);
-    const [startDate, endDate] = value;
+    const [startDate, setStartDate] = useState(null);
+    const [endDate, setEndDate] = useState(null);
+    const [focusedInput, setFocusedInput] = useState(null);
+    const handleDatesChange = ({ startDate, endDate }) => {
+        setStartDate(startDate);
+        setEndDate(endDate);
+    };
 
     const [room, setRoom] = useState('');
     const [types, setTypes] = useState([]);
@@ -72,8 +68,6 @@ const BookingContainer = ({ hotel }) => {
           alert(error.response.data.message);
         }
       });
-
-      
 
     const handleRoom = (value) => {
         if (value) {
@@ -106,14 +100,14 @@ const BookingContainer = ({ hotel }) => {
     const handleChildren = (room, count, pos) => {
         let currentRoom = hotel.rooms.find(d => d.name === room);
         let c = currentRoom.childrens.find(d => d.count === parseInt(count));
-        let childrensPrice = c ? getOfferPrice(c.offers, value, c.price) : 0;
+        let childrensPrice = c ? getOfferPrice(c.offers, [startDate._d, endDate._d], c.price) : 0;
 
         if (parseInt(count) === 2) {
             let firstChildren = currentRoom.childrens.find(d => d.count === 1);
-            childrensPrice += firstChildren ? getOfferPrice(firstChildren.offers, value, c.price) : 0;
+            childrensPrice += firstChildren ? getOfferPrice(firstChildren.offers, [startDate._d, endDate._d], c.price) : 0;
         }
 
-        const days = differenceInDays(value[1], value[0]);
+        const days = differenceInDays(endDate._d, startDate._d);
         let total = parseFloat(childrensPrice) * parseInt(days);
 
         let upd = [...bookings];
@@ -127,13 +121,13 @@ const BookingContainer = ({ hotel }) => {
     const add = () => {
         let upd = bookings.find(d => d.room.id === room);
 
-        if (!upd && value[0]) {
+        if (!upd && startDate) {
             let currentTypes = Object.keys(typesSelected);
             currentTypes.forEach(item => {
                 for (let index = 0; index < typesSelected[item]; index++) {
                     let rm = hotel.rooms.find(d => d.name === room);
                     setBookings(bookings => [...bookings, {
-                        date: value,
+                        date: [startDate, endDate],
                         room: rm,
                         type: item,
                         adults: getAdults(item),
@@ -147,7 +141,6 @@ const BookingContainer = ({ hotel }) => {
         }
     }
 
-
     function getTotal(type) {
         let currentRoom = hotel.rooms.find(d => d.name === room);
         // let currentTypes = Object.keys(typesSelected);
@@ -155,17 +148,17 @@ const BookingContainer = ({ hotel }) => {
         let total = 0;
         if (typesSelected[type] > 0) {
             let t = currentRoom.types.find(d => d.description == type);
-            let prc = getOfferPrice(t.offers, value, t.price, user.tenant.type);
+            let prc = getOfferPrice(t.offers, [startDate._d, endDate._d], t.price, user.tenant.type);
             total += prc * getAdults(type);
         }
       
         let childrensPrice = 0;
         if (parseInt(childrensSelected) > 0) {
             let c = currentRoom.childrens.find(d => d.count === parseInt(childrensSelected));
-            childrensPrice = getOfferPrice(c.offers, value, c.price, user.tenant.type);
+            childrensPrice = getOfferPrice(c.offers, [startDate._d, endDate._d], c.price, user.tenant.type);
         }
 
-        const days = differenceInDays(value[1], value[0]);
+        const days = differenceInDays(endDate._d, startDate._d);
         return (parseFloat(total) + parseFloat(childrensPrice)) * parseInt(days);
     }
 
@@ -207,16 +200,18 @@ const BookingContainer = ({ hotel }) => {
             <Grid item xs={12} md={3}>
                 <Grid container mt={3}>
                     <Grid item xs={12}>
-                        <DatePickerCustom
-                            selectsRange={true}
+                        <DateRangePicker
                             startDate={startDate}
+                            startDateId="start_date_id" 
                             endDate={endDate}
-                            onChange={(update) => {
-                                setValue(update);
-                            }}
-                            placeholderText={'Fecha'}
+                            endDateId="end_date_id" 
+                            focusedInput={focusedInput}
+                            onDatesChange={handleDatesChange} 
+                            onFocusChange={focusedInput => setFocusedInput(focusedInput)}
                             withPortal
-                            isClearable={true}
+                            showClearDates
+                            startDatePlaceholderText='Desde'
+                            endDatePlaceholderText='Hasta'
                         />
                     </Grid>
                     <Grid item xs={12} mt={2}>
@@ -228,14 +223,15 @@ const BookingContainer = ({ hotel }) => {
                             onChange={(event, room) => {
                                 handleRoom(room?.name);
                             }}
+                            sx={{zIndex: '-999'}}
                             getOptionLabel={(option) => option.name}
                             renderInput={(params) => <TextField fullWidth {...params} label="Habitación" />}
                         />
                         {
-                            types.length > 0 && value[0] && <Divider sx={{ mt: 2 }}>{'Cantidad'}</Divider>
+                            types.length > 0 && startDate && <Divider sx={{ mt: 2 }}>{'Cantidad'}</Divider>
                         }
                         {
-                            value[0] && types.map((item, index) =>
+                            startDate && types.map((item, index) =>
 
                                 <Autocomplete
                                     sx={{ mt: 2 }}
@@ -252,7 +248,7 @@ const BookingContainer = ({ hotel }) => {
                                 />
                             )}
                         {
-                            types.length > 0 && value[0] &&
+                            types.length > 0 && startDate &&
                             <Button variant={'contained'} fullWidth sx={{ mt: 3 }} onClick={add}>
                                 {'Agregar'}
                             </Button>

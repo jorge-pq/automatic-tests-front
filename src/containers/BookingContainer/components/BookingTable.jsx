@@ -43,7 +43,7 @@ export default function BookingTable({ data, remove, handleChildren}) {
                 <TableBody>
                     {data.map((row, index) => (
                         <TableRow key={index} align="center">
-                            <TableCell align="center">{format(row.date[0], 'dd/MM/yyyy')} - {format(row.date[1], 'dd/MM/yyyy')}</TableCell>
+                            <TableCell align="center">{format(row.date[0]._d, 'dd/MM/yyyy')} - {format(row.date[1]._d, 'dd/MM/yyyy')}</TableCell>
                             <TableCell align="center">{row.room.name}</TableCell>
                             {/* <TableCell align="left">
                                 <Stack direction="row" spacing={1}>
