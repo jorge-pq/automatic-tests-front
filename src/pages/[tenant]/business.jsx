@@ -8,7 +8,7 @@ import Layout from '../../layout';
 
 const Business = ({ tenants }) => {
   return (
-    <Layout page={'Empresas'}>
+    <Layout page={'Agencias'}>
       <TenantContainer data={tenants} />
     </Layout>
   );

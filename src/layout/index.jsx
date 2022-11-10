@@ -210,7 +210,7 @@ export default function Layout({children, page}) {
                 <ListItemIcon>
                   <AssignmentIcon />
                 </ListItemIcon>
-                <ListItemText primary="Facturas" />
+                <ListItemText primary="Órdenes" />
               </ListItemButton>
             }
             <Divider sx={{ my: 1 }} />

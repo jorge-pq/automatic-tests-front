@@ -8,7 +8,7 @@ import Layout from '../../layout';
 
 const Orders = ({ bookings }) => {
   return (
-    <Layout page={'Reservaciones'}>
+    <Layout page={'Órdenes'}>
       <OrdersContainer bookings={bookings} />
     </Layout>
   );

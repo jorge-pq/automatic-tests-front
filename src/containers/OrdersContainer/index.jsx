@@ -36,7 +36,6 @@ const OrdersContainer = ({bookings}) => {
     const router = useRouter();
 
     const getBookingDate = (range) => {
-        console.log(range)
         return new Date(range[0]).toLocaleDateString() + ' - ' + new Date(range[1]).toLocaleDateString();
     }
 

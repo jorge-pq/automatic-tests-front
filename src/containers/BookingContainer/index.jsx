@@ -61,8 +61,8 @@ const BookingContainer = ({ hotel }) => {
 
     const { mutate: create } = useMutation(addBooking, {
         onSuccess: (data) => {
-        closeBookingDialog();
-          router.push(`/${getTenant()}/orders`);
+            closeBookingDialog();
+            router.push(`/${getTenant()}/orders`);
         },
         onError: (error) => {
           alert(error.response.data.message);

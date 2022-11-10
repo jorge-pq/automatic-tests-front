@@ -108,6 +108,15 @@ const CreateBooking = ({ open, close, save, totalGuests, totalPrice }) => {
     setDiscount(e.target.value);
   }
 
+  function getBalance() {
+    let result = (parseFloat(paid) - (parseFloat(totalPrice) + parseFloat(service) - parseFloat(discount))).toFixed(2);
+    return result.toString() === '-0.00' ? 0 : result;
+  }
+
+  function getTotal() {
+    return (parseFloat(totalPrice) + parseFloat(service) - parseFloat(discount)).toFixed(2);
+  }
+
   const steps = ['Datos del Cliente', 'Datos de los Huéspedes', 'Pago'];
   const [activeStep, setActiveStep] = useState(0);
 
@@ -122,9 +131,9 @@ const CreateBooking = ({ open, close, save, totalGuests, totalPrice }) => {
             totalPrice: totalPrice,
             service: service, 
             discount: discount,
-            total: parseFloat(totalPrice+service-discount).toFixed(2),
+            total: getTotal(),
             paid: paid,
-            balance: balance
+            balance: getBalance()
           }
         });
       }
@@ -241,12 +250,10 @@ const CreateBooking = ({ open, close, save, totalGuests, totalPrice }) => {
                 payType={payType}
                 setPayType={setPayType}
                 discount={discount}
-                setDiscount={setDiscount}
                 service={service}
-                balance={balance}
-                setBalance={setBalance}
+                balance={getBalance()}
+                total={getTotal()}
                 paid={paid}
-                setPaid={setPaid}
                 handlePaid={handlePaid}
                 handleDiscount={handleDiscount}
               />

@@ -1,12 +1,14 @@
 import React from 'react';
-import {getHotelById} from '../../../../services/hotels.service';
+import { getHotelById } from '../../../../services/hotels.service';
 import GalleryManageContainer from '../../../../containers/GalleryManageContainer';
-import {getCookie} from '../../../../lib/session';
+import { getCookie } from '../../../../lib/session';
 import Layout from '../../../../layout';
+import { redirectToLogin } from '../../../../utils/util';
 
-const GalleryManage = ({hotel}) => {
+
+const GalleryManage = ({ hotel }) => {
     return (
-        <Layout>
+        <Layout page={'Gestionar imágenes'}>
             <GalleryManageContainer hotel={hotel} />
         </Layout>
     );
@@ -18,16 +20,11 @@ export async function getServerSideProps(ctx) {
     let jwt = getCookie("token", ctx.req);
 
     if (!jwt) {
-        return {
-            redirect: {
-                destination: '/login',
-                permanent: false,
-            },
-        }
+        return redirectToLogin();
     }
 
-    const hotel = await getHotelById(ctx.params.id);
-   
+    const hotel = await getHotelById(ctx.params.id, jwt);
+
     return {
         props: {
             hotel: hotel,

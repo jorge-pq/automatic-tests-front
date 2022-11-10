@@ -8,7 +8,7 @@ import Layout from '../../layout';
 
 const CreateTenant = () => {
   return (
-    <Layout page={'Crear empresa'}>
+    <Layout page={'Crear agencia'}>
       <CreateTenantContainer />
     </Layout>
   );

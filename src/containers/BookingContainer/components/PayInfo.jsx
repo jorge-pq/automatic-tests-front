@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import { Grid, Paper, TextField, Autocomplete, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
@@ -22,10 +22,6 @@ const InputPrefix = styled('label')(({ theme }) => ({
     letterSpacing:'0.00735em'
 }));
 
-function getBalance(paid, price, service, discount){
-    let result =  parseFloat(paid-(price+service-discount)).toFixed(2);
-    return result.toString() === '-0.00' ? 0 : result;
-}
 
 
 const CardPay = ({ label, value, editable, onChange, color }) => {
@@ -42,8 +38,8 @@ const CardPay = ({ label, value, editable, onChange, color }) => {
 
 const types = ['Cash', 'Cash App', 'Zelle', 'Cheque', 'Crédito o Débito', 'Transferencia bancaria'];
 
-const PayInfo = ({price, payType, setPayType, discount, setDiscount,
-     service, balance, setBalance, paid, setPaid, handlePaid, handleDiscount}) => {
+const PayInfo = ({price, payType, setPayType, discount,
+     service, balance, total, paid, handlePaid, handleDiscount}) => {
 
     return (
         <>
@@ -59,7 +55,7 @@ const PayInfo = ({price, payType, setPayType, discount, setDiscount,
                         <CardPay label={'Descuento'} value={discount} editable onChange={handleDiscount}/>
                     </Grid>
                     <Grid item xs={2}>
-                        <CardPay label={'Total'} value={parseFloat(price+service-discount).toFixed(2)} color={'#1976d2'} />
+                        <CardPay label={'Total'} value={total} color={'#1976d2'} />
                     </Grid>
                 </Grid>
             </Paper>
@@ -81,7 +77,7 @@ const PayInfo = ({price, payType, setPayType, discount, setDiscount,
                     </Grid>
                     
                     <Grid item xs={2} sx={{padding: '0 !important'}}>
-                        <CardPay label={'Balance'} value={getBalance(paid,price,service,discount)} color={getBalance(paid,price,service,discount)>=0?'green': 'red'}/>
+                        <CardPay label={'Balance'} value={balance} color={balance>=0?'green': 'red'}/>
                     </Grid>
                 </Grid>
             </Paper>

@@ -4,10 +4,6 @@ import { Grid, Paper, Typography, Divider, Button, Stack } from '@mui/material';
 
 const OrderDetailsContainer = ({ order }) => {
 
-    const getTotalPrice = () => {
-        return parseFloat(order.order.reduce((a, c) => (a + c.total + c.childrenTotal), 0)).toFixed(2);
-    }
-
     return (
         <Grid container spacing={2}>
             <Grid item xs={9}>
@@ -126,31 +122,38 @@ const OrderDetailsContainer = ({ order }) => {
                             <Typography>{'Tipo:'}</Typography>
                         </Grid>
                         <Grid item xs={6} textAlign={'right'}>
-                            <Typography><b>{'Cash'}</b></Typography>
+                            <Typography><b>{order.pay.payType}</b></Typography>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <Typography>{'Subtotal:'}</Typography>
+                        </Grid>
+                        <Grid item xs={6} textAlign={'right'}>
+                            <Typography><b>${order.pay.totalPrice}</b></Typography>
                         </Grid>
                         <Grid item xs={6}>
                             <Typography>{'Servicio: '}</Typography>
                         </Grid>
                         <Grid item xs={6} textAlign={'right'}>
-                            <Typography><b>${1}</b></Typography>
+                            <Typography><b>${parseFloat(order.pay.service).toFixed(2)}</b></Typography>
                         </Grid>
                         <Grid item xs={6}>
                             <Typography>{'Descuento:'}</Typography>
                         </Grid>
                         <Grid item xs={6} textAlign={'right'}>
-                            <Typography><b>${0}</b></Typography>
+                            <Typography><b>${parseFloat(order.pay.discount).toFixed(2)}</b></Typography>
                         </Grid>
                         <Grid item xs={6}>
-                            <Typography>{'Total:'}</Typography>
+                            <Typography><b>{'Total:'}</b></Typography>
                         </Grid>
                         <Grid item xs={6} textAlign={'right'}>
-                            <Typography><b>${getTotalPrice()}</b></Typography>
+                            <Typography><b>${order.pay.total}</b></Typography>
                         </Grid>
+                        <Divider sx={{ width: '100%', my: 1 }} />
                         <Grid item xs={6}>
                             <Typography>{'Balance:'}</Typography>
                         </Grid>
                         <Grid item xs={6} textAlign={'right'}>
-                            <Typography><b>${0}</b></Typography>
+                            <Typography><b>${parseFloat(order.pay.balance).toFixed(2)}</b></Typography>
                         </Grid>
                     </Grid>
                 </Paper>
