@@ -25,7 +25,7 @@ const GalleryContainer = ({ hotel }) => {
             {hotel.images?.map((item) => (
                 <ImageListItem key={item.path} cols={item.cols || 1} rows={item.rows || 1}>
                     <img
-                        {...srcset(getImage(item.path), 121, item.rows, item.cols)}
+                        {...srcset(item.path, 121, item.rows, item.cols)}
                         alt={item.title}
                         loading="lazy"
                     />

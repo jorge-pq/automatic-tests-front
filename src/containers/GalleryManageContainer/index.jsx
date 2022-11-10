@@ -57,13 +57,22 @@ const GalleryManageContainer = ({ hotel }) => {
                     </Stack>
                 </Grid>
             </Grid>
-            <Grid item xs={12} mt={2}>
-                <Typography variant='h6'>{'Imagenes'}</Typography>
+            <Grid item xs={4} mt={2}>
+                <Typography variant='h6'>{'Cover'}</Typography>
+                <Divider />
+                <Grid container pb={4}>
+                    <Grid item xs={12} mt={2}>
+                        <ImageCard item={hotel.cover} />
+                    </Grid>
+                </Grid>
+            </Grid>
+            <Grid item xs={8} mt={2}>
+                <Typography variant='h6'>{'Imágenes'}</Typography>
                 <Divider />
                 <Grid container pb={4}>
                     {
                         hotel.images?.map((item, index) =>
-                            <Grid key={index} item xs={12} md={4} mt={2}>
+                            <Grid key={index} item xs={12} md={6} mt={2}>
                                 <ImageCard item={item.path} />
                             </Grid>
                         )}

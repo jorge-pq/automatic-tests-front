@@ -29,7 +29,7 @@ export default function HotelCard({item}) {
         <CardMedia
           component="img"
           height="140"
-          image={item.cover?getImage(item.cover):DEFAULT_IMAGE}
+          image={item.cover || DEFAULT_IMAGE}
           alt="image"
         />
         <CardContent>
