@@ -36,7 +36,7 @@ const OrderDetailsContainer = ({ order }) => {
                             <Typography variant='h6'>{'Datos del cliente'}</Typography>
                         </Grid>
                         <Grid item xs={6}>
-                            <Typography><b>{'Nombre: '}</b>{`${order.client.name} ${order.client.secondname} ${order.client.lastname} ${order.client.secondlastname}`}</Typography>
+                            <Typography><b>{'Nombre: '}</b>{`${order.client.name} ${order.client.secondname || ''} ${order.client.lastname} ${order.client.secondlastname || ''}`}</Typography>
                         </Grid>
                         <Grid item xs={6}>
                             <Typography><b>{'País: '}</b>{'Estados Unidos'}</Typography>
