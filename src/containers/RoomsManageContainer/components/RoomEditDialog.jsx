@@ -16,18 +16,9 @@ import CloseIcon from '@mui/icons-material/Close';
 import OffersChip from './OffersChip';
 import TypesTable from './TypesTable';
 import ChildrensTable from './ChildrensTable';
-import { styled } from '@mui/material/styles';
-import DatePicker from 'react-datepicker';
+import DatePickerCustom from '../../../components/DatePickerCustom';
 
-
-const DatePickerCustom = styled(DatePicker)(({ theme }) => ({
-  border: '1px solid #bfbfbf',
-  borderRadius: '3px',
-  height: '40px',
-  padding: '2.5px 4px 2.5px 6px',
-  width: '100%'
-}));
-
+import EditOffer from './EditOffer';
 
 
 const types = ["Sencilla", "Doble", "Triple"];
@@ -54,6 +45,11 @@ const RoomEditDialog = ({selected, id, open, close, save }) => {
   const [childrenOfferPriceRetail, setChildrenOfferPriceRetail] = useState();
   const [offersChildren, setOffersChildren] = useState([]);
   const [childrensAdded, setChildrensAdded] = useState([]);
+
+  const [openUpdateOffersDialog, setOpenUpdateOffersDialog] = useState(false);
+  const [typeUpdateSelected, setTypeUpdateSelected] = useState('');
+  const [openUpdateOffersChildrenDialog, setOpenUpdateOffersChildrenDialog] = useState(false);
+  const [childrenUpdateSelected, setChildrenUpdateSelected] = useState('');
 
   const handleRoom = e => {
     setRoom(e.target.value);
@@ -105,6 +101,7 @@ const RoomEditDialog = ({selected, id, open, close, save }) => {
     setTypeSelected('');  
     setOffersType([]);
   }
+
   const removeType = item => {
     setTypesAdded(typesAdded.filter(d => d.description != item));
   }
@@ -167,6 +164,34 @@ const RoomEditDialog = ({selected, id, open, close, save }) => {
     let upd = [...typesAdded];
     upd[index].offers = offersUpd;
     setTypesAdded(upd);
+  }
+
+  const editOffersToType = value => {
+    setOpenUpdateOffersDialog(true);
+    setTypeUpdateSelected(value);
+  }
+
+  const updateTypeOffers = (offer, type) => {
+    let index = typesAdded.findIndex(d => d.description == type);
+    let upd = [...typesAdded];
+    upd[index].offers.push(offer);
+    setTypesAdded(upd);
+    setOpenUpdateOffersDialog(false);
+    setTypeUpdateSelected('');
+  }
+  
+  const editOffersToChildren = value => {
+    setOpenUpdateOffersChildrenDialog(true);
+    setChildrenUpdateSelected(value);
+  }
+
+  const updateChildrenOffers = (offer, type) => {
+    let index = childrensAdded.findIndex(d => d.count == type);
+    let upd = [...childrensAdded];
+    upd[index].offers.push(offer);
+    setChildrensAdded(upd);
+    setOpenUpdateOffersChildrenDialog(false);
+    setChildrenUpdateSelected('');
   }
 
   const typesFiltered = item => {
@@ -291,7 +316,7 @@ const RoomEditDialog = ({selected, id, open, close, save }) => {
             </Grid>
           </Grid>
           <Grid item xs={12} mt={2}>
-            <TypesTable data={typesAdded} removeType={removeType} removeTypeOfferAdded={removeTypeOfferAdded} />
+            <TypesTable data={typesAdded} removeType={removeType} removeTypeOfferAdded={removeTypeOfferAdded} editOffersToType={editOffersToType} />
           </Grid>
 
           {/* ------------ Childrens ------------------------- */}
@@ -377,10 +402,11 @@ const RoomEditDialog = ({selected, id, open, close, save }) => {
             </Grid>
           </Grid>
           <Grid item xs={12} mt={2}>
-            <ChildrensTable data={childrensAdded} removeChildren={removeChildren} />
+            <ChildrensTable data={childrensAdded} removeChildren={removeChildren} editOffersToChildren={editOffersToChildren} />
           </Grid>
-
         </Grid>
+        <EditOffer open={openUpdateOffersDialog} close={()=>setOpenUpdateOffersDialog(false)} type={typeUpdateSelected} updateTypeOffers={updateTypeOffers} />
+        <EditOffer open={openUpdateOffersChildrenDialog} close={()=>setOpenUpdateOffersChildrenDialog(false)} type={childrenUpdateSelected} children updateTypeOffers={updateChildrenOffers} />
       </DialogContent>
       <DialogActions>
         <Button onClick={close}>Cerrar</Button>

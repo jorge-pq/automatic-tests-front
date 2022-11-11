@@ -8,9 +8,10 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/DeleteOutline';
+import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
 import OffersChip from './OffersChip';
 
-export default function TypesTable({data, removeType, removeTypeOfferAdded}) {
+export default function TypesTable({data, removeType, removeTypeOfferAdded, editOffersToType}) {
 
   return (
     <TableContainer component={Paper}>
@@ -39,6 +40,9 @@ export default function TypesTable({data, removeType, removeTypeOfferAdded}) {
                 <OffersChip data={row.offers} handleDeleteOffer={(item)=>removeTypeOfferAdded(item, row.description)} />
               </TableCell>
               <TableCell align="center">
+              <IconButton onClick={()=>editOffersToType(row.description)}>
+                    <LibraryAddIcon />
+                </IconButton>
                 <IconButton onClick={()=>removeType(row.description)}>
                     <DeleteIcon />
                 </IconButton>

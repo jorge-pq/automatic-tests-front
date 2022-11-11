@@ -9,9 +9,9 @@ import Paper from '@mui/material/Paper';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/DeleteOutline';
 import OffersChip from './OffersChip';
+import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
 
-
-export default function ChildrensTable({data, removeChildren}) {
+export default function ChildrensTable({data, removeChildren, editOffersToChildren}) {
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 300 }} size="small" aria-label="a dense table">
@@ -37,6 +37,9 @@ export default function ChildrensTable({data, removeChildren}) {
                 <OffersChip data={row.offers} />
               </TableCell>
               <TableCell align="center">
+              <IconButton onClick={()=>editOffersToChildren(row.count)}>
+                    <LibraryAddIcon />
+                </IconButton>
                 <IconButton onClick={()=>removeChildren(row.count)}>
                     <DeleteIcon />
                 </IconButton>
