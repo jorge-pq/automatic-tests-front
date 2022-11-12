@@ -53,6 +53,7 @@ const OrdersContainer = ({bookings}) => {
                 <TableHead>
                     <TableRow>
                         <TableCell align="center">{'Código'}</TableCell>
+                        <TableCell align="center">{'Agencia'}</TableCell>
                         <TableCell align="center">{'Hotel'}</TableCell>
                         <TableCell align="center">{'Cliente'}</TableCell>
                         <TableCell align="center">{'Fecha reservación'}</TableCell>
@@ -69,6 +70,9 @@ const OrdersContainer = ({bookings}) => {
                         >
                             <TableCell component="th" scope="row" align="center">
                                 {row.code}
+                            </TableCell>
+                            <TableCell component="th" scope="row" align="center">
+                                <Chip label={row.tenant.name} color={'default'} title={row.tenant.type} />
                             </TableCell>
                             <TableCell component="th" scope="row" align="center">
                                 {row.hotel.name}
