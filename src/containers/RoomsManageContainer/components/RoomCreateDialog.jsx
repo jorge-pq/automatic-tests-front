@@ -15,7 +15,7 @@ import TypesTable from './TypesTable';
 import ChildrensTable from './ChildrensTable';
 import { styled } from '@mui/material/styles';
 import DatePicker from 'react-datepicker';
-
+import EditOffer from './EditOffer';
 
 const types = ["Sencilla", "Doble", "Triple"];
 const childrens = [1, 2];
@@ -36,6 +36,7 @@ const RoomCreateDialog = ({id, open, close, save }) => {
   const [typePrice, setTypePrice] = useState();
   const [dateOfferType, setDateOfferType] = useState([null, null]);
   const [startDateOfferType, endDateOfferType] = dateOfferType;
+  const [typeOfferCost, setTypeOfferCost] = useState();
   const [typeOfferPrice, setTypeOfferPrice] = useState();
   const [typeOfferPriceRetail, setTypeOfferPriceRetail] = useState();
   
@@ -46,11 +47,17 @@ const RoomCreateDialog = ({id, open, close, save }) => {
   const [childrenPrice, setChildrenPrice] = useState();
   const [dateOfferChildren, setDateOfferChildren] = useState([null, null]);
   const [startDateOfferChildren, endDateOfferTChildren] = dateOfferChildren;
+  const [childrenOfferCost, setChildrenOfferCost] = useState();
   const [childrenOfferPrice, setChildrenOfferPrice] = useState();
   const [childrenOfferPriceRetail, setChildrenOfferPriceRetail] = useState();
   
   const [offersChildren, setOffersChildren] = useState([]);
   const [childrensAdded, setChildrensAdded] = useState([]);
+
+  const [openUpdateOffersDialog, setOpenUpdateOffersDialog] = useState(false);
+  const [typeUpdateSelected, setTypeUpdateSelected] = useState('');
+  const [openUpdateOffersChildrenDialog, setOpenUpdateOffersChildrenDialog] = useState(false);
+  const [childrenUpdateSelected, setChildrenUpdateSelected] = useState('');
 
   const handleRoom = e => {
     setRoom(e.target.value);
@@ -58,13 +65,14 @@ const RoomCreateDialog = ({id, open, close, save }) => {
   const handleType = value => {
     setTypeSelected(value);
   }
-  const handleTypePrice = e => setTypePrice(e.target.value);
+  const handleTypeOfferCost = e => setTypeOfferCost(e.target.value);
   const handleTypeOfferPrice = e => setTypeOfferPrice(e.target.value);
   const handleTypeOfferPriceRetail = e => setTypeOfferPriceRetail(e.target.value);
 
   const addOfferToType = () => {
     setOffersType(offersType => [...offersType, {
       date: dateOfferType,
+      cost: typeOfferCost,
       price: typeOfferPrice,
       priceRetail: typeOfferPriceRetail
     }]);
@@ -95,13 +103,14 @@ const RoomCreateDialog = ({id, open, close, save }) => {
   const handleChildrens = value => {
     setChildrensSelected(value);
   }
-  const handleChildrenPrice = e => setChildrenPrice(e.target.value);
+  const handleChildrenOfferCost = e => setChildrenOfferCost(e.target.value);
   const handleChildrenOfferPrice = e => setChildrenOfferPrice(e.target.value);
   const handleChildrenOfferPriceRetail = e => setChildrenOfferPriceRetail(e.target.value);
 
   const addOfferToChildren = () => {
     setOffersChildren(offersChildren => [...offersChildren, {
       date: dateOfferChildren,
+      cost: childrenOfferCost,
       price: childrenOfferPrice,
       priceRetail: childrenOfferPriceRetail
     }]);
@@ -148,6 +157,36 @@ const RoomCreateDialog = ({id, open, close, save }) => {
     upd[index].offers = offersUpd;
     setTypesAdded(upd);
   }
+
+  const editOffersToType = value => {
+    setOpenUpdateOffersDialog(true);
+    setTypeUpdateSelected(value);
+  }
+
+
+  const updateTypeOffers = (offer, type) => {
+    let index = typesAdded.findIndex(d => d.description == type);
+    let upd = [...typesAdded];
+    upd[index].offers.push(offer);
+    setTypesAdded(upd);
+    setOpenUpdateOffersDialog(false);
+    setTypeUpdateSelected('');
+  }
+  
+  const editOffersToChildren = value => {
+    setOpenUpdateOffersChildrenDialog(true);
+    setChildrenUpdateSelected(value);
+  }
+
+  const updateChildrenOffers = (offer, type) => {
+    let index = childrensAdded.findIndex(d => d.count == type);
+    let upd = [...childrensAdded];
+    upd[index].offers.push(offer);
+    setChildrensAdded(upd);
+    setOpenUpdateOffersChildrenDialog(false);
+    setChildrenUpdateSelected('');
+  }
+
 
   const typesFiltered = item => {
     if(typesAdded.findIndex(d=>d.description == item)== -1){
@@ -218,7 +257,7 @@ const RoomCreateDialog = ({id, open, close, save }) => {
           </Stack>
        
           <Stack direction={'row'} spacing={1} sx={{ width: '100%' }} mt={2}>
-            <Grid md={6} xs={6} item>
+            <Grid md={4} xs={6} item>
               <DatePickerCustom
                 selectsRange={true}
                 startDate={startDateOfferType}
@@ -229,6 +268,20 @@ const RoomCreateDialog = ({id, open, close, save }) => {
                 placeholderText={'Fecha'}
                 withPortal
                 isClearable={true}
+              />
+            </Grid>
+            <Grid xs={6} md={2} item>
+              <TextField
+                autoFocus
+                id="cost"
+                size={'small'}
+                label="Costo"
+                type="number"
+                inputProps={{ min: 0 }}
+                value={typeOfferCost}
+                onChange={handleTypeOfferCost}
+                fullWidth
+                variant="outlined"
               />
             </Grid>
             <Grid md={2} xs={6} item pl={1}>
@@ -274,7 +327,7 @@ const RoomCreateDialog = ({id, open, close, save }) => {
             </Grid>
           </Grid>
           <Grid item xs={12} mt={2}>
-            <TypesTable data={typesAdded} removeType={removeType} removeTypeOfferAdded={removeTypeOfferAdded} />
+            <TypesTable data={typesAdded} removeType={removeType} removeTypeOfferAdded={removeTypeOfferAdded} editOffersToType={editOffersToType} />
           </Grid>
 
           {/* ----------------------- Childrens ------------------------- */}
@@ -286,7 +339,7 @@ const RoomCreateDialog = ({id, open, close, save }) => {
           </Divider>
           <Grid item xs={12}>
             <Grid container spacing={2}>
-              <Grid item xs={6} md={3} mt={2}>
+              <Grid item xs={6} md={2} mt={2}>
                 <Autocomplete
                   disablePortal
                   id="combo-box-demo"
@@ -302,7 +355,7 @@ const RoomCreateDialog = ({id, open, close, save }) => {
 
               </Grid>
 
-              <Grid item xs={6} md={3} mt={2}>
+              <Grid item xs={6} md={2} mt={2}>
                 <DatePickerCustom
                   selectsRange={true}
                   startDate={startDateOfferChildren}
@@ -313,6 +366,20 @@ const RoomCreateDialog = ({id, open, close, save }) => {
                   placeholderText={'Fecha'}
                   withPortal
                   isClearable={true}
+                />
+              </Grid>
+              <Grid xs={6} md={2} item mt={2}>
+                <TextField
+                  autoFocus
+                  id="cost"
+                  size={'small'}
+                  label="Costo"
+                  type="number"
+                  inputProps={{ min: 0 }}
+                  value={childrenOfferCost}
+                  onChange={handleChildrenOfferCost}
+                  fullWidth
+                  variant="outlined"
                 />
               </Grid>
               <Grid xs={6} md={2} item mt={2}>
@@ -360,11 +427,11 @@ const RoomCreateDialog = ({id, open, close, save }) => {
             </Grid>
           </Grid>
           <Grid item xs={12} mt={2}>
-            <ChildrensTable data={childrensAdded} removeChildren={removeChildren} />
+            <ChildrensTable data={childrensAdded} removeChildren={removeChildren} editOffersToChildren={editOffersToChildren} />
           </Grid>
-
         </Grid>
-
+        <EditOffer open={openUpdateOffersDialog} close={()=>setOpenUpdateOffersDialog(false)} type={typeUpdateSelected} updateTypeOffers={updateTypeOffers} />
+        <EditOffer open={openUpdateOffersChildrenDialog} close={()=>setOpenUpdateOffersChildrenDialog(false)} type={childrenUpdateSelected} children updateTypeOffers={updateChildrenOffers} />
       </DialogContent>
       <DialogActions>
         <Button onClick={close}>Cerrar</Button>

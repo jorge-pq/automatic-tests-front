@@ -17,7 +17,6 @@ import OffersChip from './OffersChip';
 import TypesTable from './TypesTable';
 import ChildrensTable from './ChildrensTable';
 import DatePickerCustom from '../../../components/DatePickerCustom';
-
 import EditOffer from './EditOffer';
 
 
@@ -32,6 +31,7 @@ const RoomEditDialog = ({selected, id, open, close, save }) => {
   const [typePrice, setTypePrice] = useState();
   const [dateOfferType, setDateOfferType] = useState([null, null]);
   const [startDateOfferType, endDateOfferType] = dateOfferType;
+  const [typeOfferCost, setTypeOfferCost] = useState();
   const [typeOfferPrice, setTypeOfferPrice] = useState();
   const [typeOfferPriceRetail, setTypeOfferPriceRetail] = useState();
   const [offersType, setOffersType] = useState([]);
@@ -41,6 +41,7 @@ const RoomEditDialog = ({selected, id, open, close, save }) => {
   const [childrenPrice, setChildrenPrice] = useState();
   const [dateOfferChildren, setDateOfferChildren] = useState([null, null]);
   const [startDateOfferChildren, endDateOfferTChildren] = dateOfferChildren;
+  const [childrenOfferCost, setChildrenOfferCost] = useState();
   const [childrenOfferPrice, setChildrenOfferPrice] = useState();
   const [childrenOfferPriceRetail, setChildrenOfferPriceRetail] = useState();
   const [offersChildren, setOffersChildren] = useState([]);
@@ -57,7 +58,7 @@ const RoomEditDialog = ({selected, id, open, close, save }) => {
   const handleType = value => {
     setTypeSelected(value);
   }
-  const handleTypePrice = e => setTypePrice(e.target.value);
+  const handleTypeOfferCost = e => setTypeOfferCost(e.target.value);
   const handleTypeOfferPrice = e => setTypeOfferPrice(e.target.value);
   const handleTypeOfferPriceRetail = e => setTypeOfferPriceRetail(e.target.value);
 
@@ -78,6 +79,7 @@ const RoomEditDialog = ({selected, id, open, close, save }) => {
   const addOfferToType = () => {
     setOffersType(offersType => [...offersType, {
       date: dateOfferType,
+      cost: typeOfferCost,
       price: typeOfferPrice,
       priceRetail: typeOfferPriceRetail
     }]);
@@ -109,7 +111,7 @@ const RoomEditDialog = ({selected, id, open, close, save }) => {
   const handleChildrens = value => {
     setChildrensSelected(value);
   }
-  const handleChildrenPrice = e => setChildrenPrice(e.target.value);
+  const handleChildrenOfferCost = e => setChildrenOfferCost(e.target.value);
   const handleChildrenOfferPrice = e => setChildrenOfferPrice(e.target.value);
   const handleChildrenOfferPriceRetail = e => setChildrenOfferPriceRetail(e.target.value);
 
@@ -117,6 +119,7 @@ const RoomEditDialog = ({selected, id, open, close, save }) => {
   const addOfferToChildren = () => {
     setOffersChildren(offersChildren => [...offersChildren, {
       date: dateOfferChildren,
+      cost: childrenOfferCost,
       price: childrenOfferPrice,
       priceRetail: childrenOfferPriceRetail
     }]);
@@ -261,7 +264,7 @@ const RoomEditDialog = ({selected, id, open, close, save }) => {
             </Grid>
           </Stack>
           <Stack direction={'row'} spacing={1} sx={{ width: '100%' }} mt={2}>
-            <Grid md={6} xs={6} item>
+            <Grid md={4} xs={6} item>
               <DatePickerCustom
                 selectsRange={true}
                 startDate={startDateOfferType}
@@ -272,6 +275,20 @@ const RoomEditDialog = ({selected, id, open, close, save }) => {
                 placeholderText={'Fecha'}
                 withPortal
                 isClearable={true}
+              />
+            </Grid>
+            <Grid xs={6} md={2} item>
+              <TextField
+                autoFocus
+                id="cost"
+                size={'small'}
+                label="Costo"
+                type="number"
+                inputProps={{ min: 0 }}
+                value={typeOfferCost}
+                onChange={handleTypeOfferCost}
+                fullWidth
+                variant="outlined"
               />
             </Grid>
             <Grid md={2} xs={6} item pl={1}>
@@ -329,7 +346,7 @@ const RoomEditDialog = ({selected, id, open, close, save }) => {
           </Divider>
           <Grid item xs={12}>
             <Grid container spacing={2}>
-              <Grid item xs={6} md={3} mt={2}>
+              <Grid item xs={6} md={2} mt={2}>
                 <Autocomplete
                   disablePortal
                   id="combo-box-demo"
@@ -344,7 +361,7 @@ const RoomEditDialog = ({selected, id, open, close, save }) => {
                 />
               </Grid>
 
-               <Grid item xs={6} md={3} mt={2}>
+               <Grid item xs={6} md={2} mt={2}>
                 <DatePickerCustom
                   selectsRange={true}
                   startDate={startDateOfferChildren}
@@ -357,7 +374,20 @@ const RoomEditDialog = ({selected, id, open, close, save }) => {
                   isClearable={true}
                 />
               </Grid>
-
+              <Grid xs={6} md={2} item mt={2}>
+                <TextField
+                  autoFocus
+                  id="cost"
+                  size={'small'}
+                  label="Costo"
+                  type="number"
+                  inputProps={{ min: 0 }}
+                  value={childrenOfferCost}
+                  onChange={handleChildrenOfferCost}
+                  fullWidth
+                  variant="outlined"
+                />
+              </Grid>
               <Grid xs={6} md={2} item mt={2}>
                 <TextField
                   autoFocus
