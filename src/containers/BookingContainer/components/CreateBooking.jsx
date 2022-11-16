@@ -98,7 +98,7 @@ const CreateBooking = ({ open, close, save, totalGuests, totalPrice }) => {
 
   const [payType, setPayType] = useState('Cash');
   const [discount, setDiscount] = useState(0);
-  const service = 1;
+  const service = 2;
   const [balance, setBalance] = useState(0);
   const [paid, setPaid] = useState(0);
 
