@@ -16,7 +16,7 @@ function getOfferPrice(offers, dateSelected, defaultPrice, tenantType) {
     let price = defaultPrice ? defaultPrice : 0;
     offers.forEach(item => {
         if (new Date(item.date[0]) <= dateSelected[1] && new Date(item.date[1]) >= dateSelected[1]) {
-            price = tenantType === "Wholesaler" ? item.price : parseFloat(item.priceRetail) + 10;
+            price = tenantType === "Wholesaler" ? item.price : parseFloat(item.priceRetail) + (item.fee ? parseFloat(item.fee) : 0);
         }
     });
     return parseFloat(price);
