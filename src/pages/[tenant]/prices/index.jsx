@@ -6,14 +6,14 @@ import Layout from '../../../layout';
 import {redirectToLogin} from '../../../utils/util';
 
 
-const HotelsManageContainer = dynamic(() => import('../../../containers/HotelsManageContainer'), {
+const PricesManageContainer = dynamic(() => import('../../../containers/PricesManageContainer'), {
     suspense: true,
   }) 
 
-const hotels = ({data}) => {
+const Prices = ({data}) => {
     return (
-        <Layout page={'Gestionar hoteles'}>
-            <HotelsManageContainer data={data}/>
+        <Layout page={'Gestionar precios'}>
+            <PricesManageContainer data={data}/>
         </Layout>
     );
 };
@@ -31,4 +31,4 @@ export async function getServerSideProps(ctx) {
 
 }
 
-export default hotels;
+export default Prices;
