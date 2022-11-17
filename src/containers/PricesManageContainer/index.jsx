@@ -15,8 +15,9 @@ import SaveIcon from '@mui/icons-material/Save';
 import InputAdornment from '@mui/material/InputAdornment';
 import Typography from '@mui/material/Typography';
 import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
 import { useMutation } from 'react-query';
-import {updateHotel} from '../../services/hotels.service';
+import { updateRoom } from '../../services/hotels.service';
 
 function getBookingDate(range) {
     return new Date(range[0]).toLocaleDateString() + ' - ' + new Date(range[1]).toLocaleDateString();
@@ -37,13 +38,14 @@ const PricesManageContainer = ({ data }) => {
 
     const [snackbarOpen, setSnackbarOpen] = useState(false);
 
-    const { mutate: edit} = useMutation(updateHotel, {
+    const { mutate: edit } = useMutation(updateRoom, {
         onSuccess: (data) => {
+            setSnackbarOpen(true);
         },
         onError: (error) => {
-          alert('Error! ');
+            alert('Error! ');
         }
-      });
+    });
 
     const handleHotel = option => {
         setHotelSelected(option);
@@ -105,8 +107,15 @@ const PricesManageContainer = ({ data }) => {
         let type_index = types.findIndex(d => d.description === typeSelected.description);
         hotel.rooms[room_index].types[type_index].offers = offers;
 
-        hotel.id = hotel._id,
-        edit(hotel);
+        const data = {
+            hotelId: hotel._id,
+            roomOld: roomSelected.name,
+            name: roomSelected.name,
+            types: hotel.rooms[room_index].types,
+            childrens: hotel.rooms[room_index].childrens
+        }
+
+        edit(data);
     }
 
     const saveChildren = () => {
@@ -115,8 +124,19 @@ const PricesManageContainer = ({ data }) => {
         let ch_index = childrens.findIndex(d => d.count === childrenSelected.count);
         hotel.rooms[room_index].childrens[ch_index].offers = childrenOffers;
 
-        hotel.id = hotel._id,
-        edit(hotel);
+        const data = {
+            hotelId: hotel._id,
+            roomOld: roomSelected.name,
+            name: roomSelected.name,
+            types: hotel.rooms[room_index].types,
+            childrens: hotel.rooms[room_index].childrens
+        }
+
+        edit(data);
+    }
+
+    function getRoomUpdate() {
+
     }
 
     return (
@@ -187,7 +207,7 @@ const PricesManageContainer = ({ data }) => {
                         <TableBody>
                             {offers.map((row, index) => (
                                 <TableRow
-                                    key={index}
+                                    key={`${typeSelected.description}-${index}`}
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                 >
                                     <TableCell component="th" scope="row" align='left'>
@@ -252,7 +272,7 @@ const PricesManageContainer = ({ data }) => {
                         <TableBody>
                             {childrenOffers.map((row, index) => (
                                 <TableRow
-                                    key={index}
+                                    key={`${childrenSelected.count}-${index}`}
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                 >
                                     <TableCell component="th" scope="row" align='left'>
@@ -282,11 +302,18 @@ const PricesManageContainer = ({ data }) => {
                 </TableContainer>
             </Grid>
             <Snackbar
-                anchorOrigin={{ vertical:'top', horizontal: 'right' }}
+                anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
                 open={snackbarOpen}
-                onClose={()=>setSnackbarOpen(false)}
-                message="Los precios se han guardado satisfactoriamente"
-            />
+                autoHideDuration={5000}
+                onClose={() => setSnackbarOpen(false)}
+            >
+                <Alert
+                    onClose={() => setSnackbarOpen(false)}
+                    sx={{ width: '100%', backgroundColor: 'rgb(46, 125, 50)', color: 'white' }}
+                >
+                    {'Los precios se han guardado satisfactoriamente'}
+                </Alert>
+            </Snackbar>
         </Grid>
     );
 };
