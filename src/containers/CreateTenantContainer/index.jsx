@@ -50,7 +50,7 @@ const CreateTenantContainer = () => {
               <Controller
                 control={control}
                 name="phoneAgency"
-                render={({ field }) => <TextField size={'small'} fullWidth placeholder={'Telefono'} {...field} />}
+                render={({ field }) => <TextField size={'small'} fullWidth placeholder={'Teléfono'} {...field} />}
               />
             </Grid>
             <Grid item md={5} xs={11}>
