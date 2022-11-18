@@ -29,13 +29,13 @@ const CreateTenantContainer = () => {
   }
 
   return (
-    <Grid container pt={6} justifyContent={'center'}>
+    <Grid container pt={2} justifyContent={'center'}>
       <Paper elevation={3} sx={{pt:3}}>
       <form onSubmit={handleSubmit(onSubmit)} style={{ width: 'inherit' }}>
         <Divider><Typography variant='overline'>{'Empresa'}</Typography></Divider>
         <Grid item xs={12} my={3}>
-          <Grid container justifyContent={'center'}>
-            <Grid item md={7} xs={11}>
+          <Grid container justifyContent={'center'} spacing={2}>
+            <Grid item md={5} xs={11}>
               <Controller
                 control={control}
                 name="name"
@@ -45,6 +45,41 @@ const CreateTenantContainer = () => {
               {
                 errors.name && <label style={errorText}>{'El nombre de la empresa es requerido'}</label>
               }
+            </Grid>
+            <Grid item md={5} xs={11}>
+              <Controller
+                control={control}
+                name="phoneAgency"
+                render={({ field }) => <TextField size={'small'} fullWidth placeholder={'Telefono'} {...field} />}
+              />
+            </Grid>
+            <Grid item md={5} xs={11}>
+              <Controller
+                control={control}
+                name="state"
+                render={({ field }) => <TextField size={'small'} fullWidth placeholder={'Estado'} {...field} />}
+              />
+            </Grid>
+            <Grid item md={5} xs={11}>
+              <Controller
+                control={control}
+                name="city"
+                render={({ field }) => <TextField size={'small'} fullWidth placeholder={'Ciudad'} {...field} />}
+              />
+            </Grid>
+            <Grid item md={5} xs={11}>
+              <Controller
+                control={control}
+                name="address"
+                render={({ field }) => <TextField size={'small'} fullWidth placeholder={'Dirección'} {...field} />}
+              />
+            </Grid>
+            <Grid item md={5} xs={11}>
+              <Controller
+                control={control}
+                name="zipCode"
+                render={({ field }) => <TextField size={'small'} fullWidth placeholder={'Código postal'} {...field} />}
+              />
             </Grid>
           </Grid>
         </Grid>
