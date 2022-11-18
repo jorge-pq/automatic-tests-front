@@ -100,11 +100,11 @@ const BookingContainer = ({ hotel }) => {
     const handleChildren = (room, count, pos) => {
         let currentRoom = hotel.rooms.find(d => d.name === room);
         let c = currentRoom.childrens.find(d => d.count === parseInt(count));
-        let childrensPrice = c ? getOfferPrice(c.offers, [startDate._d, endDate._d], c.price) : 0;
+        let childrensPrice = c ? getOfferPrice(c.offers, [startDate._d, endDate._d], c.price, user.tenant.type) : 0;
 
         if (parseInt(count) === 2) {
             let firstChildren = currentRoom.childrens.find(d => d.count === 1);
-            childrensPrice += firstChildren ? getOfferPrice(firstChildren.offers, [startDate._d, endDate._d], c.price) : 0;
+            childrensPrice += firstChildren ? getOfferPrice(firstChildren.offers, [startDate._d, endDate._d], c.price, user.tenant.type) : 0;
         }
 
         const days = differenceInDays(endDate._d, startDate._d);
