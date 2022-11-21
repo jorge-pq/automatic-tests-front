@@ -1,4 +1,4 @@
-import {rget, rpost} from '../lib/request';
+import {rget, rpost, rput} from '../lib/request';
 import cookie from 'js-cookie'
 
 
@@ -16,3 +16,8 @@ export const getOrderById = async (id, jwt) => {
     const {data} = await rget('api/booking/'+id, jwt);
     return data;
 };
+
+export const updateBooking = async (obj) => {
+    const {data} = await rput('api/booking/update/'+obj.id, obj.values, cookie.get('token'));
+    return data;
+}

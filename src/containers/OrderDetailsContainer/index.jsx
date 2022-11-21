@@ -19,10 +19,10 @@ const OrderDetailsContainer = ({ order }) => {
                             <Typography variant='h6'>{'Datos de la oficina'}</Typography>
                         </Grid>
                         <Grid item xs={12}>
-                            <Typography><b>{'Dirección: '}</b>{order.agencyInfo.address}</Typography>
+                            <Typography><b>{'Dirección: '}</b>{order.agencyInfo?.address}</Typography>
                         </Grid>
                         <Grid item xs={12}>
-                            <Typography><b>{'Teléfono: '}</b>{order.agencyInfo.phoneAgency}</Typography>
+                            <Typography><b>{'Teléfono: '}</b>{order.agencyInfo?.phoneAgency}</Typography>
                         </Grid>
                         <Grid item xs={12}>
                             <Typography><b>{'Empleado: '}</b>{order.employee}</Typography>

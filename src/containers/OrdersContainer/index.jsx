@@ -10,10 +10,15 @@ import { IconButton, Tooltip } from '@mui/material'
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import EditIcon from '@mui/icons-material/Edit';
 import Chip from '@mui/material/Chip';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 import { useRouter } from 'next/router';
-import {getTenant} from '../../utils/util';
+import { getTenant } from '../../utils/util';
+import { updateBooking } from '../../services/booking.service';
+import { useMutation } from 'react-query';
 
-function getColorStatus(state){
+
+function getColorStatus(state) {
     let color = 'default'
     switch (state) {
         case 'Pendiente':
@@ -31,9 +36,29 @@ function getColorStatus(state){
     return color;
 }
 
-const OrdersContainer = ({bookings}) => {
+const options = [
+    'Pendiente',
+    'Confirmado',
+    'Cancelado'
+];
+
+const ITEM_HEIGHT = 48;
+
+const OrdersContainer = ({ bookings }) => {
 
     const router = useRouter();
+
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const open = Boolean(anchorEl);
+
+    const { mutate: save } = useMutation(updateBooking, {
+        onSuccess: (data) => {
+            router.reload();
+        },
+        onError: (error) => {
+            alert('Error! ');
+        }
+    });
 
     const getBookingDate = (range) => {
         return new Date(range[0]).toLocaleDateString() + ' - ' + new Date(range[1]).toLocaleDateString();
@@ -43,8 +68,15 @@ const OrdersContainer = ({bookings}) => {
         router.push(`/${getTenant()}/order/${id}`)
     }
 
-    const changeState = id => {
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
 
+    const changeState = (id, option) => {
+        save({id: id, values: {state: option}})
     }
 
     return (
@@ -87,19 +119,40 @@ const OrdersContainer = ({bookings}) => {
                                 {new Date(row.creationDate).toLocaleDateString()}
                             </TableCell>
                             <TableCell component="th" scope="row" align="center">
-                               <Chip label={row.state} color={getColorStatus(row.state)}/>
+                                <Chip label={row.state} color={getColorStatus(row.state)} />
                             </TableCell>
                             <TableCell align="center">
                                 <Tooltip title="DETALLES">
-                                    <IconButton onClick={()=>details(row._id)}>
+                                    <IconButton onClick={() => details(row._id)}>
                                         <AssignmentIcon />
                                     </IconButton>
                                 </Tooltip>
                                 <Tooltip title="CAMBIAR ESTADO">
-                                    <IconButton onClick={()=>changeState(row._id)}>
+                                    <IconButton onClick={handleClick}>
                                         <EditIcon />
                                     </IconButton>
                                 </Tooltip>
+                                <Menu
+                                    id="long-menu"
+                                    MenuListProps={{
+                                        'aria-labelledby': 'long-button',
+                                    }}
+                                    anchorEl={anchorEl}
+                                    open={open}
+                                    onClose={handleClose}
+                                    PaperProps={{
+                                        style: {
+                                            maxHeight: ITEM_HEIGHT * 4.5,
+                                            width: '20ch',
+                                        },
+                                    }}
+                                >
+                                    {options.map((option) => (
+                                        <MenuItem key={option} onClick={()=>changeState(row._id, option)}>
+                                            {option}
+                                        </MenuItem>
+                                    ))}
+                                </Menu>
                             </TableCell>
                         </TableRow>
                     ))}
