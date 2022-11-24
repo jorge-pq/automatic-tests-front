@@ -87,18 +87,16 @@ function ColorlibStepIcon(props) {
 function fieldsNotRequired(item){
   return item !== 'secondname' && item !== 'secondlastname'
 }  
-
-const CreateBooking = ({ open, close, save, totalGuests, totalPrice }) => {
-
+const OrderEditDialog = ({booking, open, close, save, totalGuests, totalPrice }) => {
   const { getValues, formState: { errors }, setError, control, clearErrors } = useForm();
 
-  const [birthday, setBirthday] = useState();
-  const [guests, setGuests] = useState([]);
+  const [birthday, setBirthday] = useState(new Date(booking.client.birthday));
+  const [guests, setGuests] = useState(booking.guests);
 
-  const [payType, setPayType] = useState('Cash');
-  const [discount, setDiscount] = useState(0);
+  const [payType, setPayType] = useState(booking.pay.payType);
+  const [discount, setDiscount] = useState(booking.pay.discount);
   const service = 2;
-  const [paid, setPaid] = useState(0);
+  const [paid, setPaid] = useState(booking.pay.paid);
 
   const handlePaid = e => setPaid(e.target.value);
 
@@ -121,11 +119,9 @@ const CreateBooking = ({ open, close, save, totalGuests, totalPrice }) => {
   const handleNext = () => {
     if (activeStep === steps.length - 1) {
       if (validate()) {
-        let client = getValues();
-        client.birthday = birthday;
         save({
           guests: guests,
-          client: client,
+          client: getValues(),
           pay: {
             payType: payType,
             totalPrice: totalPrice,
@@ -202,7 +198,7 @@ const CreateBooking = ({ open, close, save, totalGuests, totalPrice }) => {
   return (
     <Dialog open={open} onClose={close} maxWidth={'lg'}>
       <DialogTitle>
-        Reservación
+        Editar reservación
         <IconButton
           aria-label="close"
           onClick={close}
@@ -234,6 +230,7 @@ const CreateBooking = ({ open, close, save, totalGuests, totalPrice }) => {
                   setBirthday={setBirthday}
                   control={control}
                   errors={errors}
+                  client={booking.client}
                 />
             }
             {activeStep === 1 &&
@@ -271,14 +268,14 @@ const CreateBooking = ({ open, close, save, totalGuests, totalPrice }) => {
               </Button>
               <Box sx={{ flex: '1 1 auto' }} />
               <Button onClick={handleNext}>
-                {activeStep === steps.length - 1 ? 'Reservar' : 'Siguiente'}
+                {activeStep === steps.length - 1 ? 'Actualizar' : 'Siguiente'}
               </Button>
             </Box>
           </Grid>
         </Grid>
       </DialogContent>
     </Dialog>
-  );
+    );
 };
 
-export default CreateBooking;
+export default OrderEditDialog;

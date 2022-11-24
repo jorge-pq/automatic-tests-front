@@ -17,7 +17,7 @@ import { useRouter } from 'next/router';
 import { getTenant } from '../../utils/util';
 import { updateBooking } from '../../services/booking.service';
 import { useMutation } from 'react-query';
-import OrderEditDialog from './OrderEditDialog';
+import OrderEditDialog from './OrderEditComponents/OrderEditDialog'
 
 function getColorStatus(state) {
     let color = 'default'
@@ -88,8 +88,22 @@ const OrdersContainer = ({ bookings }) => {
         setShowEditDialog(true);
     }
 
-    const edit = () => {
+    const getTotalPersons = () => {
+        let persons = selected.order.reduce((a, c) => (a + c.adults), 0);
+        let childrens = selected.order.reduce((a, c) => (a + c.childrensCount), 0);
+        return persons + childrens;
+    }
 
+    const getTotalPrice = () => {
+        return parseFloat(selected.order.reduce((a, c) => (a + c.total + c.childrenTotal), 0)).toFixed(2);
+    }
+
+
+    const edit = (data) => {
+        selected.client = data.client;
+        selected.guests = data.guests;
+        selected.pay = data.pay;
+        save({ id: selected._id, values: selected })
     }
 
     return (
@@ -178,7 +192,15 @@ const OrdersContainer = ({ bookings }) => {
                     </TableBody>
                 </Table>
             </TableContainer>
-           {selected && <OrderEditDialog open={showEditDialog} booking={selected} close={()=>setShowEditDialog(false)} save={edit} />} 
+           {selected && 
+            <OrderEditDialog 
+                open={showEditDialog}
+                booking={selected}
+                close={()=>setShowEditDialog(false)}
+                save={edit}
+                totalGuests={getTotalPersons()}
+                totalPrice={getTotalPrice()}
+            />} 
         </>
     );
 };
