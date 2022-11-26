@@ -66,6 +66,23 @@ export const getImage = (fileName) => {
 }
 
 
-export const test = async () => {
-  
+
+export const getRoomTypes = async (jwt) => {
+    const {data} = await rget('api/roomtypes', jwt);
+    return data;
+}
+
+export const addRoomTypes = async (values) => {
+    const {data} = await rpost('api/roomtypes/create',values, cookie.get('token'));
+    return data;
+}
+
+export const updateRoomTypes = async (values) => {
+    const {data} = await rput('api/roomtypes/'+values.id, values, cookie.get('token'));
+    return data;
+}
+
+export const removeRoomTypes = async (id) => {
+    const {data} = await rdelete('api/roomtypes/'+ id, cookie.get('token'));
+    return data;
 }

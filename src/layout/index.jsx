@@ -19,16 +19,19 @@ import ListItemText from '@mui/material/ListItemText';
 import { useRouter } from 'next/router';
 import cookie from 'js-cookie';
 import AuthContext from '../providers/AuthContext';
-import {getTenant} from '../utils/util';
+import { getTenant } from '../utils/util';
 import LocalHotelIcon from '@mui/icons-material/LocalHotel';
 import AddBusinessIcon from '@mui/icons-material/AddBusiness';
 import StoreIcon from '@mui/icons-material/Store';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import PasswordIcon from '@mui/icons-material/Password';
+import SettingsIcon from '@mui/icons-material/Settings';
 import LogoutIcon from '@mui/icons-material/Logout';
 import HomeIcon from '@mui/icons-material/Home';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import Popover from '@mui/material/Popover';
+import NightShelterIcon from '@mui/icons-material/NightShelter';
 
 const drawerWidth = 240;
 
@@ -78,10 +81,23 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 const mdTheme = createTheme();
 
-export default function Layout({children, page}) {
+export default function Layout({ children, page }) {
 
   const { isAuth, setAuth, user } = React.useContext(AuthContext);
   const router = useRouter();
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const openPop = Boolean(anchorEl);
+  const id = openPop ? 'simple-popover' : undefined;
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
@@ -110,6 +126,8 @@ export default function Layout({children, page}) {
   const goToOrders = () => router.push(`/${getTenant()}/orders`);
 
   const goToPrices = () => router.push(`/${getTenant()}/prices`);
+
+  const goRoomTypes = () => router.push(`/${getTenant()}/config/room_types`);
 
   const logout = () => {
     setAuth(false);
@@ -149,7 +167,7 @@ export default function Layout({children, page}) {
             >
               {page}
             </Typography>
-            { isAuth && <Typography>{user.fullname}</Typography> }
+            {isAuth && <Typography>{user.fullname}</Typography>}
           </Toolbar>
         </AppBar>
         <Drawer variant="permanent" open={open}>
@@ -161,7 +179,7 @@ export default function Layout({children, page}) {
               pr: [1],
             }}
           >
-            <Link href='/' sx={{textDecoration:'none', textTransform: 'uppercase',backgroundColor:'#e7e7e7', borderRadius: '5px', padding:'1px 5px'}}>
+            <Link href='/' sx={{ textDecoration: 'none', textTransform: 'uppercase', backgroundColor: '#e7e7e7', borderRadius: '5px', padding: '1px 5px' }}>
               <Typography variant='button'>{user?.tenant?.name || 'Booking'}</Typography>
             </Link>
             <IconButton onClick={toggleDrawer}>
@@ -191,10 +209,10 @@ export default function Layout({children, page}) {
                   <ListItemText primary="Lista de minoristas" />
                 </ListItemButton>
                 <ListItemButton onClick={goToCreateTenant}>
-                <ListItemIcon>
-                  <AddBusinessIcon />
-                </ListItemIcon>
-                <ListItemText primary="Agregar minorista" />
+                  <ListItemIcon>
+                    <AddBusinessIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Agregar minorista" />
                 </ListItemButton>
               </>
             }
@@ -237,6 +255,33 @@ export default function Layout({children, page}) {
               </ListItemIcon>
               <ListItemText primary="Cambiar contraseña" />
             </ListItemButton>
+            {user?.tenant?.type === "Wholesaler" &&
+              <>
+                <ListItemButton onClick={handleClick}>
+                  <ListItemIcon>
+                    <SettingsIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Configuraciones" />
+                </ListItemButton>
+                <Popover
+                  id={id}
+                  open={openPop}
+                  anchorEl={anchorEl}
+                  onClose={handleClose}
+                  anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'left',
+                  }}
+                >
+                <ListItemButton sx={{backgroundColor:'#1976d2'}} onClick={goRoomTypes}>
+                  <ListItemIcon>
+                    <NightShelterIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Tipos de habitaciones" />
+                </ListItemButton>
+                </Popover>
+              </>
+            }
             <ListItemButton onClick={logout}>
               <ListItemIcon>
                 <LogoutIcon />
@@ -259,7 +304,7 @@ export default function Layout({children, page}) {
         >
           <Toolbar />
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-           {children}
+            {children}
           </Container>
         </Box>
       </Box>
