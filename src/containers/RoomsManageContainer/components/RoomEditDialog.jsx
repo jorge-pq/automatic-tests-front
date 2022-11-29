@@ -20,10 +20,9 @@ import DatePickerCustom from '../../../components/DatePickerCustom';
 import EditOffer from './EditOffer';
 
 
-const types = ["Sencilla", "Doble", "Triple"];
 const childrens = [1, 2];
 
-const RoomEditDialog = ({selected, id, open, close, save }) => {
+const RoomEditDialog = ({selected, id, open, close, save, types, getRoomTypePersons }) => {
 
   const [roomOld, setRoomOld] = useState('');
   const [room, setRoom] = useState('');
@@ -96,6 +95,7 @@ const RoomEditDialog = ({selected, id, open, close, save }) => {
   const addType = () => {
     setTypesAdded(typesAdded => [...typesAdded, {
       description: typeSelected,
+      persons: getRoomTypePersons(typeSelected),
       price: typePrice,
       offers: offersType
     }]);

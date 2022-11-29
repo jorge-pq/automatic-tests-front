@@ -22,22 +22,11 @@ function getOfferPrice(offers, dateSelected, defaultPrice, tenantType) {
     return parseFloat(price);
 }
 
-function getAdults(type) {
-    switch (type) {
-        case "Sencilla":
-            return 1;
-        case "Doble":
-            return 2;
-        case "Triple":
-            return 3;
-        default:
-            return 1;
-    }
-}
+
 
 const selector = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
 
-const BookingContainer = ({ hotel }) => {
+const BookingContainer = ({ hotel, roomTypes }) => {
 
     const { user } = useContext(AuthContext);
     const router = useRouter();
@@ -50,6 +39,10 @@ const BookingContainer = ({ hotel }) => {
         setStartDate(startDate);
         setEndDate(endDate);
     };
+
+    function getAdults(type) {
+        return roomTypes.find(d=>d.name===type).persons
+    }
 
     const [room, setRoom] = useState('');
     const [types, setTypes] = useState([]);

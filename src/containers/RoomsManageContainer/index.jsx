@@ -9,7 +9,7 @@ import { useRouter } from 'next/router';
 import 'react-datepicker/dist/react-datepicker.css';
 
 
-const RoomsManageContainer = ({ hotel }) => {
+const RoomsManageContainer = ({ hotel, roomTypes }) => {
 
     const router = useRouter();
     const [openDialog, setOpenDialog] = useState(false);
@@ -72,6 +72,10 @@ const RoomsManageContainer = ({ hotel }) => {
         setSelected(item);
         setOpenDialogEdit(true);
     }
+    
+    const types = roomTypes.map(d=>d.name);
+
+    const getRoomTypePersons = name => roomTypes.find(d=>d.name===name).persons;
 
     return (
         <Grid container>
@@ -87,9 +91,9 @@ const RoomsManageContainer = ({ hotel }) => {
                 <RoomsTable data={hotel.rooms} removeRoom={handleRemove} showEdit={showEdit} />
             </Grid>
 
-            <RoomCreateDialog id={hotel._id} open={openDialog} close={closeCreateDialog} save={save} />
+            <RoomCreateDialog types={types} getRoomTypePersons={getRoomTypePersons} id={hotel._id} open={openDialog} close={closeCreateDialog} save={save} />
             {
-                selected && <RoomEditDialog id={hotel._id} selected={selected} open={openDialogEdit} close={closeDialogEdit} save={update} />
+                selected && <RoomEditDialog types={types} getRoomTypePersons={getRoomTypePersons} id={hotel._id} selected={selected} open={openDialogEdit} close={closeDialogEdit} save={update} />
             }
 
         </Grid>

@@ -17,7 +17,6 @@ import { styled } from '@mui/material/styles';
 import DatePicker from 'react-datepicker';
 import EditOffer from './EditOffer';
 
-const types = ["Sencilla", "Doble", "Triple"];
 const childrens = [1, 2];
 
 const DatePickerCustom = styled(DatePicker)(({ theme }) => ({
@@ -29,7 +28,7 @@ const DatePickerCustom = styled(DatePicker)(({ theme }) => ({
 }));
 
 
-const RoomCreateDialog = ({id, open, close, save }) => {
+const RoomCreateDialog = ({id, open, close, save, types, getRoomTypePersons }) => {
 
   const [room, setRoom] = useState('');
   const [typeSelected, setTypeSelected] = useState('');
@@ -88,6 +87,7 @@ const RoomCreateDialog = ({id, open, close, save }) => {
   const addType = () => {
     setTypesAdded(typesAdded => [...typesAdded, {
       description: typeSelected,
+      persons: getRoomTypePersons(typeSelected),
       price: typePrice,
       offers: offersType
     }]);
@@ -205,6 +205,7 @@ const RoomCreateDialog = ({id, open, close, save }) => {
       return false;
     }
   }
+
 
   return (
     <Dialog open={open} maxWidth={'lg'}>

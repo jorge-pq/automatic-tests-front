@@ -1,6 +1,6 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
-import {getHotelById} from '../../../../services/hotels.service';
+import {getHotelById, getRoomTypes} from '../../../../services/hotels.service';
 import {getCookie} from '../../../../lib/session';
 import Layout from '../../../../layout';
 
@@ -10,10 +10,10 @@ const RoomsManageContainer = dynamic(() => import('../../../../containers/RoomsM
   }) 
 
 
-const RoomsManage = ({hotel}) => {
+const RoomsManage = ({hotel, types}) => {
     return (
         <Layout page={'Gestionar habitaciones'}>
-            <RoomsManageContainer hotel={hotel} />
+            <RoomsManageContainer hotel={hotel} roomTypes={types} />
         </Layout>
     );
 };
@@ -33,10 +33,12 @@ export async function getServerSideProps(ctx) {
     }
 
     const hotel = await getHotelById(ctx.params.id, jwt);
+    const types = await getRoomTypes(jwt);
    
     return {
         props: {
             hotel: hotel,
+            types: types
         },
     }
 
