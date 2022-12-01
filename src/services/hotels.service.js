@@ -86,3 +86,9 @@ export const removeRoomTypes = async (id) => {
     const {data} = await rdelete('api/roomtypes/'+ id, cookie.get('token'));
     return data;
 }
+
+export const getClients = async (jwt) => {
+    const {data} = await rget('api/clients', jwt);
+    return data;
+}
+

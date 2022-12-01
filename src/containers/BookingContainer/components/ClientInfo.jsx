@@ -4,6 +4,7 @@ import DatePicker from 'react-datepicker';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import { Controller } from 'react-hook-form';
+import Autocomplete from '@mui/material/Autocomplete';
 
 const DatePickerCustom = styled(DatePicker)(({ theme }) => ({
     border: '1px solid #bfbfbf',
@@ -16,10 +17,25 @@ const DatePickerCustom = styled(DatePicker)(({ theme }) => ({
 
 const errorText = { color: '#E8530E' };
 
-const ClientInfo = ({ birthday, setBirthday, control, errors }) => {
+const ClientInfo = ({ birthday, setBirthday, control, errors, clients, clientSelected, handleClient }) => {
 
     return (
         <Grid container spacing={2}>
+            <Grid item xs={6}>
+            <Autocomplete
+                  disablePortal
+                  id="combo-box-demo"
+                  options={clients}
+                  size={'small'}
+                  value={clientSelected}
+                  onChange={(event, item) => {
+                    handleClient(item);
+                  }}
+                  getOptionLabel={(option) => `${option.name} ${option.secondname} ${option.lastname} ${option.secondlastname}`}
+                  renderInput={(params) => <TextField {...params} label="Clientes" />}
+                />
+            </Grid>
+            <Grid item xs={6}></Grid>
             <Grid item xs={3}>
                 <Controller
                     control={control}

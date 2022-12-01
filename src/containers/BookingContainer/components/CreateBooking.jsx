@@ -88,9 +88,9 @@ function fieldsNotRequired(item){
   return item !== 'secondname' && item !== 'secondlastname'
 }  
 
-const CreateBooking = ({ open, close, save, totalGuests, totalPrice }) => {
+const CreateBooking = ({ open, close, save, totalGuests, totalPrice, clients }) => {
 
-  const { getValues, formState: { errors }, setError, control, clearErrors } = useForm();
+  const { getValues, formState: { errors }, setError, control, clearErrors, setValue } = useForm();
 
   const [birthday, setBirthday] = useState();
   const [guests, setGuests] = useState([]);
@@ -99,6 +99,23 @@ const CreateBooking = ({ open, close, save, totalGuests, totalPrice }) => {
   const [discount, setDiscount] = useState(0);
   const service = 2;
   const [paid, setPaid] = useState(0);
+
+  const [clientSelected, setClientSelected] = useState();
+  const handleClient = value => {
+    setValue("name", value?.name || '');
+    setValue("secondname", value?.secondname || '');
+    setValue("lastname", value?.lastname || '');
+    setValue("secondlastname", value?.secondlastname || '');
+    setValue("phone", value?.phone || '');
+    setValue("email", value?.email || '');
+    setBirthday(value?.birthday && new Date(value.birthday));
+    setValue("clientID", value?.clientID || '');
+    setValue("state", value?.state || '');
+    setValue("city", value?.city || '');
+    setValue("address", value?.address || '');
+    setValue("zipcode", value?.zipcode || '');
+    setClientSelected(value);
+  } 
 
   const handlePaid = e => setPaid(e.target.value);
 
@@ -234,6 +251,9 @@ const CreateBooking = ({ open, close, save, totalGuests, totalPrice }) => {
                   setBirthday={setBirthday}
                   control={control}
                   errors={errors}
+                  clients={clients}
+                  clientSelected={clientSelected}
+                  handleClient={handleClient}
                 />
             }
             {activeStep === 1 &&
