@@ -6,7 +6,8 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { Edit, LocalHotel, Delete, Image as ImageIcon } from '@mui/icons-material';
+import { Edit, Delete, Image as ImageIcon } from '@mui/icons-material';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
 import { IconButton, Tooltip } from '@mui/material'
 import { useRouter } from 'next/router';
 import {getTenant} from '../../../utils/util';
@@ -16,9 +17,9 @@ export default function HotelsTable({ data, showEdit, removeHotel }) {
 
     const router = useRouter();
 
-    const goToRoomsByHotel = (id) => router.push(`/${getTenant()}/manage/rooms/${id}`);
+    const goToTourDetails = (id) => router.push(`/${getTenant()}/manage/tour/${id}`);
 
-    const goToGallery = (id) => router.push(`/${getTenant()}/manage/gallery/${id}`);
+    // const goToGallery = (id) => router.push(`/${getTenant()}/manage/gallery/${id}`);
 
     return (
         <TableContainer component={Paper}>
@@ -67,15 +68,15 @@ export default function HotelsTable({ data, showEdit, removeHotel }) {
                                <Chip label={row.active? 'Activo' : 'Inactivo'} color={row.active ? 'success' : 'error'} />
                             </TableCell>
                             <TableCell align="right">
-                            <Tooltip title="Ver Imágenes">
+                            {/* <Tooltip title="Ver Imágenes">
                                     <IconButton onClick={() => goToGallery(row._id)}>
                                         <ImageIcon />
                                     </IconButton>
-                                </Tooltip>
+                                </Tooltip> */}
                                 
-                                <Tooltip title="Ver Habitaciones">
-                                    <IconButton onClick={() => goToRoomsByHotel(row._id)}>
-                                        <LocalHotel />
+                                <Tooltip title="Ver Detalles">
+                                    <IconButton onClick={() => goToTourDetails(row._id)}>
+                                        <LocationOnIcon />
                                     </IconButton>
                                 </Tooltip>
                                 <Tooltip title="Editar">

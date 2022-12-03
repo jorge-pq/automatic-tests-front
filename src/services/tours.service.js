@@ -26,3 +26,8 @@ export const removeTour = async (id) => {
     const {data} = await rdelete('api/tours/'+ id, cookie.get('token'));
     return data;
 }
+
+export const getTourById = async (id, jwt) => {
+    const {data} = await rget('api/tours/'+id, jwt);
+    return data;
+};
