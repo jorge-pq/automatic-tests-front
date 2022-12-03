@@ -5,7 +5,7 @@ import {getCookie} from '../../lib/session';
 import {redirectToLogin} from '../../utils/util';
 import Layout from '../../layout';
 
-const Home = ({ data }) => {
+const Booking = ({ data }) => {
   return (
     <Layout page={'Hoteles'}>
       <HotelsContainer data={data} />
@@ -29,4 +29,4 @@ export async function getServerSideProps(ctx) {
 }
 
 
-export default Home;
+export default Booking;

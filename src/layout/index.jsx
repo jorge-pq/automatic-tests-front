@@ -30,6 +30,9 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import HomeIcon from '@mui/icons-material/Home';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import DateRangeIcon from '@mui/icons-material/DateRange';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
+import EditLocationAltIcon from '@mui/icons-material/EditLocationAlt';
 import Popover from '@mui/material/Popover';
 import NightShelterIcon from '@mui/icons-material/NightShelter';
 
@@ -87,9 +90,13 @@ export default function Layout({ children, page }) {
   const router = useRouter();
 
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorRes, setAnchorRes] = React.useState(null);
 
   const openPop = Boolean(anchorEl);
   const id = openPop ? 'simple-popover' : undefined;
+
+  const openPopRes = Boolean(anchorRes);
+  const resid = openPop ? 'res-popover' : undefined;
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -99,14 +106,35 @@ export default function Layout({ children, page }) {
     setAnchorEl(null);
   };
 
+  const handleClickResMenu = (event) => {
+    setAnchorRes(event.currentTarget);
+  };
+
+  const handleCloseResMenu = () => {
+    setAnchorRes(null);
+  };
+
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
     setOpen(!open);
   };
 
+  const goToBookingHotel = () => {
+    router.push(`/${getTenant()}/booking_hotel`);
+  }
+
+  const goToBookingTour = () => {
+    router.push(`/${getTenant()}/booking_tour`);
+  }
+
   const goToManage = () => {
     router.push(`/${getTenant()}/manage/hotels`);
   }
+
+  const goToManageTours = () => {
+    router.push(`/${getTenant()}/manage/tours`);
+  }
+
 
   const goToBusiness = () => {
     router.push(`/${getTenant()}/business`);
@@ -192,8 +220,37 @@ export default function Layout({ children, page }) {
               <ListItemIcon>
                 <HomeIcon />
               </ListItemIcon>
-              <ListItemText primary="Inicio" />
+              <ListItemText primary="Dasboard" />
             </ListItemButton>
+            <ListItemButton onClick={handleClickResMenu}>
+              <ListItemIcon>
+                <DateRangeIcon />
+              </ListItemIcon>
+              <ListItemText primary="Reservar" />
+            </ListItemButton>
+            <Popover
+              id={resid}
+              open={openPopRes}
+              anchorEl={anchorRes}
+              onClose={handleCloseResMenu}
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'left',
+              }}
+            >
+              <ListItemButton sx={{ backgroundColor: '#1976d2', width: '200px' }} onClick={goToBookingHotel}>
+                <ListItemIcon>
+                  <NightShelterIcon />
+                </ListItemIcon>
+                <ListItemText primary="Hotel" />
+              </ListItemButton>
+              <ListItemButton sx={{ backgroundColor: '#1976d2' }} onClick={goToBookingTour}>
+                <ListItemIcon>
+                  <LocationOnIcon />
+                </ListItemIcon>
+                <ListItemText primary="Tour" />
+              </ListItemButton>
+            </Popover>
             {user?.tenant?.type === "Wholesaler" &&
               <>
                 <ListItemButton onClick={goToManage}>
@@ -201,6 +258,12 @@ export default function Layout({ children, page }) {
                     <LocalHotelIcon />
                   </ListItemIcon>
                   <ListItemText primary="Gestionar hoteles" />
+                </ListItemButton>
+                <ListItemButton onClick={goToManageTours}> 
+                  <ListItemIcon>
+                    <EditLocationAltIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Gestionar tours" />
                 </ListItemButton>
                 <ListItemButton onClick={goToBusiness}>
                   <ListItemIcon>
@@ -273,12 +336,12 @@ export default function Layout({ children, page }) {
                     horizontal: 'left',
                   }}
                 >
-                <ListItemButton sx={{backgroundColor:'#1976d2'}} onClick={goRoomTypes}>
-                  <ListItemIcon>
-                    <NightShelterIcon />
-                  </ListItemIcon>
-                  <ListItemText primary="Tipos de habitaciones" />
-                </ListItemButton>
+                  <ListItemButton sx={{ backgroundColor: '#1976d2' }} onClick={goRoomTypes}>
+                    <ListItemIcon>
+                      <NightShelterIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Tipos de habitaciones" />
+                  </ListItemButton>
                 </Popover>
               </>
             }

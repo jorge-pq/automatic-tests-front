@@ -20,7 +20,7 @@ export const redirectToLogin = () => {
 }
 
 export const redirectToTenat = (tenant) => {
-    let pathBase = tenant ? tenant.replace(/ /g, "-").toLowerCase() + '/home' : 'sys-admin/business'
+    let pathBase = tenant ? tenant.replace(/ /g, "-").toLowerCase() + '/dashboard' : 'sys-admin/business'
     return {
         redirect: {
             destination: `/${pathBase}`,
