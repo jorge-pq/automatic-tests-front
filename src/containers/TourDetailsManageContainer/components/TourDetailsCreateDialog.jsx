@@ -5,7 +5,8 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import { Grid, Autocomplete, Stack } from '@mui/material';
+import { Grid, Autocomplete, Stack, Switch } from '@mui/material';
+import FormControlLabel from '@mui/material/FormControlLabel';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
@@ -16,7 +17,6 @@ import { styled } from '@mui/material/styles';
 import DatePicker from 'react-datepicker';
 import EditOffer from './EditOffer';
 
-const childrens = [1, 2];
 
 const DatePickerCustom = styled(DatePicker)(({ theme }) => ({
   border: '1px solid #bfbfbf',
@@ -52,10 +52,8 @@ const TourDetailsCreateDialog = ({id, open, close, save, types, getRoomTypePerso
   const [offersChildren, setOffersChildren] = useState([]);
   const [childrensAdded, setChildrensAdded] = useState([]);
 
-  const [openUpdateOffersDialog, setOpenUpdateOffersDialog] = useState(false);
-  const [typeUpdateSelected, setTypeUpdateSelected] = useState('');
-  const [openUpdateOffersChildrenDialog, setOpenUpdateOffersChildrenDialog] = useState(false);
-  const [childrenUpdateSelected, setChildrenUpdateSelected] = useState('');
+  const [isPeriod, setIsPeriod] = useState(false);
+  const [date, setDate] = useState(new Date());
 
   const handleRoom = e => {
     setRoom(e.target.value);
@@ -209,7 +207,7 @@ const TourDetailsCreateDialog = ({id, open, close, save, types, getRoomTypePerso
   return (
     <Dialog open={open} maxWidth={'lg'}>
       <DialogTitle>
-        {'Nueva Habitacion'}
+        {'Nuevo tour'}
         <IconButton
           aria-label="close"
           onClick={close}
@@ -255,27 +253,54 @@ const TourDetailsCreateDialog = ({id, open, close, save, types, getRoomTypePerso
               />
             </Grid>
           </Stack>
-       
           <Stack direction={'row'} spacing={1} sx={{ width: '100%' }} mt={2}>
-            <Grid md={4} xs={6} item>
-              <DatePickerCustom
-                selectsRange={true}
-                startDate={startDateOfferType}
-                endDate={endDateOfferType}
-                onChange={(update) => {
-                  setDateOfferType(update);
-                }}
-                placeholderText={'Fecha'}
-                withPortal
-                isClearable={true}
+            <Grid md={2} xs={6} item>
+              <FormControlLabel
+                control={
+                  <Switch checked={isPeriod} onChange={e=>setIsPeriod(e.target.checked)} />
+                }
+                label="Período"
               />
             </Grid>
-            <Grid xs={6} md={2} item>
+            {
+              isPeriod ?
+                <Grid md={4} xs={6} item sx={{marginLeft: '-8px !important'}}>
+                  <DatePickerCustom
+                    selectsRange={true}
+                    startDate={startDateOfferType}
+                    endDate={endDateOfferType}
+                    onChange={(update) => {
+                      setDateOfferType(update);
+                    }}
+                    placeholderText={'Período'}
+                    withPortal
+                    isClearable={true}
+                  />
+                </Grid> :
+                <Grid md={4} xs={6} item sx={{marginLeft: '-8px !important'}}>
+                  <DatePickerCustom
+                    selected={date}
+                    onChange={(date) => setDate(date)}
+                    placeholderText={'Fecha'}
+                    withPortal
+                    isClearable={true}
+                  />
+                </Grid>
+            }
+
+          </Stack>
+          <Divider sx={{ width: '100%', my: 1 }}>
+            <Typography sx={{ position: 'relative', top: '10px' }} variant={'caption'}>
+              {'Costos'}
+            </Typography>
+          </Divider>
+          <Stack direction={'row'} spacing={1} sx={{ width: '100%' }} mt={2}>
+          <Grid xs={6} md={4} item>
               <TextField
                 autoFocus
                 id="cost"
                 size={'small'}
-                label="Costo"
+                label="Costo adulto"
                 type="number"
                 inputProps={{ min: 0 }}
                 value={typeOfferCost}
@@ -284,11 +309,46 @@ const TourDetailsCreateDialog = ({id, open, close, save, types, getRoomTypePerso
                 variant="outlined"
               />
             </Grid>
-            <Grid md={2} xs={6} item pl={1}>
+            <Grid xs={6} md={4} item>
+              <TextField
+                autoFocus
+                id="cost"
+                size={'small'}
+                label="Costo niño"
+                type="number"
+                inputProps={{ min: 0 }}
+                value={typeOfferCost}
+                onChange={handleTypeOfferCost}
+                fullWidth
+                variant="outlined"
+              />
+            </Grid>
+            <Grid xs={6} md={4} item>
+              <TextField
+                autoFocus
+                id="cost"
+                size={'small'}
+                label="Costo infante"
+                type="number"
+                inputProps={{ min: 0 }}
+                value={typeOfferCost}
+                onChange={handleTypeOfferCost}
+                fullWidth
+                variant="outlined"
+              />
+            </Grid>
+          </Stack>
+          <Divider sx={{ width: '100%', my: 1 }}>
+            <Typography sx={{ position: 'relative', top: '10px' }} variant={'caption'}>
+              {'Precios públicos'}
+            </Typography>
+          </Divider>
+          <Stack direction={'row'} spacing={1} sx={{ width: '100%' }} mt={2}>
+            <Grid md={4} xs={6} item pl={1}>
               <TextField
                 autoFocus
                 id="name"
-                label="Precio mayorista"
+                label="Precio adulto"
                 inputProps={{ min: 0 }}
                 type="number"
                 size={'small'}
@@ -298,11 +358,46 @@ const TourDetailsCreateDialog = ({id, open, close, save, types, getRoomTypePerso
                 variant="outlined"
               />
             </Grid>
-            <Grid md={2} xs={6} item pl={1}>
+            <Grid md={4} xs={6} item pl={1}>
               <TextField
                 autoFocus
                 id="name"
-                label="Precio minorista"
+                label="Precio niño"
+                inputProps={{ min: 0 }}
+                type="number"
+                size={'small'}
+                value={typeOfferPrice}
+                onChange={handleTypeOfferPrice}
+                fullWidth
+                variant="outlined"
+              />
+            </Grid>
+            <Grid md={4} xs={6} item pl={1}>
+              <TextField
+                autoFocus
+                id="name"
+                label="Precio infante"
+                inputProps={{ min: 0 }}
+                type="number"
+                size={'small'}
+                value={typeOfferPrice}
+                onChange={handleTypeOfferPrice}
+                fullWidth
+                variant="outlined"
+              />
+            </Grid>
+          </Stack>
+          <Divider sx={{ width: '100%', my: 1 }}>
+            <Typography sx={{ position: 'relative', top: '10px' }} variant={'caption'}>
+              {'Precios minoristas'}
+            </Typography>
+          </Divider>
+          <Stack direction={'row'} spacing={1} sx={{ width: '100%' }} mt={2}>
+            <Grid md={4} xs={6} item pl={1}>
+              <TextField
+                autoFocus
+                id="name"
+                label="Precio adulto"
                 inputProps={{ min: 0 }}
                 type="number"
                 size={'small'}
@@ -312,12 +407,40 @@ const TourDetailsCreateDialog = ({id, open, close, save, types, getRoomTypePerso
                 variant="outlined"
               />
             </Grid>
-            <Grid xs={6} md={2} mt={3} item>
+            <Grid md={4} xs={6} item pl={1}>
+              <TextField
+                autoFocus
+                id="name"
+                label="Precio niño"
+                inputProps={{ min: 0 }}
+                type="number"
+                size={'small'}
+                value={typeOfferPriceRetail}
+                onChange={handleTypeOfferPriceRetail}
+                fullWidth
+                variant="outlined"
+              />
+            </Grid>
+            <Grid md={4} xs={6} item pl={1}>
+              <TextField
+                autoFocus
+                id="name"
+                label="Precio infante"
+                inputProps={{ min: 0 }}
+                type="number"
+                size={'small'}
+                value={typeOfferPriceRetail}
+                onChange={handleTypeOfferPriceRetail}
+                fullWidth
+                variant="outlined"
+              />
+            </Grid>
+          </Stack>
+          <Stack direction={'row'} spacing={1} sx={{ width: '100%' }} mt={2} justifyContent={'flex-end'}>
+            <Grid xs={6} md={2} item>
               <Button variant={'contained'} onClick={addOfferToType}>{'Agregar oferta'}</Button>
             </Grid>
           </Stack>
-          
-
           <Grid item xs={12} mt={2}>
             <OffersChip data={offersType} handleDeleteOffer={removeTypeOffer} />
           </Grid>
@@ -329,109 +452,9 @@ const TourDetailsCreateDialog = ({id, open, close, save, types, getRoomTypePerso
           <Grid item xs={12} mt={2}>
             <TypesTable data={typesAdded} removeType={removeType} removeTypeOfferAdded={removeTypeOfferAdded} editOffersToType={editOffersToType} />
           </Grid>
-
-          {/* ----------------------- Childrens ------------------------- */}
-
-          <Divider sx={{ width: '100%', my: 2 }}>
-            <Typography sx={{ position: 'relative', top: '15px' }} variant={'h6'}>
-              {'Niños'}
-            </Typography>
-          </Divider>
-          <Grid item xs={12}>
-            <Grid container spacing={2}>
-              <Grid item xs={6} md={2} mt={2}>
-                <Autocomplete
-                  disablePortal
-                  id="combo-box-demo"
-                  options={childrens.filter(childrenFiltered)}
-                  size={'small'}
-                  value={childrensSelected}
-                  onChange={(event, count) => {
-                    handleChildrens(count);
-                  }}
-                  getOptionLabel={(option) => option}
-                  renderInput={(params) => <TextField fullWidth {...params} label="Cantidad de niños" />}
-                />
-
-              </Grid>
-
-              <Grid item xs={6} md={2} mt={2}>
-                <DatePickerCustom
-                  selectsRange={true}
-                  startDate={startDateOfferChildren}
-                  endDate={endDateOfferTChildren}
-                  onChange={(update) => {
-                    setDateOfferChildren(update);
-                  }}
-                  placeholderText={'Fecha'}
-                  withPortal
-                  isClearable={true}
-                />
-              </Grid>
-              <Grid xs={6} md={2} item mt={2}>
-                <TextField
-                  autoFocus
-                  id="cost"
-                  size={'small'}
-                  label="Costo"
-                  type="number"
-                  inputProps={{ min: 0 }}
-                  value={childrenOfferCost}
-                  onChange={handleChildrenOfferCost}
-                  fullWidth
-                  variant="outlined"
-                />
-              </Grid>
-              <Grid xs={6} md={2} item mt={2}>
-                <TextField
-                  autoFocus
-                  id="name"
-                  size={'small'}
-                  label="Precio mayorista"
-                  type="number"
-                  inputProps={{ min: 0 }}
-                  value={childrenOfferPrice}
-                  onChange={handleChildrenOfferPrice}
-                  fullWidth
-                  variant="outlined"
-                />
-              </Grid>
-              <Grid xs={6} md={2} item mt={2}>
-                <TextField
-                  autoFocus
-                  id="name"
-                  size={'small'}
-                  label="Precio minorista"
-                  type="number"
-                  inputProps={{ min: 0 }}
-                  value={childrenOfferPriceRetail}
-                  onChange={handleChildrenOfferPriceRetail}
-                  fullWidth
-                  variant="outlined"
-                />
-              </Grid>
-              <Grid xs={12} md={2} mt={2} pl={3} item>
-                <Button variant={'contained'} onClick={addOfferToChildren}>{'Agregar oferta'}</Button>
-              </Grid>
-
-            </Grid>
-          </Grid>
-
          
-          <Grid item xs={12} mt={2}>
-            <OffersChip data={offersChildren} handleDeleteOffer={removeChildrenOffer} />
-          </Grid>
-          <Grid item xs={12} mt={2}>
-            <Grid container justifyContent={'center'}>
-              <Button variant={'contained'} disabled={offersChildren.length===0} onClick={addChildren}>{'Agregar Niño'}</Button>
-            </Grid>
-          </Grid>
-          {/* <Grid item xs={12} mt={2}>
-            <ChildrensTable data={childrensAdded} removeChildren={removeChildren} editOffersToChildren={editOffersToChildren} />
-          </Grid> */}
         </Grid>
-        <EditOffer open={openUpdateOffersDialog} close={()=>setOpenUpdateOffersDialog(false)} type={typeUpdateSelected} updateTypeOffers={updateTypeOffers} />
-        <EditOffer open={openUpdateOffersChildrenDialog} close={()=>setOpenUpdateOffersChildrenDialog(false)} type={childrenUpdateSelected} children updateTypeOffers={updateChildrenOffers} />
+        {/* <EditOffer open={openUpdateOffersDialog} close={()=>setOpenUpdateOffersDialog(false)} type={typeUpdateSelected} updateTypeOffers={updateTypeOffers} /> */}
       </DialogContent>
       <DialogActions>
         <Button onClick={close}>Cerrar</Button>
