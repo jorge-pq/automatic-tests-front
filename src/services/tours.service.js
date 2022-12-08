@@ -31,3 +31,9 @@ export const getTourById = async (id, jwt) => {
     const {data} = await rget('api/tours/'+id, jwt);
     return data;
 };
+
+
+export const addDetails = async (values) => {
+    const {data} = await rput('api/tour/details/add/'+values.tourId, values, cookie.get('token'));
+    return data;
+}

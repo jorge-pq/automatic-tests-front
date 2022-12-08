@@ -4,12 +4,17 @@ import Stack from '@mui/material/Stack';
 import { format } from 'date-fns'
 
 
-function getFormatDate(value) {
+function getFormatDate(date, period, isPeriod) {
     let dt = '';
-    try {
-        dt = value ? format(value[0], 'dd/MM/yyyy') + ' - ' + format(value[1], 'dd/MM/yyyy') : '';
-    } catch (error) {
-        dt = value ? format(new Date(value[0]), 'dd/MM/yyyy') + ' - ' + format(new Date(value[1]), 'dd/MM/yyyy') : '';
+    if (isPeriod) {
+        try {
+            dt = period ? format(period[0], 'dd/MM/yyyy') + ' - ' + format(period[1], 'dd/MM/yyyy') : '';
+        } catch (error) {
+            dt = period ? format(new Date(period[0]), 'dd/MM/yyyy') + ' - ' + format(new Date(period[1]), 'dd/MM/yyyy') : '';
+        }
+    }
+    else {
+        dt = date ? format(date, 'dd/MM/yyyy') : '';
     }
 
     return dt;
@@ -20,7 +25,7 @@ const OffersChip = ({data, handleDeleteOffer}) => {
     return (
         <Stack direction="row" spacing={1}>
             {
-                data.map((item, index) => <Chip key={index} label={`${getFormatDate(item.date)} : $${item.price} - $${item.priceRetail}`} onDelete={()=>handleDeleteOffer(item)} />)
+                data.map((item, index) => <Chip key={index} label={getFormatDate(item.date, item.period, item.isPeriod)} onDelete={()=>handleDeleteOffer(item)} />)
             }
         </Stack>
     );
