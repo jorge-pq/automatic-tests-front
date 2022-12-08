@@ -81,7 +81,7 @@ const TourDetailsCreateDialog = ({ id, open, close, save, types, getRoomTypePers
       costChildren: typeOfferCostChildren,
       costInfant: typeOfferCostInfant,
       priceAdult: typeOfferPriceAdult,
-      priceChildre: typeOfferPriceChildren,
+      priceChildren: typeOfferPriceChildren,
       priceInfant: typeOfferPriceInfant,
       priceRetailAdult: typeOfferPriceRetailAdult,
       priceRetailChildren: typeOfferPriceRetailChildren,

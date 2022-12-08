@@ -84,7 +84,7 @@ const TourDetailsManageContainer = ({ tour, roomTypes }) => {
             </Grid>
             <Grid item xs={6}>
                 <Grid container justifyContent={'flex-end'}>
-                    <Button variant={'contained'} onClick={openCreateDialog}>{'Agregar detalles'}</Button>
+                    <Button variant={'contained'} onClick={openCreateDialog}>{tour.details.length > 0 ? 'Editar detalles' : 'Agregar detalles'}</Button>
                 </Grid>
             </Grid>
             <Grid item xs={12} mt={2}>

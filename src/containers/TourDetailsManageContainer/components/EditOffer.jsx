@@ -56,7 +56,7 @@ const EditOffer = ({ open, close, type, updateTypeOffers, children }) => {
             costChildren: typeOfferCostChildren,
             costInfant: typeOfferCostInfant,
             priceAdult: typeOfferPriceAdult,
-            priceChildre: typeOfferPriceChildren,
+            priceChildren: typeOfferPriceChildren,
             priceInfant: typeOfferPriceInfant,
             priceRetailAdult: typeOfferPriceRetailAdult,
             priceRetailChildren: typeOfferPriceRetailChildren,
