@@ -37,7 +37,7 @@ const TourDetailsTable = ({data, showEdit, removeRoom}) => {
                                 {
                                     row.offers.map((item, i) =>
                                         <li key={i}>
-                                            {`${ item.isPeriod ? (format(new Date(o.date[0]), 'dd/MM/yyyy') + ' ' + format(new Date(o.date[1]), 'dd/MM/yyyy')):format(new Date(item.date), 'dd/MM/yyyy') } `} 
+                                            {`${ item.isPeriod ? (format(new Date(item.period[0]), 'dd/MM/yyyy') + ' ' + format(new Date(item.period[1]), 'dd/MM/yyyy')):format(new Date(item.date), 'dd/MM/yyyy') } `} 
                                             <ul>
                                                 <li>Costo adultos: <b>${item.costAdult}</b> - Precio publico de adultos: <b>${item.priceAdult}</b> - Precio minorista de adultos: <b>${item.priceRetailAdult}</b></li>
                                                 <li>Costo niños: <b>${item.costChildren}</b> -  Precio publico de niños: <b>${item.priceChildren}</b> - Precio minorista de niños: <b>${item.priceRetailChildren}</b></li>

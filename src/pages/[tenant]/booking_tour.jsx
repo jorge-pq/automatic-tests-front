@@ -1,6 +1,6 @@
 import * as React from 'react';
 import ToursContainer from '../../containers/ToursContainer';
-// import { getHotelsActive } from '../../services/hotels.service';
+import { getToursActive } from '../../services/tours.service';
 import {getCookie} from '../../lib/session';
 import {redirectToLogin} from '../../utils/util';
 import Layout from '../../layout';
@@ -23,7 +23,7 @@ export async function getServerSideProps(ctx) {
 		return redirectToLogin();
 	}
 
- const data = [] //  await getHotelsActive(jwt);
+ const data = await getToursActive(jwt);
   return { props: { data } }
 
 }
