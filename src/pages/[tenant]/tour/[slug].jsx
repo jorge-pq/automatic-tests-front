@@ -6,14 +6,14 @@ import { getCookie } from '../../../lib/session';
 import { redirectToLogin } from '../../../utils/util';
 import Layout from '../../../layout';
 
-const BookingTourContainer = dynamic(() => import('../../../containers/BookingTourContainer'), {
-    suspense: true,
-})
+// const BookingTourContainer = dynamic(() => import('../../../containers/BookingTourContainer'), {
+//     suspense: true,
+// })
 
 const Tour = ({ tour, types, clients }) => {
     return (
         <Layout page={tour.name}>
-            <BookingTourContainer tour={tour} roomTypes={types} clients={clients} />
+            {/* <BookingTourContainer tour={tour} roomTypes={types} clients={clients} /> */}
         </Layout>
     );
 };
