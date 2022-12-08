@@ -10,6 +10,8 @@ import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/DeleteOutline';
 import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
 import OffersChip from './OffersChip';
+import { format } from 'date-fns'
+
 
 export default function TypesTable({data, removeType, removeTypeOfferAdded, editOffersToType}) {
 
@@ -18,10 +20,9 @@ export default function TypesTable({data, removeType, removeTypeOfferAdded, edit
       <Table sx={{ minWidth: 300 }} size="small" aria-label="a dense table">
         <TableHead>
           <TableRow>
-            <TableCell align="center">{'Tipo'}</TableCell>
-            {/* <TableCell align="center">{'Precio standard'}</TableCell> */}
-            <TableCell align="left">{'Ofertas'}</TableCell>
-            <TableCell align="center">{'Eliminar'}</TableCell>
+            <TableCell align="center">{'Oferta'}</TableCell>
+            <TableCell align="left">{'Tipo'}</TableCell>
+            <TableCell align="center">{'Accion'}</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -31,19 +32,16 @@ export default function TypesTable({data, removeType, removeTypeOfferAdded, edit
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
               <TableCell align="center"scope="row">
-                {row.description}
+              {`${ row.isPeriod ? (format(new Date(row.period[0]), 'dd/MM/yyyy') + ' - ' + format(new Date(row.period[1]), 'dd/MM/yyyy')):format(new Date(row.date), 'dd/MM/yyyy') } `} 
               </TableCell>
-              {/* <TableCell align="center" scope="row">
-                {row.price}
-              </TableCell> */}
               <TableCell align="left">
                 <OffersChip data={row.offers} handleDeleteOffer={(item)=>removeTypeOfferAdded(item, row.description)} />
               </TableCell>
               <TableCell align="center">
-              <IconButton onClick={()=>editOffersToType(row.description)}>
+              {/* <IconButton onClick={()=>editOffersToType(row.description)}>
                     <LibraryAddIcon />
-                </IconButton>
-                <IconButton onClick={()=>removeType(row.description)}>
+                </IconButton> */}
+                <IconButton onClick={()=>removeType(index)}>
                     <DeleteIcon />
                 </IconButton>
               </TableCell>

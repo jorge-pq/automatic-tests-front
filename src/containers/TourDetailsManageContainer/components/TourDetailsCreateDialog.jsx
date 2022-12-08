@@ -35,17 +35,17 @@ const TourDetailsCreateDialog = ({ id, open, close, save, types, getRoomTypePers
   const [dateOfferType, setDateOfferType] = useState([null, null]);
   const [startDateOfferType, endDateOfferType] = dateOfferType;
 
-  const [typeOfferCostAdult, setTypeOfferCostAdult] = useState();
-  const [typeOfferCostChildren, setTypeOfferCostChildren] = useState();
-  const [typeOfferCostInfant, setTypeOfferCostInfant] = useState();
+  const [typeOfferCostAdult, setTypeOfferCostAdult] = useState(0);
+  const [typeOfferCostChildren, setTypeOfferCostChildren] = useState(0);
+  const [typeOfferCostInfant, setTypeOfferCostInfant] = useState(0);
 
-  const [typeOfferPriceAdult, setTypeOfferPriceAdult] = useState();
-  const [typeOfferPriceChildren, setTypeOfferPriceChildren,] = useState();
-  const [typeOfferPriceInfant, setTypeOfferPriceInfant] = useState();
+  const [typeOfferPriceAdult, setTypeOfferPriceAdult] = useState(0);
+  const [typeOfferPriceChildren, setTypeOfferPriceChildren,] = useState(0);
+  const [typeOfferPriceInfant, setTypeOfferPriceInfant] = useState(0);
 
-  const [typeOfferPriceRetailAdult, setTypeOfferPriceRetailAdult] = useState();
-  const [typeOfferPriceRetailChildren, setTypeOfferPriceRetailChildren] = useState();
-  const [typeOfferPriceRetailInfant, setTypeOfferPriceRetailInfant] = useState();
+  const [typeOfferPriceRetailAdult, setTypeOfferPriceRetailAdult] = useState(0);
+  const [typeOfferPriceRetailChildren, setTypeOfferPriceRetailChildren] = useState(0);
+  const [typeOfferPriceRetailInfant, setTypeOfferPriceRetailInfant] = useState(0);
 
   const [offersType, setOffersType] = useState([]);
   const [typesAdded, setTypesAdded] = useState([]);
@@ -72,31 +72,39 @@ const TourDetailsCreateDialog = ({ id, open, close, save, types, getRoomTypePers
   const handleTypeOfferPriceRetailChildren = e => setTypeOfferPriceRetailChildren(e.target.value);
   const handleTypeOfferPriceRetailInfant = e => setTypeOfferPriceRetailInfant(e.target.value);
 
-  const addOfferToType = () => {
-    setOffersType(offersType => [...offersType, {
-      isPeriod: isPeriod,
-      period: dateOfferType,
-      date: date,
-      costAdult: typeOfferCostAdult,
-      costChildren: typeOfferCostChildren,
-      costInfant: typeOfferCostInfant,
-      priceAdult: typeOfferPriceAdult,
-      priceChildren: typeOfferPriceChildren,
-      priceInfant: typeOfferPriceInfant,
-      priceRetailAdult: typeOfferPriceRetailAdult,
-      priceRetailChildren: typeOfferPriceRetailChildren,
-      priceRetailInfant: typeOfferPriceRetailInfant
-    }]);
-    setTypeOfferCostAdult(0);
-    setTypeOfferCostChildren(0);
-    setTypeOfferCostInfant(0);
-    setTypeOfferPriceAdult(0);
-    setTypeOfferPriceChildren(0);
-    setTypeOfferPriceInfant(0);
-    setTypeOfferPriceRetailAdult(0);
-    setTypeOfferPriceRetailChildren(0);
-    setTypeOfferPriceRetailInfant(0);
-    setDateOfferType([null, null]);
+  const addTypeToOffer = () => {
+    if(isPeriod && !typeSelected){
+      alert('Seleccione un tipo de habitación');
+    }
+    else{
+      setOffersType(offersType => [...offersType, {
+        // isPeriod: isPeriod,
+        // period: dateOfferType,
+        // date: date,
+        room: isPeriod ? typeSelected : 'Sin habitación',
+        costAdult: typeOfferCostAdult,
+        costChildren: typeOfferCostChildren,
+        costInfant: typeOfferCostInfant,
+        priceAdult: typeOfferPriceAdult,
+        priceChildren: typeOfferPriceChildren,
+        priceInfant: typeOfferPriceInfant,
+        priceRetailAdult: typeOfferPriceRetailAdult,
+        priceRetailChildren: typeOfferPriceRetailChildren,
+        priceRetailInfant: typeOfferPriceRetailInfant
+      }]);
+      setTypeSelected('');
+    }
+   
+    // setTypeOfferCostAdult(0);
+    // setTypeOfferCostChildren(0);
+    // setTypeOfferCostInfant(0);
+    // setTypeOfferPriceAdult(0);
+    // setTypeOfferPriceChildren(0);
+    // setTypeOfferPriceInfant(0);
+    // setTypeOfferPriceRetailAdult(0);
+    // setTypeOfferPriceRetailChildren(0);
+    // setTypeOfferPriceRetailInfant(0);
+    // setDateOfferType([null, null]);
   }
 
   const removeTypeOffer = item => {
@@ -105,18 +113,21 @@ const TourDetailsCreateDialog = ({ id, open, close, save, types, getRoomTypePers
 
   const addType = () => {
     setTypesAdded(typesAdded => [...typesAdded, {
-      description: typeSelected || 'Sin habitacion',
-      persons: typeSelected ? getRoomTypePersons(typeSelected) : 1,
-      price: typePrice,
+      id: typesAdded.length,
+      isPeriod: isPeriod,
+      period: dateOfferType,
+      date: date,
       offers: offersType
     }]);
     setTypeSelected('');
     setOffersType([]);
+    setDateOfferType([null, null]);
+    setDate();
   }
 
 
-  const removeType = item => {
-    setTypesAdded(typesAdded.filter(d => d.description != item));
+  const removeType = index => {
+    setTypesAdded(typesAdded.filter(d => d.id != index));
   }
 
   const handleSubmit = () => {
@@ -153,7 +164,7 @@ const TourDetailsCreateDialog = ({ id, open, close, save, types, getRoomTypePers
   }
 
   const typesFiltered = item => {
-    if (typesAdded.findIndex(d => d.description == item) == -1) {
+    if (offersType.findIndex(d => d.room == item) == -1) {
       return true;
     }
     else {
@@ -193,19 +204,36 @@ const TourDetailsCreateDialog = ({ id, open, close, save, types, getRoomTypePers
             </Grid>
             {
               isPeriod ?
-                <Grid md={4} xs={6} item sx={{ marginLeft: '-8px !important' }}>
-                  <DatePickerCustom
-                    selectsRange={true}
-                    startDate={startDateOfferType}
-                    endDate={endDateOfferType}
-                    onChange={(update) => {
-                      setDateOfferType(update);
-                    }}
-                    placeholderText={'Período'}
-                    withPortal
-                    isClearable={true}
-                  />
-                </Grid> :
+                <>
+                  <Grid md={4} xs={6} item sx={{ marginLeft: '-8px !important' }}>
+                    <DatePickerCustom
+                      selectsRange={true}
+                      startDate={startDateOfferType}
+                      endDate={endDateOfferType}
+                      onChange={(update) => {
+                        setDateOfferType(update);
+                      }}
+                      placeholderText={'Período'}
+                      withPortal
+                      isClearable={true}
+                    />
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Autocomplete
+                      disablePortal
+                      id="combo-box-demo"
+                      options={types.filter(typesFiltered)}
+                      size={'small'}
+                      value={typeSelected}
+                      onChange={(event, type) => {
+                        handleType(type);
+                      }}
+                      getOptionLabel={(option) => option}
+                      renderInput={(params) => <TextField fullWidth {...params} label="Tipo" />}
+                    />
+                  </Grid>
+                </>
+                :
                 <Grid md={4} xs={6} item sx={{ marginLeft: '-8px !important' }}>
                   <DatePickerCustom
                     selected={date}
@@ -216,20 +244,6 @@ const TourDetailsCreateDialog = ({ id, open, close, save, types, getRoomTypePers
                   />
                 </Grid>
             }
-            <Grid item xs={6}>
-              <Autocomplete
-                disablePortal
-                id="combo-box-demo"
-                options={types.filter(typesFiltered)}
-                size={'small'}
-                value={typeSelected}
-                onChange={(event, type) => {
-                  handleType(type);
-                }}
-                getOptionLabel={(option) => option}
-                renderInput={(params) => <TextField fullWidth {...params} label="Tipo" />}
-              />
-            </Grid>
           </Stack>
           <Divider sx={{ width: '100%', my: 1 }}>
             <Typography sx={{ position: 'relative', top: '10px' }} variant={'caption'}>
@@ -380,7 +394,7 @@ const TourDetailsCreateDialog = ({ id, open, close, save, types, getRoomTypePers
           </Stack>
           <Stack direction={'row'} spacing={1} sx={{ width: '100%' }} mt={2} justifyContent={'flex-end'}>
             <Grid xs={6} md={2} item>
-              <Button variant={'contained'} onClick={addOfferToType}>{'Agregar oferta'}</Button>
+              <Button variant={'contained'} onClick={addTypeToOffer}>{'Agregar precio'}</Button>
             </Grid>
           </Stack>
           <Grid item xs={12} mt={2}>
@@ -388,7 +402,7 @@ const TourDetailsCreateDialog = ({ id, open, close, save, types, getRoomTypePers
           </Grid>
           <Grid item xs={12} mt={2}>
             <Grid container justifyContent={'center'}>
-              <Button variant={'contained'} disabled={offersType.length === 0} onClick={addType}>{'Agregar tipo habitación'}</Button>
+              <Button variant={'contained'} disabled={offersType.length === 0} onClick={addType}>{'Agregar oferta'}</Button>
             </Grid>
           </Grid>
           <Grid item xs={12} mt={2}>
@@ -396,11 +410,11 @@ const TourDetailsCreateDialog = ({ id, open, close, save, types, getRoomTypePers
           </Grid>
 
         </Grid>
-        <EditOffer open={openUpdateOffersDialog} close={()=>setOpenUpdateOffersDialog(false)} type={typeUpdateSelected} updateTypeOffers={updateTypeOffers} />
+        <EditOffer open={openUpdateOffersDialog} close={() => setOpenUpdateOffersDialog(false)} type={typeUpdateSelected} updateTypeOffers={updateTypeOffers} />
       </DialogContent>
       <DialogActions>
         <Button onClick={close}>Cerrar</Button>
-        <Button variant={'contained'} disabled={typesAdded.length < 1} onClick={handleSubmit}>{'Guardar habitacion'}</Button>
+        <Button variant={'contained'} disabled={typesAdded.length < 1} onClick={handleSubmit}>{'Guardar ofertas'}</Button>
       </DialogActions>
     </Dialog>
   );
