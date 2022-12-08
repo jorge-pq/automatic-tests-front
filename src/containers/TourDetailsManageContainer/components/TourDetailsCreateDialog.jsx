@@ -31,7 +31,7 @@ const TourDetailsCreateDialog = ({ id, open, close, save, types, getRoomTypePers
 
   const [room, setRoom] = useState('');
   const [typeSelected, setTypeSelected] = useState('');
-  const [typePrice, setTypePrice] = useState();
+  const [syncPrices, setSyncPrices] = useState(false);
   const [dateOfferType, setDateOfferType] = useState([null, null]);
   const [startDateOfferType, endDateOfferType] = dateOfferType;
 
@@ -64,9 +64,24 @@ const TourDetailsCreateDialog = ({ id, open, close, save, types, getRoomTypePers
   const handleTypeOfferCostChildren = e => setTypeOfferCostChildren(e.target.value);
   const handleTypeOfferCostInfant = e => setTypeOfferCostInfant(e.target.value);
 
-  const handleTypeOfferPriceAdult = e => setTypeOfferPriceAdult(e.target.value);
-  const handleTypeOfferPriceChildren = e => setTypeOfferPriceChildren(e.target.value);
-  const handleTypeOfferPriceInfant = e => setTypeOfferPriceInfant(e.target.value);
+  const handleTypeOfferPriceAdult = e => {
+    setTypeOfferPriceAdult(e.target.value);
+    if(syncPrices){
+      setTypeOfferPriceRetailAdult(e.target.value);
+    }
+  } 
+  const handleTypeOfferPriceChildren = e => {
+    setTypeOfferPriceChildren(e.target.value);
+    if(syncPrices){
+      setTypeOfferPriceRetailChildren(e.target.value);
+    }
+  }
+  const handleTypeOfferPriceInfant = e => {
+    setTypeOfferPriceInfant(e.target.value);
+    if(syncPrices){
+      setTypeOfferPriceRetailInfant(e.target.value);
+    }
+  }
 
   const handleTypeOfferPriceRetailAdult = e => setTypeOfferPriceRetailAdult(e.target.value);
   const handleTypeOfferPriceRetailChildren = e => setTypeOfferPriceRetailChildren(e.target.value);
@@ -392,8 +407,16 @@ const TourDetailsCreateDialog = ({ id, open, close, save, types, getRoomTypePers
               />
             </Grid>
           </Stack>
-          <Stack direction={'row'} spacing={1} sx={{ width: '100%' }} mt={2} justifyContent={'flex-end'}>
-            <Grid xs={6} md={2} item>
+          <Stack direction={'row'} spacing={1} sx={{ width: '100%' }} mt={2} justifyContent={'space-between'}>
+            <Grid item>
+              <FormControlLabel
+                control={
+                  <Switch checked={syncPrices} onChange={e => setSyncPrices(e.target.checked)} />
+                }
+                label="Sincronizar precios públicos y minoristas"
+              />
+            </Grid>
+            <Grid item>
               <Button variant={'contained'} onClick={addTypeToOffer}>{'Agregar precio'}</Button>
             </Grid>
           </Stack>
