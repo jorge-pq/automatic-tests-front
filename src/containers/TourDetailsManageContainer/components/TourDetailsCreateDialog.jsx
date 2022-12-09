@@ -59,6 +59,7 @@ const TourDetailsCreateDialog = ({ id, open, close, save, types, getRoomTypePers
 
   const handleType = value => {
     setTypeSelected(value);
+    // autocompletar precios con el ultimo tour
   }
   const handleTypeOfferCostAdult = e => setTypeOfferCostAdult(e.target.value);
   const handleTypeOfferCostChildren = e => setTypeOfferCostChildren(e.target.value);
@@ -108,18 +109,16 @@ const TourDetailsCreateDialog = ({ id, open, close, save, types, getRoomTypePers
         priceRetailInfant: typeOfferPriceRetailInfant
       }]);
       setTypeSelected('');
+      setTypeOfferCostAdult(0);
+      setTypeOfferCostChildren(0);
+      setTypeOfferCostInfant(0);
+      setTypeOfferPriceAdult(0);
+      setTypeOfferPriceChildren(0);
+      setTypeOfferPriceInfant(0);
+      setTypeOfferPriceRetailAdult(0);
+      setTypeOfferPriceRetailChildren(0);
+      setTypeOfferPriceRetailInfant(0);
     }
-   
-    // setTypeOfferCostAdult(0);
-    // setTypeOfferCostChildren(0);
-    // setTypeOfferCostInfant(0);
-    // setTypeOfferPriceAdult(0);
-    // setTypeOfferPriceChildren(0);
-    // setTypeOfferPriceInfant(0);
-    // setTypeOfferPriceRetailAdult(0);
-    // setTypeOfferPriceRetailChildren(0);
-    // setTypeOfferPriceRetailInfant(0);
-    // setDateOfferType([null, null]);
   }
 
   const removeTypeOffer = item => {
