@@ -4,7 +4,7 @@ import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
+import Autocomplete from '@mui/material/Autocomplete';
 import DialogTitle from '@mui/material/DialogTitle';
 import { getSlug } from '../../../utils/util';
 import { Controller, useForm } from 'react-hook-form';
@@ -49,6 +49,27 @@ export default function TourCreateDialog({ open, close, save }) {
               />
               {
                 errors.name && <label style={errorText}>{'El nombre es requerido'}</label>
+              }
+            </Grid>
+            <Grid item xs={12}>
+              <Controller
+                control={control}
+                name="category"
+                rules={{ required: true }}
+                render={({ field }) => <Autocomplete
+                disablePortal
+                id="combo-box-demo"
+                options={['Nacional', 'Internacional']}
+                size={'small'}
+                onChange={(event, op) => {
+                  field.onChange(op);
+                }}
+                getOptionLabel={(option) => option}
+                renderInput={(params) => <TextField fullWidth {...params} label="Categoria" />}
+              />}
+              />
+              {
+                errors.category && <label style={errorText}>{'La categoria es requerida'}</label>
               }
             </Grid>
 

@@ -19,6 +19,7 @@ const TourDetailsTable = ({ data, showEdit, removeRoom }) => {
                 <TableHead>
                     <TableRow>
                         <TableCell align="left">{'Oferta'}</TableCell>
+                        <TableCell align="left">{'Disponibilidad'}</TableCell>
                         <TableCell align="left">{'Precio'}</TableCell>
                     </TableRow>
                 </TableHead>
@@ -30,6 +31,9 @@ const TourDetailsTable = ({ data, showEdit, removeRoom }) => {
                         >
                             <TableCell component="th" scope="row">
                             {`${row.isPeriod ? (format(new Date(row.period[0]), 'dd/MM/yyyy') + ' ' + format(new Date(row.period[1]), 'dd/MM/yyyy')) : format(new Date(row.date), 'dd/MM/yyyy')} `}
+                            </TableCell>
+                            <TableCell component="th" scope="row">
+                                {row.availability}
                             </TableCell>
                             <TableCell component="th" scope="row">
                                 <ul>

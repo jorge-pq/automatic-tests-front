@@ -13,7 +13,7 @@ import OffersChip from './OffersChip';
 import { format } from 'date-fns'
 
 
-export default function TypesTable({data, removeType, removeTypeOfferAdded, editOffersToType}) {
+export default function TypesTable({ data, removeType, removeTypeOfferAdded, editOffersToType }) {
 
   return (
     <TableContainer component={Paper}>
@@ -21,6 +21,7 @@ export default function TypesTable({data, removeType, removeTypeOfferAdded, edit
         <TableHead>
           <TableRow>
             <TableCell align="center">{'Oferta'}</TableCell>
+            <TableCell align="left">{'Disponibilidad'}</TableCell>
             <TableCell align="left">{'Tipo'}</TableCell>
             <TableCell align="center">{'Accion'}</TableCell>
           </TableRow>
@@ -31,22 +32,25 @@ export default function TypesTable({data, removeType, removeTypeOfferAdded, edit
               key={index}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
-              <TableCell align="center"scope="row">
-              {`${ row.isPeriod ? (format(new Date(row.period[0]), 'dd/MM/yyyy') + ' - ' + format(new Date(row.period[1]), 'dd/MM/yyyy')):format(new Date(row.date), 'dd/MM/yyyy') } `} 
+              <TableCell align="center" scope="row">
+                {`${row.isPeriod ? (format(new Date(row.period[0]), 'dd/MM/yyyy') + ' - ' + format(new Date(row.period[1]), 'dd/MM/yyyy')) : format(new Date(row.date), 'dd/MM/yyyy')} `}
+              </TableCell>
+              <TableCell component="th" scope="row">
+                {row.availability}
               </TableCell>
               <TableCell align="left">
-                <OffersChip data={row.offers} handleDeleteOffer={(item)=>removeTypeOfferAdded(item, row.description)} />
+                <OffersChip data={row.offers} handleDeleteOffer={(item) => removeTypeOfferAdded(item, row.description)} />
               </TableCell>
               <TableCell align="center">
-              {/* <IconButton onClick={()=>editOffersToType(row.description)}>
+                {/* <IconButton onClick={()=>editOffersToType(row.description)}>
                     <LibraryAddIcon />
                 </IconButton> */}
-                <IconButton onClick={()=>removeType(index)}>
-                    <DeleteIcon />
+                <IconButton onClick={() => removeType(index)}>
+                  <DeleteIcon />
                 </IconButton>
               </TableCell>
             </TableRow>
-          )):<p style={{marginLeft: '10px'}}>{'0 elementos'}</p>}
+          )) : <p style={{ marginLeft: '10px' }}>{'0 elementos'}</p>}
         </TableBody>
       </Table>
     </TableContainer>

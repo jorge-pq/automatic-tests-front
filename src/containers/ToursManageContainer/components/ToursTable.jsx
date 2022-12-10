@@ -28,6 +28,7 @@ export default function HotelsTable({ data, showEdit, removeHotel }) {
                     <TableRow>
                         <TableCell>{'Código'}</TableCell>
                         <TableCell>{'Nombre'}</TableCell>
+                        <TableCell>{'Categoria'}</TableCell>
                         <TableCell>{'País'}</TableCell>
                         <TableCell>{'Estado'}</TableCell>
                         <TableCell>{'Ciudad'}</TableCell>
@@ -48,6 +49,9 @@ export default function HotelsTable({ data, showEdit, removeHotel }) {
                             </TableCell>
                             <TableCell component="th" scope="row">
                                 {row.name}
+                            </TableCell>
+                            <TableCell component="th" scope="row">
+                                {row.category}
                             </TableCell>
                             <TableCell component="th" scope="row">
                                 {row.country}

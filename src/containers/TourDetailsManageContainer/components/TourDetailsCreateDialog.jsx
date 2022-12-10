@@ -35,6 +35,8 @@ const TourDetailsCreateDialog = ({ id, open, close, save, types, getRoomTypePers
   const [dateOfferType, setDateOfferType] = useState([null, null]);
   const [startDateOfferType, endDateOfferType] = dateOfferType;
 
+  const [availability, setAvailability] = useState(0);
+
   const [typeOfferCostAdult, setTypeOfferCostAdult] = useState(0);
   const [typeOfferCostChildren, setTypeOfferCostChildren] = useState(0);
   const [typeOfferCostInfant, setTypeOfferCostInfant] = useState(0);
@@ -59,8 +61,11 @@ const TourDetailsCreateDialog = ({ id, open, close, save, types, getRoomTypePers
 
   const handleType = value => {
     setTypeSelected(value);
-    // autocompletar precios con el ultimo tour
+    // autocompletar precios con el ultimo periodo
   }
+
+  const handleAvailability = e => setAvailability(e.target.value);
+
   const handleTypeOfferCostAdult = e => setTypeOfferCostAdult(e.target.value);
   const handleTypeOfferCostChildren = e => setTypeOfferCostChildren(e.target.value);
   const handleTypeOfferCostInfant = e => setTypeOfferCostInfant(e.target.value);
@@ -131,11 +136,13 @@ const TourDetailsCreateDialog = ({ id, open, close, save, types, getRoomTypePers
       isPeriod: isPeriod,
       period: dateOfferType,
       date: date,
-      offers: offersType
+      offers: offersType,
+      availability: availability,
     }]);
     setTypeSelected('');
     setOffersType([]);
     setDateOfferType([null, null]);
+    setAvailability(0);
     setDate();
   }
 
@@ -232,7 +239,7 @@ const TourDetailsCreateDialog = ({ id, open, close, save, types, getRoomTypePers
                       isClearable={true}
                     />
                   </Grid>
-                  <Grid item xs={6}>
+                  <Grid item xs={3}>
                     <Autocomplete
                       disablePortal
                       id="combo-box-demo"
@@ -258,6 +265,20 @@ const TourDetailsCreateDialog = ({ id, open, close, save, types, getRoomTypePers
                   />
                 </Grid>
             }
+            <Grid xs={6} md={3} item>
+              <TextField
+                autoFocus
+                id="cost"
+                size={'small'}
+                label="Disponibilidad"
+                type="number"
+                inputProps={{ min: 0 }}
+                value={availability}
+                onChange={handleAvailability}
+                fullWidth
+                variant="outlined"
+              />
+            </Grid>
           </Stack>
           <Divider sx={{ width: '100%', my: 1 }}>
             <Typography sx={{ position: 'relative', top: '10px' }} variant={'caption'}>
