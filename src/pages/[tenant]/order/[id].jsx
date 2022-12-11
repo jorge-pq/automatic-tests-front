@@ -11,7 +11,7 @@ const Order = ({order}) => {
     return (
         <Layout page={'Factura'}>
             {
-                order.type === "hotel" ? <OrderDetailsContainer order={order} /> : <OrderTourDetailsContainer order={order} />
+                order.type === "hotel" || !order.type ? <OrderDetailsContainer order={order} /> : <OrderTourDetailsContainer order={order} />
             }
         </Layout>
     );

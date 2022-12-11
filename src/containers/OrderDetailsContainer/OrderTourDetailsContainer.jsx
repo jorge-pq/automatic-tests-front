@@ -4,9 +4,10 @@ import { Grid, Paper, Typography, Divider, Button, Stack } from '@mui/material';
 
 const OrderTourDetailsContainer = ({ order }) => {
 
+    console.log(order);
     return (
         <Grid container spacing={2}>
-            {/* <Grid item xs={9}>
+            <Grid item xs={9}>
                 <Paper elevation={3} sx={{ p: 3 }}>
                     <Grid container justifyContent={'space-between'}>
                         <Grid item>
@@ -50,7 +51,7 @@ const OrderTourDetailsContainer = ({ order }) => {
                             <Typography><b>{'Ciudad: '}</b>{order.client.city}</Typography>
                         </Grid>
                         <Grid item xs={6}>
-                            <Typography><b>{'Fecha de nacimiento: '}</b>{'1990/09/30'}</Typography>
+                            <Typography><b>{'Fecha de nacimiento: '}</b>{new Date(order.client.birthday).toLocaleDateString()}</Typography>
                         </Grid>
                         <Grid item xs={6}>
                             <Typography><b>{'Dirección: '}</b>{order.client.address}</Typography>
@@ -70,10 +71,7 @@ const OrderTourDetailsContainer = ({ order }) => {
                             <Typography><b>{'Hotel: '}</b>{order.hotel.name}</Typography>
                         </Grid>
                         <Grid item xs={12}>
-                            <Typography><b>{'Fecha entrada: '}</b>{new Date(order.order[0].date[0]).toLocaleDateString()}</Typography>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Typography><b>{'Fecha salida: '}</b>{new Date(order.order[0].date[1]).toLocaleDateString()}</Typography>
+                            <Typography><b>{'Fecha: '}</b>{order.order[0].period}</Typography>
                         </Grid>
                         <Grid item xs={12}>
                             <Typography><b>{'Habitaciones: '}</b></Typography>
@@ -83,7 +81,7 @@ const OrderTourDetailsContainer = ({ order }) => {
                             order.order.map((i, index) =>
                                 <Grid container key={index}>
                                     <Grid item xs={6} mt={1}>
-                                        <Typography><b>- {i.room.name}</b></Typography>
+                                        <Typography><b>- {i.room}</b></Typography>
                                     </Grid>
                                     <Grid item xs={6} mt={1}>
                                         <Typography><b>{'Tipo: '}</b>{i.type}</Typography>
@@ -172,7 +170,7 @@ const OrderTourDetailsContainer = ({ order }) => {
                     </Button>
                   </Stack>
                 </Paper>
-            </Grid> */}
+            </Grid>
         </Grid >
     );
 };

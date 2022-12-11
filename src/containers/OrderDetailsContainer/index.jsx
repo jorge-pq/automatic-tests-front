@@ -50,7 +50,7 @@ const OrderDetailsContainer = ({ order }) => {
                             <Typography><b>{'Ciudad: '}</b>{order.client.city}</Typography>
                         </Grid>
                         <Grid item xs={6}>
-                            <Typography><b>{'Fecha de nacimiento: '}</b>{'1990/09/30'}</Typography>
+                            <Typography><b>{'Fecha de nacimiento: '}</b>{new Date(order.client.birthday).toLocaleDateString()}</Typography>
                         </Grid>
                         <Grid item xs={6}>
                             <Typography><b>{'Dirección: '}</b>{order.client.address}</Typography>
