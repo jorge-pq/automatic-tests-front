@@ -1,15 +1,114 @@
-import React, {useState} from 'react';
+import React, { useState, useContext } from 'react';
 import { Grid, Typography, Divider, Button, Autocomplete, TextField } from '@mui/material';
 import BookingTourTable from './BookingTourTable';
 import { format } from 'date-fns'
+import AuthContext from '../../providers/AuthContext';
+
+function getDate(item) {
+    return `${item.isPeriod ? (format(new Date(item.period[0]), 'dd/MM/yyyy') + ' - ' + format(new Date(item.period[1]), 'dd/MM/yyyy')) : format(new Date(item.date), 'dd/MM/yyyy')}`;
+}
+
+const selector = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
 
 const BookingTourContainer = ({ tour, roomTypes, clients }) => {
-    
-    const [offers, setOffers] = useState([]);
 
-    const handleTypeRoom = value => {
-        let t = tour.details.find(d=>d.description === value).offers;
-        setOffers(t);
+    const { user } = useContext(AuthContext);
+
+    const [periodSelected, setPeriodSelected] = useState();
+    const [types, setTypes] = useState([]);
+    const [typesCount, setTypesCount] = useState({});
+    const [bookings, setBookings] = useState([]);
+
+
+    function getAdults(type) {
+        return roomTypes.find(d=>d.name===type).persons
+    }
+
+    const handleTypePeriod = op => {
+        if (op) {
+            setPeriodSelected(op);
+            let t = tour.details.find(d => d.id === op.id).offers;
+            setTypes(t);
+        }
+        else {
+            setPeriodSelected();
+            setTypesCount({});
+            setTypes([]);
+        }
+
+    }
+
+    const handleChange = (key, value) => {
+        setTypesCount({ ...typesCount, [key]: value });
+    };
+
+    const add = () => {
+        let p = getDate(periodSelected);
+        let upd = bookings.find(d => d.period === p);
+
+        if (!upd) {
+            let currentTypes = Object.keys(typesCount);
+            currentTypes.forEach(item => {
+                for (let index = 0; index < typesCount[item]; index++) {
+                    let persons = parseInt(getAdults(item));
+                    setBookings(bookings => [...bookings, {
+                        period: p,
+                        type: item,
+                        adults: persons,
+                        childrensCount: 0,
+                        childrenTotal: 0,
+                        infantCount: 0,
+                        infantTotal: 0,
+                        total: getTotal(persons, item)
+                    }]);
+                }
+            });
+        }
+    }
+
+    const removeBooking = pos => {
+        let arr = [...bookings];
+        arr.splice(pos, 1);
+        setBookings(arr);
+    }
+
+    function getTotal(personsCount, type) {
+        let total = 0;
+        if (typesCount[type] > 0) {
+            let t = periodSelected.offers.find(d => d.room == type);
+            let price = user.tenant.type === "Wholesaler" ? parseFloat(t.priceAdult) : parseFloat(t.priceRetailAdult);
+            total += price * personsCount;
+        }
+      
+        return parseFloat(total);
+    }
+
+    const handleChildren = (room, count, pos) => {
+        let t = periodSelected.offers.find(d => d.room == room);
+
+        let price = user.tenant.type === "Wholesaler" ? parseFloat(t.priceChildren) : parseFloat(t.priceRetailChildren);
+        const total = price * count;
+
+        let upd = [...bookings];
+        let book = upd[pos];
+        book.childrenTotal = total > 0 ? total : 0;
+        book.childrensCount = count || 0;
+        upd[pos] = book;
+        setBookings(upd);
+    }
+
+    const handleInfante = (room, count, pos) => {
+        let t = periodSelected.offers.find(d => d.room == room);
+
+        let price = user.tenant.type === "Wholesaler" ? parseFloat(t.priceInfant) : parseFloat(t.priceRetailInfant);
+        const total = price * count;
+
+        let upd = [...bookings];
+        let book = upd[pos];
+        book.infantTotal = total > 0 ? total : 0;
+        book.infantCount = count || 0;
+        upd[pos] = book;
+        setBookings(upd);
     }
 
     return (
@@ -19,38 +118,53 @@ const BookingTourContainer = ({ tour, roomTypes, clients }) => {
             </Grid>
             <Grid item xs={12} md={3}>
                 <Grid container mt={3}>
-                <Grid item xs={12}>
+                    <Grid item xs={12}>
                         <Autocomplete
                             disablePortal
                             id="combo-box-demo"
+                            value={periodSelected}
                             options={tour.details}
                             size={'small'}
-                            onChange={(event, room) => {
-                                handleTypeRoom(room.description);
+                            onChange={(event, op) => {
+                                handleTypePeriod(op);
                             }}
                             sx={{ zIndex: '-999' }}
-                            getOptionLabel={(option) => option.description}
-                            renderInput={(params) => <TextField fullWidth {...params} label="Tipo habitacion" />}
+                            getOptionLabel={(option) => getDate(option)}
+                            renderInput={(params) => <TextField fullWidth {...params} label="Oferta" />}
                         />
                     </Grid>
                     <Grid item xs={12} mt={2}>
-                        <Autocomplete
-                            disablePortal
-                            id="combo-box-demo"
-                            options={offers}
-                            size={'small'}
-                            // onChange={(event, room) => {
-                            //     handleRoom(room?.name);
-                            // }}
-                            sx={{ zIndex: '-999' }}
-                            getOptionLabel={(option) => `${ option.isPeriod ? (format(new Date(option.period[0]), 'dd/MM/yyyy') + ' ' + format(new Date(option.period[1]), 'dd/MM/yyyy')):format(new Date(option.date), 'dd/MM/yyyy') } `}
-                            renderInput={(params) => <TextField fullWidth {...params} label="Oferta" />}
-                        />
+                        {
+                            types.length > 0 && <Divider sx={{ mt: 2 }}>{'Cantidad'}</Divider>
+                        }
+                        {
+                            types.length > 0 && types.map((item, index) =>
+
+                                <Autocomplete
+                                    sx={{ mt: 2 }}
+                                    key={index}
+                                    disablePortal
+                                    id="combo-box-demo"
+                                    options={selector}
+                                    size={'small'}
+                                    onChange={(event, op) => {
+                                        handleChange(item.room, op);
+                                    }}
+                                    getOptionLabel={(option) => option}
+                                    renderInput={(params) => <TextField fullWidth {...params} label={item.room} />}
+                                />
+                            )}
+                        {
+                            types.length > 0 &&
+                            <Button variant={'contained'} fullWidth sx={{ mt: 3 }} onClick={add}>
+                                {'Agregar'}
+                            </Button>
+                        }
                     </Grid>
                 </Grid>
             </Grid>
             <Grid item xs={12} md={9} p={2}>
-                <BookingTourTable />
+                <BookingTourTable data={bookings} remove={removeBooking} handleChildren={handleChildren} handleInfante={handleInfante} />
             </Grid>
         </Grid>
     );
