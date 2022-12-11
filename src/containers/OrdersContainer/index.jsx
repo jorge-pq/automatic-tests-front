@@ -91,11 +91,12 @@ const OrdersContainer = ({ bookings }) => {
     const getTotalPersons = () => {
         let persons = selected.order.reduce((a, c) => (a + c.adults), 0);
         let childrens = selected.order.reduce((a, c) => (a + c.childrensCount), 0);
-        return persons + childrens;
+        let infants = selected.order.reduce((a, c) => (a +  (c.infantCount || 0)), 0); 
+        return persons + childrens + infants;
     }
 
     const getTotalPrice = () => {
-        return parseFloat(selected.order.reduce((a, c) => (a + c.total + c.childrenTotal), 0)).toFixed(2);
+        return parseFloat(selected.order.reduce((a, c) => (a + c.total + c.childrenTotal + (c.infantTotal || 0)), 0)).toFixed(2);
     }
 
 
@@ -114,7 +115,7 @@ const OrdersContainer = ({ bookings }) => {
                         <TableRow>
                             <TableCell align="center">{'Código'}</TableCell>
                             <TableCell align="center">{'Agencia'}</TableCell>
-                            <TableCell align="center">{'Hotel'}</TableCell>
+                            <TableCell align="center">{'Hotel / Tour'}</TableCell>
                             <TableCell align="center">{'Cliente'}</TableCell>
                             <TableCell align="center">{'Fecha reservación'}</TableCell>
                             <TableCell align="center">{'Fecha creación'}</TableCell>
@@ -141,7 +142,7 @@ const OrdersContainer = ({ bookings }) => {
                                     {`${row.client.name} ${row.client.lastname}`}
                                 </TableCell>
                                 <TableCell component="th" scope="row" align="center">
-                                    {getBookingDate(row.order[0].date)}
+                                    {row.type === "hotel" || !row.type ? getBookingDate(row.order[0].date) : row.order[0].period}
                                 </TableCell>
                                 <TableCell component="th" scope="row" align="center">
                                     {new Date(row.creationDate).toLocaleDateString()}

@@ -7,6 +7,7 @@ import CreateBooking from '../BookingContainer/components/CreateBooking';
 import { addBooking } from '../../services/booking.service';
 import { useMutation } from 'react-query';
 import { useRouter } from 'next/router';
+import {getTenant} from '../../utils/util';
 
 function getDate(item) {
     return `${item.isPeriod ? (format(new Date(item.period[0]), 'dd/MM/yyyy') + ' - ' + format(new Date(item.period[1]), 'dd/MM/yyyy')) : format(new Date(item.date), 'dd/MM/yyyy')}`;
@@ -147,7 +148,7 @@ const BookingTourContainer = ({ tour, roomTypes, clients }) => {
 
     const save = (data) => {
         data.type = 'tour';
-        data.hotel = hotel;
+        data.hotel = tour;
         data.order = bookings;
         create(data);
     }
