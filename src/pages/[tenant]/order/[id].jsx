@@ -1,6 +1,7 @@
 import React from 'react';
 import {getOrderById} from '../../../services/booking.service';
 import OrderDetailsContainer from '../../../containers/OrderDetailsContainer';
+import OrderTourDetailsContainer from '../../../containers/OrderDetailsContainer/OrderTourDetailsContainer';
 import {getCookie} from '../../../lib/session';
 import {redirectToLogin} from '../../../utils/util';
 import Layout from '../../../layout';
@@ -9,7 +10,9 @@ import Layout from '../../../layout';
 const Order = ({order}) => {
     return (
         <Layout page={'Factura'}>
-            <OrderDetailsContainer order={order} />
+            {
+                order.type === "hotel" ? <OrderDetailsContainer order={order} /> : <OrderTourDetailsContainer order={order} />
+            }
         </Layout>
     );
 };

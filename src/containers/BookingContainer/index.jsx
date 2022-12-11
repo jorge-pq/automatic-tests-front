@@ -180,6 +180,7 @@ const BookingContainer = ({ hotel, roomTypes, clients }) => {
     }
 
     const save = (data) => {
+        data.type = 'hotel';
         data.hotel = hotel;
         data.order = bookings;
         create(data);

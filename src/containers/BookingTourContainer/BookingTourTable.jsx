@@ -13,6 +13,22 @@ import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 const selector = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
 
 const BookingTourTable = ({ data, remove, handleChildren, handleInfante }) => {
+
+    const getTotal = () => {
+        return parseFloat(data.reduce((a, c) => (a + c.total + c.childrenTotal + c.infantTotal), 0)).toFixed(2);
+    }
+    const getTotalAdults = () => {
+        return data.reduce((a, c) => (a + c.adults), 0);
+    }
+    
+    const getTotalChildrens = () => {
+        return data.reduce((a, c) => (a + c.childrensCount), 0);
+    }
+    
+    const getTotalInfants = () => {
+        return data.reduce((a, c) => (a + c.infantCount), 0);
+    }
+
     return (
         <TableContainer component={Paper}>
             <Table sx={{ minWidth: 700 }} aria-label="spanning table">
@@ -72,11 +88,11 @@ const BookingTourTable = ({ data, remove, handleChildren, handleInfante }) => {
                         </TableRow>
                     ))}
                     <TableRow>
-                        <TableCell rowSpan={1} />
                         <TableCell colSpan={2}><strong>{'TOTAL'}</strong></TableCell>
-                        <TableCell align="center"><Typography variant={'h5'}>{0}</Typography></TableCell>
-                        <TableCell align="center"><Typography variant={'h5'}>{0}</Typography></TableCell>
-                        <TableCell align="center"><Typography variant={'h5'}>${0}</Typography></TableCell>
+                        <TableCell align="center"><Typography variant={'h5'}>{getTotalAdults()}</Typography></TableCell>
+                        <TableCell align="center"><Typography variant={'h5'}>{getTotalChildrens()}</Typography></TableCell>
+                        <TableCell align="center"><Typography variant={'h5'}>{getTotalInfants()}</Typography></TableCell>
+                        <TableCell align="center"><Typography variant={'h5'}>${getTotal()}</Typography></TableCell>
                     </TableRow>
                 </TableBody>
             </Table>

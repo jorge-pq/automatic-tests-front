@@ -3,6 +3,10 @@ import { Grid, Typography, Divider, Button, Autocomplete, TextField } from '@mui
 import BookingTourTable from './BookingTourTable';
 import { format } from 'date-fns'
 import AuthContext from '../../providers/AuthContext';
+import CreateBooking from '../BookingContainer/components/CreateBooking';
+import { addBooking } from '../../services/booking.service';
+import { useMutation } from 'react-query';
+import { useRouter } from 'next/router';
 
 function getDate(item) {
     return `${item.isPeriod ? (format(new Date(item.period[0]), 'dd/MM/yyyy') + ' - ' + format(new Date(item.period[1]), 'dd/MM/yyyy')) : format(new Date(item.date), 'dd/MM/yyyy')}`;
@@ -13,12 +17,23 @@ const selector = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
 const BookingTourContainer = ({ tour, roomTypes, clients }) => {
 
     const { user } = useContext(AuthContext);
+    const router = useRouter();
+    const [openBookingDialog, setOpenBookingDialog] = useState(false);
 
     const [periodSelected, setPeriodSelected] = useState();
     const [types, setTypes] = useState([]);
     const [typesCount, setTypesCount] = useState({});
     const [bookings, setBookings] = useState([]);
 
+    const { mutate: create } = useMutation(addBooking, {
+        onSuccess: (data) => {
+            closeBookingDialog();
+            router.push(`/${getTenant()}/orders`);
+        },
+        onError: (error) => {
+          alert(error.response.data.message);
+        }
+    });
 
     function getAdults(type) {
         return roomTypes.find(d=>d.name===type).persons
@@ -87,12 +102,12 @@ const BookingTourContainer = ({ tour, roomTypes, clients }) => {
         let t = periodSelected.offers.find(d => d.room == room);
 
         let price = user.tenant.type === "Wholesaler" ? parseFloat(t.priceChildren) : parseFloat(t.priceRetailChildren);
-        const total = price * count;
+        const total = price * parseInt(count);
 
         let upd = [...bookings];
         let book = upd[pos];
         book.childrenTotal = total > 0 ? total : 0;
-        book.childrensCount = count || 0;
+        book.childrensCount = parseInt(count) || 0;
         upd[pos] = book;
         setBookings(upd);
     }
@@ -101,14 +116,40 @@ const BookingTourContainer = ({ tour, roomTypes, clients }) => {
         let t = periodSelected.offers.find(d => d.room == room);
 
         let price = user.tenant.type === "Wholesaler" ? parseFloat(t.priceInfant) : parseFloat(t.priceRetailInfant);
-        const total = price * count;
+        const total = price * parseInt(count);
 
         let upd = [...bookings];
         let book = upd[pos];
         book.infantTotal = total > 0 ? total : 0;
-        book.infantCount = count || 0;
+        book.infantCount = parseInt(count) || 0;
         upd[pos] = book;
         setBookings(upd);
+    }
+
+    const handleBookingDialog = () => {
+        setOpenBookingDialog(true);
+    }
+
+    const closeBookingDialog = () => {
+        setOpenBookingDialog(false);
+    }
+
+    const getTotalPersons = () => {
+        let persons = bookings.reduce((a, c) => (a + c.adults), 0);
+        let childrens = bookings.reduce((a, c) => (a + c.childrensCount), 0);
+        let infants = bookings.reduce((a, c) => (a + c.infantCount), 0); 
+        return persons + childrens + infants;
+    }
+
+    const getTotalPrice = () => {
+        return parseFloat(bookings.reduce((a, c) => (a + c.total + c.childrenTotal + c.infantTotal), 0)).toFixed(2);
+    }
+
+    const save = (data) => {
+        data.type = 'tour';
+        data.hotel = hotel;
+        data.order = bookings;
+        create(data);
     }
 
     return (
@@ -166,6 +207,23 @@ const BookingTourContainer = ({ tour, roomTypes, clients }) => {
             <Grid item xs={12} md={9} p={2}>
                 <BookingTourTable data={bookings} remove={removeBooking} handleChildren={handleChildren} handleInfante={handleInfante} />
             </Grid>
+            <Grid item xs={12} p={2}>
+                <Grid container justifyContent={'flex-end'}>
+                    <Button variant='contained' size='small' onClick={handleBookingDialog} disabled={bookings.length===0}>
+                        {'Reservar'}
+                    </Button>
+                </Grid>
+            </Grid>
+
+            <CreateBooking
+                open={openBookingDialog}
+                close={closeBookingDialog}
+                save={save}
+                clients={clients}
+                totalGuests={getTotalPersons()}
+                totalPrice={getTotalPrice()}
+            />
+
         </Grid>
     );
 };
