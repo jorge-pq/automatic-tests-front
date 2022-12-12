@@ -60,7 +60,21 @@ const TourDetailsCreateDialog = ({ id, open, close, save, types, getRoomTypePers
 
   const handleType = value => {
     setTypeSelected(value);
-    // autocompletar precios con el ultimo periodo
+    if(typesAdded.length>0){
+        let last = typesAdded[typesAdded.length - 1];
+        let offer = last.offers.find(d=>d.room===(isPeriod ? value : 'Sin habitación'));
+        if(offer){
+          setTypeOfferCostAdult(offer.costAdult);
+          setTypeOfferCostChildren(offer.costChildren);
+          setTypeOfferCostInfant(offer.costInfant);
+          setTypeOfferPriceAdult(offer.priceAdult);
+          setTypeOfferPriceChildren(offer.priceChildren);
+          setTypeOfferPriceInfant(offer.priceInfant);
+          setTypeOfferPriceRetailAdult(offer.priceRetailAdult);
+          setTypeOfferPriceRetailChildren(offer.priceRetailChildren);
+          setTypeOfferPriceRetailInfant(offer.priceRetailInfant);
+        }
+    }
   }
 
   const handleAvailability = e => setAvailability(e.target.value);
