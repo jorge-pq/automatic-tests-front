@@ -2,74 +2,121 @@ import React, {useState} from 'react';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import { Grid, Switch } from '@mui/material';
+import { Grid, Switch, Autocomplete } from '@mui/material';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import DialogTitle from '@mui/material/DialogTitle';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import Button from '@mui/material/Button';
-import DatePickerCustom from '../../../components/DatePickerCustom';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
 
 
-const EditOffer = ({ open, close, type, updateTypeOffers, children }) => {
+const EditOffer = ({ open, close, selected, updateTypeOffers, typesAdded, types, offersType }) => {
 
-    const [dateOfferType, setDateOfferType] = useState([null, null]);
-    const [startDateOfferType, endDateOfferType] = dateOfferType;
+   const [typeSelected, setTypeSelected] = useState('');
+   const [syncPrices, setSyncPrices] = useState(true);
+    const [typeOfferCostAdult, setTypeOfferCostAdult] = useState(0);
+    const [typeOfferCostChildren, setTypeOfferCostChildren] = useState(0);
+    const [typeOfferCostInfant, setTypeOfferCostInfant] = useState(0);
   
-    const [typeOfferCostAdult, setTypeOfferCostAdult] = useState();
-    const [typeOfferCostChildren, setTypeOfferCostChildren] = useState();
-    const [typeOfferCostInfant, setTypeOfferCostInfant] = useState();
+    const [typeOfferPriceAdult, setTypeOfferPriceAdult] = useState(0);
+    const [typeOfferPriceChildren, setTypeOfferPriceChildren,] = useState(0);
+    const [typeOfferPriceInfant, setTypeOfferPriceInfant] = useState(0);
   
-    const [typeOfferPriceAdult, setTypeOfferPriceAdult] = useState();
-    const [typeOfferPriceChildren, setTypeOfferPriceChildren,] = useState();
-    const [typeOfferPriceInfant, setTypeOfferPriceInfant] = useState();
-  
-    const [typeOfferPriceRetailAdult, setTypeOfferPriceRetailAdult] = useState();
-    const [typeOfferPriceRetailChildren, setTypeOfferPriceRetailChildren] = useState();
-    const [typeOfferPriceRetailInfant, setTypeOfferPriceRetailInfant] = useState();
+    const [typeOfferPriceRetailAdult, setTypeOfferPriceRetailAdult] = useState(0);
+    const [typeOfferPriceRetailChildren, setTypeOfferPriceRetailChildren] = useState(0);
+    const [typeOfferPriceRetailInfant, setTypeOfferPriceRetailInfant] = useState(0);
 
-    const [isPeriod, setIsPeriod] = useState(false);
-    const [date, setDate] = useState(new Date());
+    const handleType = value => {
+      setTypeSelected(value);
+      if(typesAdded.length>0){
+          let last = typesAdded[typesAdded.length - 1];
+          let offer = last.offers.find(d=>d.room===value);
+          if(offer){
+            setTypeOfferCostAdult(offer.costAdult);
+            setTypeOfferCostChildren(offer.costChildren);
+            setTypeOfferCostInfant(offer.costInfant);
+            setTypeOfferPriceAdult(offer.priceAdult);
+            setTypeOfferPriceChildren(offer.priceChildren);
+            setTypeOfferPriceInfant(offer.priceInfant);
+            setTypeOfferPriceRetailAdult(offer.priceRetailAdult);
+            setTypeOfferPriceRetailChildren(offer.priceRetailChildren);
+            setTypeOfferPriceRetailInfant(offer.priceRetailInfant);
+          }
+      }
+    }
 
     const handleTypeOfferCostAdult = e => setTypeOfferCostAdult(e.target.value);
     const handleTypeOfferCostChildren = e => setTypeOfferCostChildren(e.target.value);
     const handleTypeOfferCostInfant = e => setTypeOfferCostInfant(e.target.value);
   
-    const handleTypeOfferPriceAdult = e => setTypeOfferPriceAdult(e.target.value);
-    const handleTypeOfferPriceChildren = e => setTypeOfferPriceChildren(e.target.value);
-    const handleTypeOfferPriceInfant = e => setTypeOfferPriceInfant(e.target.value);
+    const handleTypeOfferPriceAdult = e => {
+      setTypeOfferPriceAdult(e.target.value);
+      if(syncPrices){
+        setTypeOfferPriceRetailAdult(e.target.value);
+      }
+    } 
+    const handleTypeOfferPriceChildren = e => {
+      setTypeOfferPriceChildren(e.target.value);
+      if(syncPrices){
+        setTypeOfferPriceRetailChildren(e.target.value);
+      }
+    }
+    const handleTypeOfferPriceInfant = e => {
+      setTypeOfferPriceInfant(e.target.value);
+      if(syncPrices){
+        setTypeOfferPriceRetailInfant(e.target.value);
+      }
+    }
   
     const handleTypeOfferPriceRetailAdult = e => setTypeOfferPriceRetailAdult(e.target.value);
     const handleTypeOfferPriceRetailChildren = e => setTypeOfferPriceRetailChildren(e.target.value);
     const handleTypeOfferPriceRetailInfant = e => setTypeOfferPriceRetailInfant(e.target.value);
 
-    const save = () => {
-        updateTypeOffers({
-            isPeriod: isPeriod,
-            period: dateOfferType,
-            date: date,
-            costAdult: typeOfferCostAdult,
-            costChildren: typeOfferCostChildren,
-            costInfant: typeOfferCostInfant,
-            priceAdult: typeOfferPriceAdult,
-            priceChildren: typeOfferPriceChildren,
-            priceInfant: typeOfferPriceInfant,
-            priceRetailAdult: typeOfferPriceRetailAdult,
-            priceRetailChildren: typeOfferPriceRetailChildren,
-            priceRetailInfant: typeOfferPriceRetailInfant
-        },
-            type
-        );
+  const save = () => {
+    const upd = {
+      room: typeSelected,
+      costAdult: typeOfferCostAdult,
+      costChildren: typeOfferCostChildren,
+      costInfant: typeOfferCostInfant,
+      priceAdult: typeOfferPriceAdult,
+      priceChildren: typeOfferPriceChildren,
+      priceInfant: typeOfferPriceInfant,
+      priceRetailAdult: typeOfferPriceRetailAdult,
+      priceRetailChildren: typeOfferPriceRetailChildren,
+      priceRetailInfant: typeOfferPriceRetailInfant
+    };
+    setTypeSelected('');
+    setTypeOfferCostAdult(0);
+    setTypeOfferCostChildren(0);
+    setTypeOfferCostInfant(0);
+    setTypeOfferPriceAdult(0);
+    setTypeOfferPriceChildren(0);
+    setTypeOfferPriceInfant(0);
+    setTypeOfferPriceRetailAdult(0);
+    setTypeOfferPriceRetailChildren(0);
+    setTypeOfferPriceRetailInfant(0);
+    updateTypeOffers(upd, selected);
+
+  }
+
+    const typesFiltered = item => {
+      let offers = typesAdded.find(d=>d.id===selected)?.offers;
+      if (offers && offers.findIndex(d => d.room == item) == -1) {
+        return true;
+      }
+      else {
+        return false;
+      }
     }
 
     return (
         <Dialog open={open} maxWidth={'lg'}>
             <DialogTitle>
-                {'Agregar oferta a '} <b style={{fontStyle: 'italic'}}>{`${children ? 'Niño ' : ''}${type}`}</b>
+                {'Agregar oferta'}
                 <IconButton
                     aria-label="close"
                     onClick={close}
@@ -85,39 +132,21 @@ const EditOffer = ({ open, close, type, updateTypeOffers, children }) => {
             </DialogTitle>
             <DialogContent>
             <Stack direction={'row'} spacing={1} sx={{ width: '100%' }} mt={2}>
-            <Grid md={3} xs={6} item>
-              <FormControlLabel
-                control={
-                  <Switch checked={isPeriod} onChange={e => setIsPeriod(e.target.checked)} />
-                }
-                label="Período"
+            
+              <Grid item xs={3}>
+              <Autocomplete
+                disablePortal
+                id="combo-box-demo"
+                options={types.filter(typesFiltered)}
+                size={'small'}
+                value={typeSelected}
+                onChange={(event, type) => {
+                  handleType(type);
+                }}
+                getOptionLabel={(option) => option}
+                renderInput={(params) => <TextField fullWidth {...params} label="Tipo" />}
               />
             </Grid>
-            {
-              isPeriod ?
-                <Grid md={4} xs={6} item sx={{ marginLeft: '-8px !important' }}>
-                  <DatePickerCustom
-                    selectsRange={true}
-                    startDate={startDateOfferType}
-                    endDate={endDateOfferType}
-                    onChange={(update) => {
-                      setDateOfferType(update);
-                    }}
-                    placeholderText={'Período'}
-                    withPortal
-                    isClearable={true}
-                  />
-                </Grid> :
-                <Grid md={4} xs={6} item sx={{ marginLeft: '-8px !important' }}>
-                  <DatePickerCustom
-                    selected={date}
-                    onChange={(date) => setDate(date)}
-                    placeholderText={'Fecha'}
-                    withPortal
-                    isClearable={true}
-                  />
-                </Grid>
-            }
           </Stack>
           <Divider sx={{ width: '100%', my: 1 }}>
             <Typography sx={{ position: 'relative', top: '10px' }} variant={'caption'}>
@@ -263,6 +292,16 @@ const EditOffer = ({ open, close, type, updateTypeOffers, children }) => {
                 onChange={handleTypeOfferPriceRetailInfant}
                 fullWidth
                 variant="outlined"
+              />
+            </Grid>
+          </Stack>
+          <Stack direction={'row'} spacing={1} sx={{ width: '100%' }} mt={2}>
+            <Grid item>
+              <FormControlLabel
+                control={
+                  <Switch checked={syncPrices} onChange={e => setSyncPrices(e.target.checked)} />
+                }
+                label="Sincronizar precios públicos y minoristas"
               />
             </Grid>
           </Stack>

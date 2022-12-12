@@ -39,12 +39,15 @@ export default function TypesTable({ data, removeType, removeTypeOfferAdded, edi
                 {row.availability}
               </TableCell>
               <TableCell align="left">
-                <OffersChip data={row.offers} handleDeleteOffer={(item) => removeTypeOfferAdded(item, row.description)} />
+                <OffersChip data={row.offers} handleDeleteOffer={(item) => removeTypeOfferAdded(item, row.id)} />
               </TableCell>
               <TableCell align="center">
-                {/* <IconButton onClick={()=>editOffersToType(row.description)}>
+                {
+                  row.isPeriod && 
+                  <IconButton onClick={() => editOffersToType(row.id)}>
                     <LibraryAddIcon />
-                </IconButton> */}
+                  </IconButton>
+                }
                 <IconButton onClick={() => removeType(index)}>
                   <DeleteIcon />
                 </IconButton>

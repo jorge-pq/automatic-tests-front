@@ -152,7 +152,6 @@ const TourDetailsCreateDialog = ({ id, open, close, save, types, getRoomTypePers
     setTypeSelected('');
     setOffersType([]);
     setDateOfferType([null, null]);
-    // setAvailability(0);
     setDate();
   }
 
@@ -185,8 +184,8 @@ const TourDetailsCreateDialog = ({ id, open, close, save, types, getRoomTypePers
   }
 
 
-  const updateTypeOffers = (offer, type) => {
-    let index = typesAdded.findIndex(d => d.description == type);
+  const updateTypeOffers = (offer, id) => {
+    let index = typesAdded.findIndex(d => d.id == id);
     let upd = [...typesAdded];
     upd[index].offers.push(offer);
     setTypesAdded(upd);
@@ -463,7 +462,15 @@ const TourDetailsCreateDialog = ({ id, open, close, save, types, getRoomTypePers
           </Grid>
 
         </Grid>
-        <EditOffer open={openUpdateOffersDialog} close={() => setOpenUpdateOffersDialog(false)} type={typeUpdateSelected} updateTypeOffers={updateTypeOffers} />
+        <EditOffer
+          open={openUpdateOffersDialog}
+          close={() => setOpenUpdateOffersDialog(false)}
+          selected={typeUpdateSelected}
+          updateTypeOffers={updateTypeOffers}
+          typesAdded={typesAdded}
+          types={types}      
+          offersType={offersType}
+        />
       </DialogContent>
       <DialogActions>
         <Button onClick={close}>Cerrar</Button>

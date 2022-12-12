@@ -172,6 +172,10 @@ const BookingTourContainer = ({ tour, roomTypes, clients }) => {
         create(data);
     }
 
+    const soldout = () => {
+       return parseInt(availability) + parseInt(getTotalPersons()) > parseInt(tour.details[0].availability); 
+    }
+
     return (
         <Grid container>
             <Grid item xs={12}>
@@ -230,7 +234,12 @@ const BookingTourContainer = ({ tour, roomTypes, clients }) => {
             </Grid>
             <Grid item xs={12} p={2}>
                 <Grid container justifyContent={'flex-end'}>
-                    <Button variant='contained' size='small' onClick={handleBookingDialog} disabled={bookings.length===0}>
+                    {
+                        soldout() && 
+                        <p style={{color: 'red', marginRight: '20px'}}>{'Has sobrepasado la cantidad de personas disponibles para este tour.'}</p>
+                    }
+                    
+                    <Button variant='contained' size='small' onClick={handleBookingDialog} disabled={bookings.length===0 || soldout()}>
                         {'Reservar'}
                     </Button>
                 </Grid>
