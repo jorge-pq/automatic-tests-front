@@ -29,9 +29,8 @@ const DatePickerCustom = styled(DatePicker)(({ theme }) => ({
 
 const TourDetailsCreateDialog = ({ id, open, close, save, types, getRoomTypePersons }) => {
 
-  const [room, setRoom] = useState('');
   const [typeSelected, setTypeSelected] = useState('');
-  const [syncPrices, setSyncPrices] = useState(false);
+  const [syncPrices, setSyncPrices] = useState(true);
   const [dateOfferType, setDateOfferType] = useState([null, null]);
   const [startDateOfferType, endDateOfferType] = dateOfferType;
 
@@ -99,9 +98,6 @@ const TourDetailsCreateDialog = ({ id, open, close, save, types, getRoomTypePers
     }
     else{
       setOffersType(offersType => [...offersType, {
-        // isPeriod: isPeriod,
-        // period: dateOfferType,
-        // date: date,
         room: isPeriod ? typeSelected : 'Sin habitación',
         costAdult: typeOfferCostAdult,
         costChildren: typeOfferCostChildren,
