@@ -42,3 +42,8 @@ export const addDetails = async (values) => {
     const {data} = await rput('api/tour/details/add/'+values.tourId, values, cookie.get('token'));
     return data;
 }
+
+export const getAvailability = async (period) => {
+    const {data} = await rget('api/booking/availability/'+ period, cookie.get('token'));
+    return data;
+}

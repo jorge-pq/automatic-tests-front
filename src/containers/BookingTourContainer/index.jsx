@@ -1,10 +1,11 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Grid, Typography, Divider, Button, Autocomplete, TextField } from '@mui/material';
 import BookingTourTable from './BookingTourTable';
 import { format } from 'date-fns'
 import AuthContext from '../../providers/AuthContext';
 import CreateBooking from '../BookingContainer/components/CreateBooking';
 import { addBooking } from '../../services/booking.service';
+import {getAvailability}  from '../../services/tours.service';
 import { useMutation } from 'react-query';
 import { useRouter } from 'next/router';
 import {getTenant} from '../../utils/util';
@@ -19,6 +20,7 @@ const BookingTourContainer = ({ tour, roomTypes, clients }) => {
 
     const { user } = useContext(AuthContext);
     const router = useRouter();
+    const [availability, setAvailability] = useState();
     const [openBookingDialog, setOpenBookingDialog] = useState(false);
 
     const [periodSelected, setPeriodSelected] = useState();
@@ -35,6 +37,23 @@ const BookingTourContainer = ({ tour, roomTypes, clients }) => {
           alert(error.response.data.message);
         }
     });
+
+    const updateAvailability = async () => {
+        let date = getDate(periodSelected);
+        let parse = String(date).replace(/\//g, ".").replace(/ /g,"");
+        let data = await getAvailability(parse);
+        setAvailability(data.total);
+    }
+
+    useEffect(() => {
+        if(periodSelected){
+            updateAvailability();
+        }
+        
+        return () => {
+            setAvailability();
+        };
+    }, [periodSelected]);
 
     function getAdults(type) {
         return roomTypes.find(d=>d.name===type).persons
@@ -157,6 +176,7 @@ const BookingTourContainer = ({ tour, roomTypes, clients }) => {
         <Grid container>
             <Grid item xs={12}>
                 <Typography variant={'h4'}>{tour.name}</Typography>
+                {availability >= 0 && <Typography variant={'body1'}>{`Disponibilidad: ${availability}/${tour.details[0].availability}`}</Typography>} 
             </Grid>
             <Grid item xs={12} md={3}>
                 <Grid container mt={3}>

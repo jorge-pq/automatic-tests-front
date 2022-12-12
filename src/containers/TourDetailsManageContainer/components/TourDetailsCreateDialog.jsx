@@ -152,7 +152,7 @@ const TourDetailsCreateDialog = ({ id, open, close, save, types, getRoomTypePers
     setTypeSelected('');
     setOffersType([]);
     setDateOfferType([null, null]);
-    setAvailability(0);
+    // setAvailability(0);
     setDate();
   }
 
