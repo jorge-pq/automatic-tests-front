@@ -4,88 +4,145 @@ import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import { Grid, Autocomplete } from '@mui/material';
-import Box from '@mui/material/Box';
+import { Grid, Autocomplete, Stack, Switch } from '@mui/material';
+import FormControlLabel from '@mui/material/FormControlLabel';
 import Divider from '@mui/material/Divider';
-import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import OffersChip from './OffersChip';
 import TypesTable from './TypesTable';
-// import ChildrensTable from './ChildrensTable';
-import DatePickerCustom from '../../../components/DatePickerCustom';
+import { styled } from '@mui/material/styles';
+import DatePicker from 'react-datepicker';
 import EditOffer from './EditOffer';
 
 
-const childrens = [1, 2];
+const DatePickerCustom = styled(DatePicker)(({ theme }) => ({
+  border: '1px solid #bfbfbf',
+  borderRadius: '3px',
+  height: '40px',
+  padding: '2.5px 4px 2.5px 6px',
+  width: '100%'
+}));
 
-const TourDetailsEditDialog = ({selected, id, open, close, save, types, getRoomTypePersons }) => {
 
-  const [roomOld, setRoomOld] = useState('');
-  const [room, setRoom] = useState('');
+const TourDetailsEditDialog = ({ selected, id, open, close, save, types }) => {
+
   const [typeSelected, setTypeSelected] = useState('');
-  const [typePrice, setTypePrice] = useState();
+  const [syncPrices, setSyncPrices] = useState(true);
   const [dateOfferType, setDateOfferType] = useState([null, null]);
   const [startDateOfferType, endDateOfferType] = dateOfferType;
-  const [typeOfferCost, setTypeOfferCost] = useState();
-  const [typeOfferPrice, setTypeOfferPrice] = useState();
-  const [typeOfferPriceRetail, setTypeOfferPriceRetail] = useState();
+
+  const [availability, setAvailability] = useState(0);
+
+  const [typeOfferCostAdult, setTypeOfferCostAdult] = useState(0);
+  const [typeOfferCostChildren, setTypeOfferCostChildren] = useState(0);
+  const [typeOfferCostInfant, setTypeOfferCostInfant] = useState(0);
+
+  const [typeOfferPriceAdult, setTypeOfferPriceAdult] = useState(0);
+  const [typeOfferPriceChildren, setTypeOfferPriceChildren,] = useState(0);
+  const [typeOfferPriceInfant, setTypeOfferPriceInfant] = useState(0);
+
+  const [typeOfferPriceRetailAdult, setTypeOfferPriceRetailAdult] = useState(0);
+  const [typeOfferPriceRetailChildren, setTypeOfferPriceRetailChildren] = useState(0);
+  const [typeOfferPriceRetailInfant, setTypeOfferPriceRetailInfant] = useState(0);
+
   const [offersType, setOffersType] = useState([]);
   const [typesAdded, setTypesAdded] = useState([]);
 
-  const [childrensSelected, setChildrensSelected] = useState('');
-  const [childrenPrice, setChildrenPrice] = useState();
-  const [dateOfferChildren, setDateOfferChildren] = useState([null, null]);
-  const [startDateOfferChildren, endDateOfferTChildren] = dateOfferChildren;
-  const [childrenOfferCost, setChildrenOfferCost] = useState();
-  const [childrenOfferPrice, setChildrenOfferPrice] = useState();
-  const [childrenOfferPriceRetail, setChildrenOfferPriceRetail] = useState();
-  const [offersChildren, setOffersChildren] = useState([]);
-  const [childrensAdded, setChildrensAdded] = useState([]);
+  const [isPeriod, setIsPeriod] = useState(false);
+  const [date, setDate] = useState(new Date());
 
   const [openUpdateOffersDialog, setOpenUpdateOffersDialog] = useState(false);
   const [typeUpdateSelected, setTypeUpdateSelected] = useState('');
-  const [openUpdateOffersChildrenDialog, setOpenUpdateOffersChildrenDialog] = useState(false);
-  const [childrenUpdateSelected, setChildrenUpdateSelected] = useState('');
-
-  const handleRoom = e => {
-    setRoom(e.target.value);
-  }
-  const handleType = value => {
-    setTypeSelected(value);
-  }
-  const handleTypeOfferCost = e => setTypeOfferCost(e.target.value);
-  const handleTypeOfferPrice = e => setTypeOfferPrice(e.target.value);
-  const handleTypeOfferPriceRetail = e => setTypeOfferPriceRetail(e.target.value);
 
   useEffect(() => {
-    setRoomOld(selected.name);
-    setRoom(selected.name);
-    setTypesAdded(selected.types);
-    setChildrensAdded(selected.childrens);
+    setTypesAdded(typesAdded => [...typesAdded, selected]);
+    setAvailability(selected.availability);
     return () => {
-      setRoom('');
-      setRoomOld('');
       setTypesAdded([]);
-      setChildrensAdded([]);
+      setAvailability(0);
     };
   }, [selected]);
 
 
-  const addOfferToType = () => {
-    setOffersType(offersType => [...offersType, {
-      date: dateOfferType,
-      cost: typeOfferCost,
-      price: typeOfferPrice,
-      priceRetail: typeOfferPriceRetail
-    }]);
+  const handleType = value => {
+    setTypeSelected(value);
+    if(typesAdded.length>0){
+        let last = typesAdded[typesAdded.length - 1];
+        let offer = last.offers.find(d=>d.room===(isPeriod ? value : 'Sin habitación'));
+        if(offer){
+          setTypeOfferCostAdult(offer.costAdult);
+          setTypeOfferCostChildren(offer.costChildren);
+          setTypeOfferCostInfant(offer.costInfant);
+          setTypeOfferPriceAdult(offer.priceAdult);
+          setTypeOfferPriceChildren(offer.priceChildren);
+          setTypeOfferPriceInfant(offer.priceInfant);
+          setTypeOfferPriceRetailAdult(offer.priceRetailAdult);
+          setTypeOfferPriceRetailChildren(offer.priceRetailChildren);
+          setTypeOfferPriceRetailInfant(offer.priceRetailInfant);
+        }
+    }
+  }
 
-    setTypeOfferPrice(0);
-    setTypeOfferPriceRetail(0);
-    setDateOfferType([null, null]);
+  const handleAvailability = e => setAvailability(e.target.value);
+
+  const handleTypeOfferCostAdult = e => setTypeOfferCostAdult(e.target.value);
+  const handleTypeOfferCostChildren = e => setTypeOfferCostChildren(e.target.value);
+  const handleTypeOfferCostInfant = e => setTypeOfferCostInfant(e.target.value);
+
+  const handleTypeOfferPriceAdult = e => {
+    setTypeOfferPriceAdult(e.target.value);
+    if(syncPrices){
+      setTypeOfferPriceRetailAdult(e.target.value);
+    }
+  } 
+  const handleTypeOfferPriceChildren = e => {
+    setTypeOfferPriceChildren(e.target.value);
+    if(syncPrices){
+      setTypeOfferPriceRetailChildren(e.target.value);
+    }
+  }
+  const handleTypeOfferPriceInfant = e => {
+    setTypeOfferPriceInfant(e.target.value);
+    if(syncPrices){
+      setTypeOfferPriceRetailInfant(e.target.value);
+    }
+  }
+
+  const handleTypeOfferPriceRetailAdult = e => setTypeOfferPriceRetailAdult(e.target.value);
+  const handleTypeOfferPriceRetailChildren = e => setTypeOfferPriceRetailChildren(e.target.value);
+  const handleTypeOfferPriceRetailInfant = e => setTypeOfferPriceRetailInfant(e.target.value);
+
+  const addTypeToOffer = () => {
+    if(isPeriod && !typeSelected){
+      alert('Seleccione un tipo de habitación');
+    }
+    else{
+      setOffersType(offersType => [...offersType, {
+        room: isPeriod ? typeSelected : 'Sin habitación',
+        costAdult: typeOfferCostAdult,
+        costChildren: typeOfferCostChildren,
+        costInfant: typeOfferCostInfant,
+        priceAdult: typeOfferPriceAdult,
+        priceChildren: typeOfferPriceChildren,
+        priceInfant: typeOfferPriceInfant,
+        priceRetailAdult: typeOfferPriceRetailAdult,
+        priceRetailChildren: typeOfferPriceRetailChildren,
+        priceRetailInfant: typeOfferPriceRetailInfant
+      }]);
+      setTypeSelected('');
+      setTypeOfferCostAdult(0);
+      setTypeOfferCostChildren(0);
+      setTypeOfferCostInfant(0);
+      setTypeOfferPriceAdult(0);
+      setTypeOfferPriceChildren(0);
+      setTypeOfferPriceInfant(0);
+      setTypeOfferPriceRetailAdult(0);
+      setTypeOfferPriceRetailChildren(0);
+      setTypeOfferPriceRetailInfant(0);
+    }
   }
 
   const removeTypeOffer = item => {
@@ -94,76 +151,36 @@ const TourDetailsEditDialog = ({selected, id, open, close, save, types, getRoomT
 
   const addType = () => {
     setTypesAdded(typesAdded => [...typesAdded, {
-      description: typeSelected,
-      persons: getRoomTypePersons(typeSelected),
-      price: typePrice,
-      offers: offersType
+      id: typesAdded.length,
+      isPeriod: isPeriod,
+      period: dateOfferType,
+      date: date,
+      offers: offersType,
+      availability: availability,
     }]);
-
-    setTypeSelected('');  
+    setTypeSelected('');
     setOffersType([]);
+    setDateOfferType([null, null]);
+    setDate();
   }
 
-  const removeType = item => {
-    setTypesAdded(typesAdded.filter(d => d.description != item));
-  }
-
-  const handleChildrens = value => {
-    setChildrensSelected(value);
-  }
-  const handleChildrenOfferCost = e => setChildrenOfferCost(e.target.value);
-  const handleChildrenOfferPrice = e => setChildrenOfferPrice(e.target.value);
-  const handleChildrenOfferPriceRetail = e => setChildrenOfferPriceRetail(e.target.value);
-
-
-  const addOfferToChildren = () => {
-    setOffersChildren(offersChildren => [...offersChildren, {
-      date: dateOfferChildren,
-      cost: childrenOfferCost,
-      price: childrenOfferPrice,
-      priceRetail: childrenOfferPriceRetail
-    }]);
-
-    setChildrenOfferPrice(0);
-    setChildrenOfferPriceRetail(0);
-    setDateOfferChildren([null, null]);
-  }
-
-  const removeChildrenOffer = item => {
-    setOffersChildren(offersChildren.filter(d => d != item));
-  }
-
-  const addChildren = () => {
-    setChildrensAdded(childrensAdded => [...childrensAdded, {
-      count: childrensSelected,
-      price: childrenPrice,
-      offers: offersChildren
-    }]);
-
-    setChildrensSelected('');
-    setOffersChildren([]);
-  }
-
-  const removeChildren = item => {
-    setChildrensAdded(childrensAdded.filter(d => d.count != item));
+  const removeType = index => {
+    setTypesAdded(typesAdded.filter(d => d.id != index));
   }
 
   const handleSubmit = () => {
-      const data = {
-        hotelId: id,
-        roomOld: roomOld,
-        name: room,
-        types: typesAdded,
-        childrens: childrensAdded
-      }
+    const data = {
+      tourId: id,
+      types: typesAdded
+    }
 
-      save(data);
+    save(data);
   }
 
   const removeTypeOfferAdded = (offer, type) => {
     let index = typesAdded.findIndex(d => d.description == type);
     let offers = typesAdded[index].offers;
-    let offersUpd = offers.filter(d=>d!=offer); 
+    let offersUpd = offers.filter(d => d != offer);
     let upd = [...typesAdded];
     upd[index].offers = offersUpd;
     setTypesAdded(upd);
@@ -174,51 +191,31 @@ const TourDetailsEditDialog = ({selected, id, open, close, save, types, getRoomT
     setTypeUpdateSelected(value);
   }
 
-  const updateTypeOffers = (offer, type) => {
-    let index = typesAdded.findIndex(d => d.description == type);
+
+  const updateTypeOffers = (offer, id) => {
+    let index = typesAdded.findIndex(d => d.id == id);
     let upd = [...typesAdded];
     upd[index].offers.push(offer);
     setTypesAdded(upd);
     setOpenUpdateOffersDialog(false);
     setTypeUpdateSelected('');
   }
-  
-  const editOffersToChildren = value => {
-    setOpenUpdateOffersChildrenDialog(true);
-    setChildrenUpdateSelected(value);
-  }
-
-  const updateChildrenOffers = (offer, type) => {
-    let index = childrensAdded.findIndex(d => d.count == type);
-    let upd = [...childrensAdded];
-    upd[index].offers.push(offer);
-    setChildrensAdded(upd);
-    setOpenUpdateOffersChildrenDialog(false);
-    setChildrenUpdateSelected('');
-  }
 
   const typesFiltered = item => {
-    if(typesAdded.findIndex(d=>d.description == item)== -1){
+    if (offersType.findIndex(d => d.room == item) == -1) {
       return true;
     }
-    else{
+    else {
       return false;
     }
   }
 
-  const childrenFiltered = item => {
-    if(childrensAdded.findIndex(d=>d.count == item)== -1){
-      return true;
-    }
-    else{
-      return false;
-    }
-  }
+
 
   return (
     <Dialog open={open} maxWidth={'lg'}>
       <DialogTitle>
-        {'Editar Habitacion'}
+        {'Editar tour'}
         <IconButton
           aria-label="close"
           onClick={close}
@@ -233,214 +230,250 @@ const TourDetailsEditDialog = ({selected, id, open, close, save, types, getRoomT
         </IconButton>
       </DialogTitle>
       <DialogContent>
-      <Grid container pt={2}>
-          <Stack direction={'row'} spacing={2} sx={{width: '100%'}}>
-          <Grid item xs={6}>
+        <Grid container pt={2}>
+          <Stack direction={'row'} spacing={1} sx={{ width: '100%' }} mt={2}>
+            <Grid md={2} xs={6} item>
+              <FormControlLabel
+                control={
+                  <Switch checked={isPeriod} onChange={e => setIsPeriod(e.target.checked)} />
+                }
+                label="Período"
+              />
+            </Grid>
+            {
+              isPeriod ?
+                <>
+                  <Grid md={4} xs={6} item sx={{ marginLeft: '-8px !important' }}>
+                    <DatePickerCustom
+                      selectsRange={true}
+                      startDate={startDateOfferType}
+                      endDate={endDateOfferType}
+                      onChange={(update) => {
+                        setDateOfferType(update);
+                      }}
+                      placeholderText={'Período'}
+                      withPortal
+                      isClearable={true}
+                    />
+                  </Grid>
+                  <Grid item xs={3}>
+                    <Autocomplete
+                      disablePortal
+                      id="combo-box-demo"
+                      options={types.filter(typesFiltered)}
+                      size={'small'}
+                      value={typeSelected}
+                      onChange={(event, type) => {
+                        handleType(type);
+                      }}
+                      getOptionLabel={(option) => option}
+                      renderInput={(params) => <TextField fullWidth {...params} label="Tipo" />}
+                    />
+                  </Grid>
+                </>
+                :
+                <Grid md={4} xs={6} item sx={{ marginLeft: '-8px !important' }}>
+                  <DatePickerCustom
+                    selected={date}
+                    onChange={(date) => setDate(date)}
+                    placeholderText={'Fecha'}
+                    withPortal
+                    isClearable={true}
+                  />
+                </Grid>
+            }
+            <Grid xs={6} md={3} item>
               <TextField
-                autoFocus
-                id="name"
-                label="Nombre"
-                value={room}
-                onChange={handleRoom}
-                type="text"
-                fullWidth
+                id="cost"
                 size={'small'}
+                label="Disponibilidad"
+                type="number"
+                inputProps={{ min: 0 }}
+                value={availability}
+                onChange={handleAvailability}
+                fullWidth
                 variant="outlined"
               />
             </Grid>
-            <Grid item xs={6}>
-              <Autocomplete
-                disablePortal
-                id="combo-box-demo"
-                options={types.filter(typesFiltered)}
-                size={'small'}
-                value={typeSelected}
-                onChange={(event, type) => {
-                  handleType(type);
-                }}
-                getOptionLabel={(option) => option}
-                renderInput={(params) => <TextField fullWidth {...params} label="Tipo" />}
-              />
-            </Grid>
           </Stack>
+          <Divider sx={{ width: '100%', my: 1 }}>
+            <Typography sx={{ position: 'relative', top: '10px' }} variant={'caption'}>
+              {'Costos'}
+            </Typography>
+          </Divider>
           <Stack direction={'row'} spacing={1} sx={{ width: '100%' }} mt={2}>
-            <Grid md={4} xs={6} item>
-              <DatePickerCustom
-                selectsRange={true}
-                startDate={startDateOfferType}
-                endDate={endDateOfferType}
-                onChange={(update) => {
-                  setDateOfferType(update);
-                }}
-                placeholderText={'Fecha'}
-                withPortal
-                isClearable={true}
-              />
-            </Grid>
-            <Grid xs={6} md={2} item>
+            <Grid xs={6} md={4} item>
               <TextField
                 autoFocus
                 id="cost"
                 size={'small'}
-                label="Costo"
+                label="Costo adulto"
                 type="number"
                 inputProps={{ min: 0 }}
-                value={typeOfferCost}
-                onChange={handleTypeOfferCost}
+                value={typeOfferCostAdult}
+                onChange={handleTypeOfferCostAdult}
                 fullWidth
                 variant="outlined"
               />
             </Grid>
-            <Grid md={2} xs={6} item pl={1}>
+            <Grid xs={6} md={4} item>
               <TextField
-                autoFocus
-                id="name"
-                label="Precio mayorista"
-                inputProps={{ min: 0 }}
-                type="number"
+                id="cost"
                 size={'small'}
-                value={typeOfferPrice}
-                onChange={handleTypeOfferPrice}
+                label="Costo niño"
+                type="number"
+                inputProps={{ min: 0 }}
+                value={typeOfferCostChildren}
+                onChange={handleTypeOfferCostChildren}
                 fullWidth
                 variant="outlined"
               />
             </Grid>
-            <Grid md={2} xs={6} item pl={1}>
+            <Grid xs={6} md={4} item>
               <TextField
-                autoFocus
-                id="name"
-                label="Precio minorista"
-                inputProps={{ min: 0 }}
-                type="number"
+                id="cost"
                 size={'small'}
-                value={typeOfferPriceRetail}
-                onChange={handleTypeOfferPriceRetail}
+                label="Costo infante"
+                type="number"
+                inputProps={{ min: 0 }}
+                value={typeOfferCostInfant}
+                onChange={handleTypeOfferCostInfant}
                 fullWidth
                 variant="outlined"
               />
-            </Grid>
-            <Grid xs={6} md={2} mt={3} item>
-              <Button variant={'contained'} onClick={addOfferToType}>{'Agregar oferta'}</Button>
             </Grid>
           </Stack>
-
+          <Divider sx={{ width: '100%', my: 1 }}>
+            <Typography sx={{ position: 'relative', top: '10px' }} variant={'caption'}>
+              {'Precios públicos'}
+            </Typography>
+          </Divider>
+          <Stack direction={'row'} spacing={1} sx={{ width: '100%' }} mt={2}>
+            <Grid md={4} xs={6} item pl={1}>
+              <TextField
+                id="name"
+                label="Precio adulto"
+                inputProps={{ min: 0 }}
+                type="number"
+                size={'small'}
+                value={typeOfferPriceAdult}
+                onChange={handleTypeOfferPriceAdult}
+                fullWidth
+                variant="outlined"
+              />
+            </Grid>
+            <Grid md={4} xs={6} item pl={1}>
+              <TextField
+                id="name"
+                label="Precio niño"
+                inputProps={{ min: 0 }}
+                type="number"
+                size={'small'}
+                value={typeOfferPriceChildren}
+                onChange={handleTypeOfferPriceChildren}
+                fullWidth
+                variant="outlined"
+              />
+            </Grid>
+            <Grid md={4} xs={6} item pl={1}>
+              <TextField
+                id="name"
+                label="Precio infante"
+                inputProps={{ min: 0 }}
+                type="number"
+                size={'small'}
+                value={typeOfferPriceInfant}
+                onChange={handleTypeOfferPriceInfant}
+                fullWidth
+                variant="outlined"
+              />
+            </Grid>
+          </Stack>
+          <Divider sx={{ width: '100%', my: 1 }}>
+            <Typography sx={{ position: 'relative', top: '10px' }} variant={'caption'}>
+              {'Precios minoristas'}
+            </Typography>
+          </Divider>
+          <Stack direction={'row'} spacing={1} sx={{ width: '100%' }} mt={2}>
+            <Grid md={4} xs={6} item pl={1}>
+              <TextField
+                id="name"
+                label="Precio adulto"
+                inputProps={{ min: 0 }}
+                type="number"
+                size={'small'}
+                value={typeOfferPriceRetailAdult}
+                onChange={handleTypeOfferPriceRetailAdult}
+                fullWidth
+                variant="outlined"
+              />
+            </Grid>
+            <Grid md={4} xs={6} item pl={1}>
+              <TextField
+                id="name"
+                label="Precio niño"
+                inputProps={{ min: 0 }}
+                type="number"
+                size={'small'}
+                value={typeOfferPriceRetailChildren}
+                onChange={handleTypeOfferPriceRetailChildren}
+                fullWidth
+                variant="outlined"
+              />
+            </Grid>
+            <Grid md={4} xs={6} item pl={1}>
+              <TextField
+                id="name"
+                label="Precio infante"
+                inputProps={{ min: 0 }}
+                type="number"
+                size={'small'}
+                value={typeOfferPriceRetailInfant}
+                onChange={handleTypeOfferPriceRetailInfant}
+                fullWidth
+                variant="outlined"
+              />
+            </Grid>
+          </Stack>
+          <Stack direction={'row'} spacing={1} sx={{ width: '100%' }} mt={2} justifyContent={'space-between'}>
+            <Grid item>
+              <FormControlLabel
+                control={
+                  <Switch checked={syncPrices} onChange={e => setSyncPrices(e.target.checked)} />
+                }
+                label="Sincronizar precios públicos y minoristas"
+              />
+            </Grid>
+            <Grid item>
+              <Button variant={'contained'} onClick={addTypeToOffer}>{'Agregar precio'}</Button>
+            </Grid>
+          </Stack>
           <Grid item xs={12} mt={2}>
             <OffersChip data={offersType} handleDeleteOffer={removeTypeOffer} />
           </Grid>
           <Grid item xs={12} mt={2}>
             <Grid container justifyContent={'center'}>
-              <Button variant={'contained'} disabled={offersType.length===0} onClick={addType}>{'Agregar tipo habitación'}</Button>
+              <Button variant={'contained'} disabled={offersType.length === 0} onClick={addType}>{'Agregar oferta'}</Button>
             </Grid>
           </Grid>
           <Grid item xs={12} mt={2}>
             <TypesTable data={typesAdded} removeType={removeType} removeTypeOfferAdded={removeTypeOfferAdded} editOffersToType={editOffersToType} />
           </Grid>
 
-          {/* ------------ Childrens ------------------------- */}
-
-
-          <Divider sx={{ width: '100%', my: 2 }}>
-            <Typography sx={{ position: 'relative', top: '15px' }} variant={'h6'}>
-              {'Niños'}
-            </Typography>
-          </Divider>
-          <Grid item xs={12}>
-            <Grid container spacing={2}>
-              <Grid item xs={6} md={2} mt={2}>
-                <Autocomplete
-                  disablePortal
-                  id="combo-box-demo"
-                  options={childrens.filter(childrenFiltered)}
-                  size={'small'}
-                  value={childrensSelected}
-                  onChange={(event, count) => {
-                    handleChildrens(count);
-                  }}
-                  getOptionLabel={(option) => option}
-                  renderInput={(params) => <TextField fullWidth {...params} label="Cantidad de niños" />}
-                />
-              </Grid>
-
-               <Grid item xs={6} md={2} mt={2}>
-                <DatePickerCustom
-                  selectsRange={true}
-                  startDate={startDateOfferChildren}
-                  endDate={endDateOfferTChildren}
-                  onChange={(update) => {
-                    setDateOfferChildren(update);
-                  }}
-                  placeholderText={'Fecha'}
-                  withPortal
-                  isClearable={true}
-                />
-              </Grid>
-              <Grid xs={6} md={2} item mt={2}>
-                <TextField
-                  autoFocus
-                  id="cost"
-                  size={'small'}
-                  label="Costo"
-                  type="number"
-                  inputProps={{ min: 0 }}
-                  value={childrenOfferCost}
-                  onChange={handleChildrenOfferCost}
-                  fullWidth
-                  variant="outlined"
-                />
-              </Grid>
-              <Grid xs={6} md={2} item mt={2}>
-                <TextField
-                  autoFocus
-                  id="name"
-                  size={'small'}
-                  label="Precio mayorista"
-                  type="number"
-                  inputProps={{ min: 0 }}
-                  value={childrenOfferPrice}
-                  onChange={handleChildrenOfferPrice}
-                  fullWidth
-                  variant="outlined"
-                />
-              </Grid>
-              <Grid xs={6} md={2} item mt={2}>
-                <TextField
-                  autoFocus
-                  id="name"
-                  size={'small'}
-                  label="Precio minorista"
-                  type="number"
-                  inputProps={{ min: 0 }}
-                  value={childrenOfferPriceRetail}
-                  onChange={handleChildrenOfferPriceRetail}
-                  fullWidth
-                  variant="outlined"
-                />
-              </Grid>
-              <Grid xs={12} md={2} mt={2} pl={3} item>
-                <Button variant={'contained'} onClick={addOfferToChildren}>{'Agregar oferta'}</Button>
-              </Grid>
-            </Grid>
-          </Grid>
-
-
-          <Grid item xs={12} mt={2}>
-            <OffersChip data={offersChildren} handleDeleteOffer={removeChildrenOffer} />
-          </Grid>
-          <Grid item xs={12} mt={2}>
-            <Grid container justifyContent={'center'}>
-              <Button variant={'contained'} disabled={offersChildren.length===0} onClick={addChildren}>{'Agregar Niño'}</Button>
-            </Grid>
-          </Grid>
-          {/* <Grid item xs={12} mt={2}>
-            <ChildrensTable data={childrensAdded} removeChildren={removeChildren} editOffersToChildren={editOffersToChildren} />
-          </Grid> */}
         </Grid>
-        <EditOffer open={openUpdateOffersDialog} close={()=>setOpenUpdateOffersDialog(false)} type={typeUpdateSelected} updateTypeOffers={updateTypeOffers} />
-        <EditOffer open={openUpdateOffersChildrenDialog} close={()=>setOpenUpdateOffersChildrenDialog(false)} type={childrenUpdateSelected} children updateTypeOffers={updateChildrenOffers} />
+        <EditOffer
+          open={openUpdateOffersDialog}
+          close={() => setOpenUpdateOffersDialog(false)}
+          selected={typeUpdateSelected}
+          updateTypeOffers={updateTypeOffers}
+          typesAdded={typesAdded}
+          types={types}      
+          offersType={offersType}
+        />
       </DialogContent>
       <DialogActions>
         <Button onClick={close}>Cerrar</Button>
-        <Button variant={'contained'} disabled={!room || typesAdded.length<1} onClick={handleSubmit}>{'Guardar habitacion'}</Button>
+        <Button variant={'contained'} disabled={typesAdded.length < 1} onClick={handleSubmit}>{'Guardar ofertas'}</Button>
       </DialogActions>
     </Dialog>
   );

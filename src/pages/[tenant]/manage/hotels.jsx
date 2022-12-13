@@ -1,10 +1,10 @@
-import React from 'react';
+import React, {Suspense} from 'react';
 import dynamic from 'next/dynamic';
 import {getHotels} from '../../../services/hotels.service';
 import {getCookie} from '../../../lib/session';
 import Layout from '../../../layout';
 import {redirectToLogin} from '../../../utils/util';
-
+import CircularProgress from '@mui/material/CircularProgress';
 
 const HotelsManageContainer = dynamic(() => import('../../../containers/HotelsManageContainer'), {
     suspense: true,
@@ -12,9 +12,11 @@ const HotelsManageContainer = dynamic(() => import('../../../containers/HotelsMa
 
 const hotels = ({data}) => {
     return (
-        <Layout page={'Gestionar hoteles'}>
-            <HotelsManageContainer data={data}/>
-        </Layout>
+        <Suspense fallback={<CircularProgress />}>
+            <Layout page={'Gestionar hoteles'}>
+                <HotelsManageContainer data={data}/>
+            </Layout>
+        </Suspense>
     );
 };
 

@@ -27,15 +27,15 @@ const TourDetailsManageContainer = ({ tour, roomTypes }) => {
         }
     });
 
-    const { mutate: update } = useMutation(updateDetails, {
-        onSuccess: (data) => {
-            setOpenDialogEdit(false);
-            router.reload();
-        },
-        onError: (error) => {
-            alert('Error! ');
-        }
-    });
+    // const { mutate: update } = useMutation(updateDetails, {
+    //     onSuccess: (data) => {
+    //         setOpenDialogEdit(false);
+    //         router.reload();
+    //     },
+    //     onError: (error) => {
+    //         alert('Error! ');
+    //     }
+    // });
 
     const { mutate: remove } = useMutation(removeDetails, {
         onSuccess: (data) => {
@@ -46,15 +46,20 @@ const TourDetailsManageContainer = ({ tour, roomTypes }) => {
         }
     });
 
-
-    const openCreateDialog = () => {
-        setOpenDialog(true);
+    const handleDialog = () => {
+        if(tour.details.length > 0){
+            setSelected(tour.details[0]);
+            setOpenDialogEdit(true);
+        }
+        else{
+            setOpenDialog(true);
+        }
     }
 
     const closeCreateDialog = () => {
         setOpenDialog(false);
     }
-
+    
     const closeDialogEdit = () => {
         setOpenDialogEdit(false);
     }
@@ -84,7 +89,7 @@ const TourDetailsManageContainer = ({ tour, roomTypes }) => {
             </Grid>
             <Grid item xs={6}>
                 <Grid container justifyContent={'flex-end'}>
-                    <Button variant={'contained'} onClick={openCreateDialog}>{tour.details.length > 0 ? 'Editar detalles' : 'Agregar detalles'}</Button>
+                    <Button variant={'contained'} onClick={handleDialog}>{tour.details.length > 0 ? 'Editar detalles' : 'Agregar detalles'}</Button>
                 </Grid>
             </Grid>
             <Grid item xs={12} mt={2}>
@@ -93,7 +98,7 @@ const TourDetailsManageContainer = ({ tour, roomTypes }) => {
 
             <TourDetailsCreateDialog types={types} getRoomTypePersons={getRoomTypePersons} id={tour._id} open={openDialog} close={closeCreateDialog} save={save} />
             {
-                selected && <TourDetailsEditDialog types={types} getRoomTypePersons={getRoomTypePersons} id={hotel._id} selected={selected} open={openDialogEdit} close={closeDialogEdit} save={update} />
+                selected && <TourDetailsEditDialog types={types} id={tour._id} selected={selected} open={openDialogEdit} close={closeDialogEdit} save={save} />
             }
 
         </Grid>
