@@ -24,6 +24,12 @@ export default function TourEditDialog({open, close, item, save}) {
     save(data);
   }
 
+  useEffect(() => {
+    setValue("category", item.category)
+    return () => {
+      setValue("category", '')
+    };
+  }, [item]);
 
   return (
       <Dialog open={open} onClose={close}>
