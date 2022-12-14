@@ -58,8 +58,8 @@ const TourDetailsEditDialog = ({ selected, id, open, close, save, types }) => {
   const [typeUpdateSelected, setTypeUpdateSelected] = useState('');
 
   useEffect(() => {
-    setTypesAdded(typesAdded => [...typesAdded, selected]);
-    setAvailability(selected.availability);
+    setTypesAdded(selected);
+    setAvailability(selected[selected.length-1].availability);
     return () => {
       setTypesAdded([]);
       setAvailability(0);
@@ -177,8 +177,8 @@ const TourDetailsEditDialog = ({ selected, id, open, close, save, types }) => {
     save(data);
   }
 
-  const removeTypeOfferAdded = (offer, type) => {
-    let index = typesAdded.findIndex(d => d.description == type);
+  const removeTypeOfferAdded = (offer, id) => {
+    let index = typesAdded.findIndex(d => d.id == id);
     let offers = typesAdded[index].offers;
     let offersUpd = offers.filter(d => d != offer);
     let upd = [...typesAdded];

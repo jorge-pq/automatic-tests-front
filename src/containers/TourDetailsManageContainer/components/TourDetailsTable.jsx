@@ -12,7 +12,6 @@ import { format } from 'date-fns'
 
 
 const TourDetailsTable = ({ data, showEdit, removeRoom }) => {
-    console.log(data);
     return (
         <TableContainer component={Paper}>
             <Table sx={{ minWidth: 300 }} aria-label="simple table">
@@ -30,7 +29,7 @@ const TourDetailsTable = ({ data, showEdit, removeRoom }) => {
                             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                         >
                             <TableCell component="th" scope="row">
-                            {`${row.isPeriod ? (format(new Date(row.period[0]), 'dd/MM/yyyy') + ' ' + format(new Date(row.period[1]), 'dd/MM/yyyy')) : format(new Date(row.date), 'dd/MM/yyyy')} `}
+                            {`${row.isPeriod ? (format(new Date(row.period[0]), 'dd/MM/yyyy') + ' - ' + format(new Date(row.period[1]), 'dd/MM/yyyy')) : format(new Date(row.date), 'dd/MM/yyyy')} `}
                             </TableCell>
                             <TableCell component="th" scope="row">
                                 {row.availability}

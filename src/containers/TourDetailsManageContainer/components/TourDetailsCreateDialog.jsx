@@ -169,8 +169,8 @@ const TourDetailsCreateDialog = ({ id, open, close, save, types, getRoomTypePers
     save(data);
   }
 
-  const removeTypeOfferAdded = (offer, type) => {
-    let index = typesAdded.findIndex(d => d.description == type);
+  const removeTypeOfferAdded = (offer, id) => {
+    let index = typesAdded.findIndex(d => d.id == id);
     let offers = typesAdded[index].offers;
     let offersUpd = offers.filter(d => d != offer);
     let upd = [...typesAdded];

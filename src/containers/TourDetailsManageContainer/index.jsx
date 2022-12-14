@@ -48,7 +48,7 @@ const TourDetailsManageContainer = ({ tour, roomTypes }) => {
 
     const handleDialog = () => {
         if(tour.details.length > 0){
-            setSelected(tour.details[0]);
+            setSelected(tour.details);
             setOpenDialogEdit(true);
         }
         else{
