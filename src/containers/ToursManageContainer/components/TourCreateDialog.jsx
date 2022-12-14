@@ -59,7 +59,7 @@ export default function TourCreateDialog({ open, close, save }) {
                 render={({ field }) => <Autocomplete
                 disablePortal
                 id="combo-box-demo"
-                options={['Nacional', 'Internacional']}
+                options={['Local', 'Nacional', 'Internacional']}
                 size={'small'}
                 onChange={(event, op) => {
                   field.onChange(op);

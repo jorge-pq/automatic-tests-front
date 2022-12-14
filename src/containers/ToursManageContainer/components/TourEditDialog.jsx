@@ -70,7 +70,7 @@ export default function TourEditDialog({open, close, item, save}) {
                 disablePortal
                 id="combo-box-demo"
                 defaultValue={item.category}
-                options={['Nacional', 'Internacional']}
+                options={['Local', 'Nacional', 'Internacional']}
                 size={'small'}
                 onChange={(event, op) => {
                   field.onChange(op);
