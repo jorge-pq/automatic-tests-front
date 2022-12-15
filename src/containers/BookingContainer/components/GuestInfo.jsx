@@ -15,7 +15,8 @@ import Button from '@mui/material/Button';
 import DeleteIcon from '@mui/icons-material/DeleteOutline';
 import EditIcon from '@mui/icons-material/EditOutlined';
 import { Controller, useForm } from 'react-hook-form';
-
+import Divider from '@mui/material/Divider';
+import Typography from '@mui/material/Typography';
 
 const DatePickerCustom = styled(DatePicker)(({ theme }) => ({
     border: '1px solid #bfbfbf',
@@ -52,6 +53,8 @@ const GuestInfo = ({ guests, addGuest, removeGuest, totalGuests }) => {
 
     const clear = () => {
         setValue('name', '');
+        setValue('contactName', '');
+        setValue('contactPhone', '');
         setValue('lastname', '');
         setValue('passport', '');
         setBirthday();
@@ -134,6 +137,25 @@ const GuestInfo = ({ guests, addGuest, removeGuest, totalGuests }) => {
                         errors.expireDate && !expireDate && <label style={errorText}>{'La fecha de vencimiento del pasaporte es requerida'}</label>
                     }
                 </Grid>
+                <Divider sx={{ width: '100%', my: 2 }}>
+                <Typography sx={{ position: 'relative', top: '10px' }} variant={'body1'}>
+                    {'Contacto de emergencia'}
+                </Typography>
+            </Divider>
+            <Grid item xs={4}>
+                <Controller
+                    control={control}
+                    name="contactName"
+                    render={({ field }) => <TextField size={'small'} fullWidth placeholder={'Nombre de contacto'} {...field} />}
+                />
+            </Grid>
+            <Grid item xs={4}>
+                <Controller
+                    control={control}
+                    name="contactPhone"
+                    render={({ field }) => <TextField size={'small'} fullWidth placeholder={'Telefono de contacto'} {...field} />}
+                />
+            </Grid>
                 <Grid item xs={12}>
                     <Grid container justifyContent={'flex-end'}>
                         <Button type='submit' variant={'contained'} disabled={guests.length + 1 > totalGuests}>{'Agregar'}</Button>
@@ -148,6 +170,8 @@ const GuestInfo = ({ guests, addGuest, removeGuest, totalGuests }) => {
                                 <TableCell align="center">{'Fecha de nacimiento'}</TableCell>
                                 <TableCell align="center">{'No. Pasaporte'}</TableCell>
                                 <TableCell align="center">{'Vencimiento pasaporte'}</TableCell>
+                                <TableCell align="center">{'Nombre de contacto'}</TableCell>
+                                <TableCell align="center">{'Telefono de contacto'}</TableCell>
                                 <TableCell align="center">{'Acciones'}</TableCell>
                             </TableRow>
                         </TableHead>
@@ -171,6 +195,12 @@ const GuestInfo = ({ guests, addGuest, removeGuest, totalGuests }) => {
                                     </TableCell>
                                     <TableCell align="center" scope="row">
                                         {row.expireDate}
+                                    </TableCell>
+                                    <TableCell align="center" scope="row">
+                                        {row.contactName}
+                                    </TableCell>
+                                    <TableCell align="center" scope="row">
+                                        {row.contactPhone}
                                     </TableCell>
                                     <TableCell align="center">
                                         {/* <IconButton>

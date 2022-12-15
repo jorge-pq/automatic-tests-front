@@ -107,7 +107,7 @@ const OrderDetailsContainer = ({ order }) => {
                                     </Grid>
                                     <Grid item xs={6} mt={1}>
                                         <Typography><b>{'Nombre: '}</b>{i.name}</Typography>
-                                        <Typography><b>{'Apellidps: '}</b>{i.lastname}</Typography>
+                                        <Typography><b>{'Apellidos: '}</b>{i.lastname}</Typography>
                                         <Typography><b>{'Pasaporte: '}</b>{i.passport}</Typography>
                                     </Grid>
                                 </Grid>

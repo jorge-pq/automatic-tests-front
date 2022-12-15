@@ -97,7 +97,7 @@ const CreateBooking = ({ open, close, save, totalGuests, totalPrice, clients }) 
 
   const [payType, setPayType] = useState('Cash');
   const [discount, setDiscount] = useState(0);
-  const service = 2;
+  const service = 2.5.toFixed(2);
   const [paid, setPaid] = useState(0);
 
   const [clientSelected, setClientSelected] = useState();
@@ -125,7 +125,7 @@ const CreateBooking = ({ open, close, save, totalGuests, totalPrice, clients }) 
 
   function getBalance() {
     let result = (parseFloat(paid) - (parseFloat(totalPrice) + parseFloat(service) - parseFloat(discount))).toFixed(2);
-    return result.toString() === '-0.00' ? 0 : result;
+    return result.toString() === '-0.00' ? 0 : Math.abs(result).toFixed(2);
   }
 
   function getTotal() {

@@ -56,10 +56,11 @@ const BookingTourContainer = ({ tour, roomTypes, clients }) => {
     }, [periodSelected]);
 
     function getAdults(type) {
-        return roomTypes.find(d=>d.name===type).persons
+        return roomTypes.find(d=>d.name===type)?.persons || 1
     }
 
     const handleTypePeriod = op => {
+        setTypesCount({});
         if (op) {
             setPeriodSelected(op);
             let t = tour.details.find(d => d.id === op.id).offers;
@@ -67,7 +68,6 @@ const BookingTourContainer = ({ tour, roomTypes, clients }) => {
         }
         else {
             setPeriodSelected();
-            setTypesCount({});
             setTypes([]);
         }
 
@@ -180,7 +180,7 @@ const BookingTourContainer = ({ tour, roomTypes, clients }) => {
         <Grid container>
             <Grid item xs={12}>
                 <Typography variant={'h4'}>{tour.name}</Typography>
-                {availability >= 0 && <Typography variant={'body1'}>{`Disponibilidad: ${availability}/${periodSelected.availability}`}</Typography>} 
+                {availability >= 0 && <Typography variant={'body1'}>{`Disponibilidad: ${availability}/${periodSelected?.availability}`}</Typography>} 
             </Grid>
             <Grid item xs={12} md={3}>
                 <Grid container mt={3}>
@@ -208,16 +208,16 @@ const BookingTourContainer = ({ tour, roomTypes, clients }) => {
 
                                 <Autocomplete
                                     sx={{ mt: 2 }}
-                                    key={index}
+                                    key={`${item.room}${index}`}
                                     disablePortal
-                                    id="combo-box-demo"
+                                    id={`${item.room}${index}`}
                                     options={selector}
                                     size={'small'}
                                     onChange={(event, op) => {
                                         handleChange(item.room, op);
                                     }}
                                     getOptionLabel={(option) => option}
-                                    renderInput={(params) => <TextField fullWidth {...params} label={item.room} />}
+                                    renderInput={(params) => <TextField fullWidth {...params} label={item.room !== 'Sin habitación' && item.room} />}
                                 />
                             )}
                         {

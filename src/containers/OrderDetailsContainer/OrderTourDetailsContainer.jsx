@@ -63,17 +63,6 @@ const OrderTourDetailsContainer = ({ order }) => {
                             <Typography><b>{'Código postal: '}</b>{order.client.zipcode}</Typography>
                         </Grid>
 
-                        <Divider sx={{ width: '100%', my: 1 }} />
-                        <Grid item xs={12} mb={1}>
-                            <Typography variant='h6'>{'Datos de contacto de emergencia'}</Typography>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Typography><b>{'Nombre: '}</b>{order.client.contactName || '-'}</Typography>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Typography><b>{'Teléfono: '}</b>{order.client.contactPhone || '-'}</Typography>
-                        </Grid>
-
                         <Divider sx={{ width: '100%', my: 2 }} />
                         <Grid item xs={12} mb={1}>
                             <Typography variant='h6'>{'Datos de la reserva'}</Typography>
@@ -116,8 +105,10 @@ const OrderTourDetailsContainer = ({ order }) => {
                                     </Grid>
                                     <Grid item xs={6} mt={1}>
                                         <Typography><b>{'Nombre: '}</b>{i.name}</Typography>
-                                        <Typography><b>{'Apellidps: '}</b>{i.lastname}</Typography>
+                                        <Typography><b>{'Apellidos: '}</b>{i.lastname}</Typography>
                                         <Typography><b>{'Pasaporte: '}</b>{i.passport}</Typography>
+                                        <Typography><b>{'Contacto: '}</b>{i.contactName}</Typography>
+                                        <Typography><b>{'Teléfono del contacto: '}</b>{i.contactPhone}</Typography>
                                     </Grid>
                                 </Grid>
                             )

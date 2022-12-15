@@ -164,25 +164,6 @@ const ClientInfo = ({ birthday, setBirthday, control, errors, clients, clientSel
                     errors.zipcode && <label style={errorText}>{'El código postal es requerido'}</label>
                 }
             </Grid>
-            <Divider sx={{ width: '100%', my: 2 }}>
-                <Typography sx={{ position: 'relative', top: '10px' }} variant={'body1'}>
-                    {'Contacto de emergencia'}
-                </Typography>
-            </Divider>
-            <Grid item xs={3}>
-                <Controller
-                    control={control}
-                    name="contactName"
-                    render={({ field }) => <TextField size={'small'} fullWidth placeholder={'Nombre de contacto'} {...field} />}
-                />
-            </Grid>
-            <Grid item xs={3}>
-                <Controller
-                    control={control}
-                    name="contactPhone"
-                    render={({ field }) => <TextField size={'small'} fullWidth placeholder={'Telefono de contacto'} {...field} />}
-                />
-            </Grid>
         </Grid>
     );
 };

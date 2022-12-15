@@ -72,12 +72,12 @@ const PayInfo = ({price, payType, setPayType, discount,
                             renderInput={(params) => <TextField {...params} label={'Tipo de pago'} />}
                         />
                     </Grid>
-                    <Grid item xs={4}>
-                        <TextField type={'number'} value={paid} onChange={handlePaid} size={'small'} inputProps={{ min: 0 }} label={'Pagado'} />
+                    <Grid item xs={2}>
+                        <TextField type={'number'} fullWidth value={paid} onChange={handlePaid} size={'small'} inputProps={{ min: 0, max: total, step: 0.5 }} label={'Pagado'} />
                     </Grid>
                     
-                    <Grid item xs={2} sx={{padding: '0 !important'}}>
-                        <CardPay label={'Balance'} value={balance} color={balance>=0?'green': 'red'}/>
+                    <Grid item xs={2} ml={3} sx={{padding: '0 !important'}}>
+                        <CardPay label={'Balance'} value={balance} color={balance>0?'red': 'green'}/>
                     </Grid>
                 </Grid>
             </Paper>
