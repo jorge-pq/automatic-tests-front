@@ -63,6 +63,17 @@ const OrderTourDetailsContainer = ({ order }) => {
                             <Typography><b>{'Código postal: '}</b>{order.client.zipcode}</Typography>
                         </Grid>
 
+                        <Divider sx={{ width: '100%', my: 1 }} />
+                        <Grid item xs={12} mb={1}>
+                            <Typography variant='h6'>{'Datos de contacto de emergencia'}</Typography>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Typography><b>{'Nombre: '}</b>{order.client.contactName || '-'}</Typography>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Typography><b>{'Teléfono: '}</b>{order.client.contactPhone || '-'}</Typography>
+                        </Grid>
+
                         <Divider sx={{ width: '100%', my: 2 }} />
                         <Grid item xs={12} mb={1}>
                             <Typography variant='h6'>{'Datos de la reserva'}</Typography>

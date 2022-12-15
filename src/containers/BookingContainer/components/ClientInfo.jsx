@@ -5,6 +5,8 @@ import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import { Controller } from 'react-hook-form';
 import Autocomplete from '@mui/material/Autocomplete';
+import Divider from '@mui/material/Divider';
+import Typography from '@mui/material/Typography';
 
 const DatePickerCustom = styled(DatePicker)(({ theme }) => ({
     border: '1px solid #bfbfbf',
@@ -31,7 +33,7 @@ const ClientInfo = ({ birthday, setBirthday, control, errors, clients, clientSel
                   onChange={(event, item) => {
                     handleClient(item);
                   }}
-                  getOptionLabel={(option) => `${option.name} ${option.secondname} ${option.lastname} ${option.secondlastname}`}
+                  getOptionLabel={(option) => `${option.name} ${option.secondname || ''} ${option.lastname} ${option.secondlastname || ''}`}
                   renderInput={(params) => <TextField {...params} label="Clientes" />}
                 />
             </Grid>
@@ -161,6 +163,25 @@ const ClientInfo = ({ birthday, setBirthday, control, errors, clients, clientSel
                 {
                     errors.zipcode && <label style={errorText}>{'El código postal es requerido'}</label>
                 }
+            </Grid>
+            <Divider sx={{ width: '100%', my: 2 }}>
+                <Typography sx={{ position: 'relative', top: '10px' }} variant={'body1'}>
+                    {'Contacto de emergencia'}
+                </Typography>
+            </Divider>
+            <Grid item xs={3}>
+                <Controller
+                    control={control}
+                    name="contactName"
+                    render={({ field }) => <TextField size={'small'} fullWidth placeholder={'Nombre de contacto'} {...field} />}
+                />
+            </Grid>
+            <Grid item xs={3}>
+                <Controller
+                    control={control}
+                    name="contactPhone"
+                    render={({ field }) => <TextField size={'small'} fullWidth placeholder={'Telefono de contacto'} {...field} />}
+                />
             </Grid>
         </Grid>
     );

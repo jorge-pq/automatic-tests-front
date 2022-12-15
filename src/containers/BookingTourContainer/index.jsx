@@ -173,14 +173,14 @@ const BookingTourContainer = ({ tour, roomTypes, clients }) => {
     }
 
     const soldout = () => {
-       return parseInt(availability) + parseInt(getTotalPersons()) > parseInt(tour.details[0].availability); 
+       return periodSelected ? parseInt(availability) + parseInt(getTotalPersons()) > parseInt(periodSelected.availability) : false; 
     }
 
     return (
         <Grid container>
             <Grid item xs={12}>
                 <Typography variant={'h4'}>{tour.name}</Typography>
-                {availability >= 0 && <Typography variant={'body1'}>{`Disponibilidad: ${availability}/${tour.details[0].availability}`}</Typography>} 
+                {availability >= 0 && <Typography variant={'body1'}>{`Disponibilidad: ${availability}/${periodSelected.availability}`}</Typography>} 
             </Grid>
             <Grid item xs={12} md={3}>
                 <Grid container mt={3}>
