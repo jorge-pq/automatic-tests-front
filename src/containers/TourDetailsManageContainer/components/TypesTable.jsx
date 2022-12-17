@@ -7,13 +7,14 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import IconButton from '@mui/material/IconButton';
+import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/DeleteOutline';
 import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
 import OffersChip from './OffersChip';
 import { format } from 'date-fns'
 
 
-export default function TypesTable({ data, removeType, removeTypeOfferAdded, editOffersToType }) {
+export default function TypesTable({ data, removeType, removeTypeOfferAdded, editOffersToType, editAvalaibilityToPeriod }) {
 
   return (
     <TableContainer component={Paper}>
@@ -42,13 +43,16 @@ export default function TypesTable({ data, removeType, removeTypeOfferAdded, edi
                 <OffersChip data={row.offers} handleDeleteOffer={(item) => removeTypeOfferAdded(item, row.id)} />
               </TableCell>
               <TableCell align="center">
+                <IconButton title='EDITAR DISPONIBILIDAD' onClick={() => editAvalaibilityToPeriod(row)}>
+                  <EditIcon />
+                </IconButton>
                 {
                   row.isPeriod && 
-                  <IconButton onClick={() => editOffersToType(row.id)}>
+                  <IconButton title='AGREGAR OFERTAS' onClick={() => editOffersToType(row.id)}>
                     <LibraryAddIcon />
                   </IconButton>
                 }
-                <IconButton onClick={() => removeType(index)}>
+                <IconButton title='ELIMINAR PERIODO' onClick={() => removeType(index)}>
                   <DeleteIcon />
                 </IconButton>
               </TableCell>

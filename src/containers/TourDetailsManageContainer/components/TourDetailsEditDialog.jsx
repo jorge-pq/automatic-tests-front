@@ -16,6 +16,7 @@ import TypesTable from './TypesTable';
 import { styled } from '@mui/material/styles';
 import DatePicker from 'react-datepicker';
 import EditOffer from './EditOffer';
+import EditAvalaibility from './EditAvalaibility';
 
 
 const DatePickerCustom = styled(DatePicker)(({ theme }) => ({
@@ -57,9 +58,12 @@ const TourDetailsEditDialog = ({ selected, id, open, close, save, types }) => {
   const [openUpdateOffersDialog, setOpenUpdateOffersDialog] = useState(false);
   const [typeUpdateSelected, setTypeUpdateSelected] = useState('');
 
+  const [openUpdateAvalaibilityDialog, setOpenUpdateAvalaibilityDialog] = useState(false);
+  const [periodUpdateSelected, setPeriodUpdateSelected] = useState();
+
   useEffect(() => {
     setTypesAdded(selected);
-    setAvailability(selected[selected.length-1].availability);
+    setAvailability(selected[selected.length - 1].availability);
     return () => {
       setTypesAdded([]);
       setAvailability(0);
@@ -69,20 +73,20 @@ const TourDetailsEditDialog = ({ selected, id, open, close, save, types }) => {
 
   const handleType = value => {
     setTypeSelected(value);
-    if(typesAdded.length>0){
-        let last = typesAdded[typesAdded.length - 1];
-        let offer = last.offers.find(d=>d.room===(isPeriod ? value : 'Sin habitación'));
-        if(offer){
-          setTypeOfferCostAdult(offer.costAdult);
-          setTypeOfferCostChildren(offer.costChildren);
-          setTypeOfferCostInfant(offer.costInfant);
-          setTypeOfferPriceAdult(offer.priceAdult);
-          setTypeOfferPriceChildren(offer.priceChildren);
-          setTypeOfferPriceInfant(offer.priceInfant);
-          setTypeOfferPriceRetailAdult(offer.priceRetailAdult);
-          setTypeOfferPriceRetailChildren(offer.priceRetailChildren);
-          setTypeOfferPriceRetailInfant(offer.priceRetailInfant);
-        }
+    if (typesAdded.length > 0) {
+      let last = typesAdded[typesAdded.length - 1];
+      let offer = last.offers.find(d => d.room === (isPeriod ? value : 'Sin habitación'));
+      if (offer) {
+        setTypeOfferCostAdult(offer.costAdult);
+        setTypeOfferCostChildren(offer.costChildren);
+        setTypeOfferCostInfant(offer.costInfant);
+        setTypeOfferPriceAdult(offer.priceAdult);
+        setTypeOfferPriceChildren(offer.priceChildren);
+        setTypeOfferPriceInfant(offer.priceInfant);
+        setTypeOfferPriceRetailAdult(offer.priceRetailAdult);
+        setTypeOfferPriceRetailChildren(offer.priceRetailChildren);
+        setTypeOfferPriceRetailInfant(offer.priceRetailInfant);
+      }
     }
   }
 
@@ -94,19 +98,19 @@ const TourDetailsEditDialog = ({ selected, id, open, close, save, types }) => {
 
   const handleTypeOfferPriceAdult = e => {
     setTypeOfferPriceAdult(e.target.value);
-    if(syncPrices){
+    if (syncPrices) {
       setTypeOfferPriceRetailAdult(e.target.value);
     }
-  } 
+  }
   const handleTypeOfferPriceChildren = e => {
     setTypeOfferPriceChildren(e.target.value);
-    if(syncPrices){
+    if (syncPrices) {
       setTypeOfferPriceRetailChildren(e.target.value);
     }
   }
   const handleTypeOfferPriceInfant = e => {
     setTypeOfferPriceInfant(e.target.value);
-    if(syncPrices){
+    if (syncPrices) {
       setTypeOfferPriceRetailInfant(e.target.value);
     }
   }
@@ -116,10 +120,10 @@ const TourDetailsEditDialog = ({ selected, id, open, close, save, types }) => {
   const handleTypeOfferPriceRetailInfant = e => setTypeOfferPriceRetailInfant(e.target.value);
 
   const addTypeToOffer = () => {
-    if(isPeriod && !typeSelected){
+    if (isPeriod && !typeSelected) {
       alert('Seleccione un tipo de habitación');
     }
-    else{
+    else {
       setOffersType(offersType => [...offersType, {
         room: isPeriod ? typeSelected : 'Sin habitación',
         costAdult: typeOfferCostAdult,
@@ -199,6 +203,20 @@ const TourDetailsEditDialog = ({ selected, id, open, close, save, types }) => {
     setTypesAdded(upd);
     setOpenUpdateOffersDialog(false);
     setTypeUpdateSelected('');
+  }
+
+  const editAvalaibilityToPeriod = value => {
+    setOpenUpdateAvalaibilityDialog(true);
+    setPeriodUpdateSelected(value);
+  }
+
+  const updateAvalaibility = (value, id) => {
+    let index = typesAdded.findIndex(d => d.id == id);
+    let upd = [...typesAdded];
+    upd[index].availability = value;
+    setTypesAdded(upd);
+    setOpenUpdateAvalaibilityDialog(false);
+    setPeriodUpdateSelected();
   }
 
   const typesFiltered = item => {
@@ -457,7 +475,7 @@ const TourDetailsEditDialog = ({ selected, id, open, close, save, types }) => {
             </Grid>
           </Grid>
           <Grid item xs={12} mt={2}>
-            <TypesTable data={typesAdded} removeType={removeType} removeTypeOfferAdded={removeTypeOfferAdded} editOffersToType={editOffersToType} />
+            <TypesTable data={typesAdded} removeType={removeType} removeTypeOfferAdded={removeTypeOfferAdded} editOffersToType={editOffersToType} editAvalaibilityToPeriod={editAvalaibilityToPeriod} />
           </Grid>
 
         </Grid>
@@ -467,9 +485,19 @@ const TourDetailsEditDialog = ({ selected, id, open, close, save, types }) => {
           selected={typeUpdateSelected}
           updateTypeOffers={updateTypeOffers}
           typesAdded={typesAdded}
-          types={types}      
+          types={types}
           offersType={offersType}
         />
+        {
+          periodUpdateSelected &&
+          <EditAvalaibility
+            open={openUpdateAvalaibilityDialog}
+            close={() => setOpenUpdateAvalaibilityDialog(false)}
+            selected={periodUpdateSelected}
+            updateAvalaibility={updateAvalaibility}
+          />
+        }
+
       </DialogContent>
       <DialogActions>
         <Button onClick={close}>Cerrar</Button>
