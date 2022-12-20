@@ -262,6 +262,8 @@ const CreateBooking = ({ open, close, save, totalGuests, totalPrice, clients }) 
                 addGuest={addGuest}
                 removeGuest={removeGuest}
                 totalGuests={totalGuests}
+                client={getValues()}
+                birthdayClient={birthday}
               />
             }
             {activeStep === 2 &&

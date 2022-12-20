@@ -10,6 +10,8 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import Switch from '@mui/material/Switch';
+import FormControlLabel from '@mui/material/FormControlLabel';
 import IconButton from '@mui/material/IconButton';
 import Button from '@mui/material/Button';
 import DeleteIcon from '@mui/icons-material/DeleteOutline';
@@ -28,11 +30,13 @@ const DatePickerCustom = styled(DatePicker)(({ theme }) => ({
 
 const errorText = { color: '#E8530E' };
 
-const GuestInfo = ({ guests, addGuest, removeGuest, totalGuests }) => {
+const GuestInfo = ({ guests, addGuest, removeGuest, totalGuests, client, birthdayClient }) => {
 
     const { setError, handleSubmit, formState: { errors }, clearErrors, setValue, control } = useForm();
     const [birthday, setBirthday] = useState();
     const [expireDate, setExpireDate] = useState();
+
+    const [active, setActive] = useState(false);
 
     const onSubmit = (data) => {
         if(!birthday){
@@ -71,11 +75,27 @@ const GuestInfo = ({ guests, addGuest, removeGuest, totalGuests }) => {
         clearErrors();
     }
 
+    const handleClient = e => {
+        setActive(e.target.checked);
+        if(e.target.checked){
+            setValue('name', client.name + ' ' + client.secondname || '');
+            setValue('lastname', client.lastname + ' ' + client.secondlastname || '');
+            setBirthday(new Date(birthdayClient));
+        }
+        else{
+            clear();
+        }
+        
+    }
+
     return (
         <form onSubmit={handleSubmit(onSubmit)} style={{ width: 'inherit' }}>
             <Grid container spacing={2}>
                 <Grid item xs={12}>
                  <b>{guests.length + 1 > totalGuests ? 'Se han insertado todos los huesped' : `Huesped ${guests.length + 1} / ${totalGuests}`}</b>
+                </Grid>
+                <Grid item xs={12}>
+                   <FormControlLabel control={<Switch onChange={handleClient} defaultChecked={active} />} label="Agregar cliente" />
                 </Grid>
                 <Grid item xs={4}>
                     <Controller
