@@ -18,6 +18,7 @@ import { getTenant } from '../../utils/util';
 
 const TenantContainer = ({ data }) => {
 
+    const router = useRouter();
     const { user } = React.useContext(AuthContext);
 
     const goToUsers = (id) => router.push(`/${getTenant()}/users/${id}`);
@@ -29,6 +30,7 @@ const TenantContainer = ({ data }) => {
                     <TableRow>
                         <TableCell>{'Name'}</TableCell>
                         {user?.role === 'super_admin' && <TableCell>{'Retails'}</TableCell>}
+                        <TableCell align="center">{'Acción'}</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -49,7 +51,7 @@ const TenantContainer = ({ data }) => {
                                     </Stack>
                                 </TableCell>
                             }
-                            <TableCell align="right">
+                            <TableCell align="center">
                                 <Tooltip title="USUARIOS">
                                     <IconButton onClick={() => goToUsers(row._id)}>
                                         <GroupIcon />

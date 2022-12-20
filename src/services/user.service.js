@@ -27,3 +27,9 @@ export const getUsers = async (tenant, jwt) => {
     return data;
 };
 
+export const updatePassword = async (values) => {
+    const {data} = await rput('api/user/password', values, cookie.get('token'));
+    return data;
+};
+
+

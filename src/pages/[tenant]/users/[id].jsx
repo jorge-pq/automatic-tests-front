@@ -26,7 +26,7 @@ export async function getServerSideProps(ctx) {
         return redirectToLogin();
     }
 
-    const users = await getUsers(ctx.params.tenant, jwt);
+    const users = await getUsers(ctx.params.id, jwt);
 
     return {
         props: {
