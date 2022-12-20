@@ -41,7 +41,7 @@ const BookingTourContainer = ({ tour, roomTypes, clients }) => {
     const updateAvailability = async () => {
         let date = getDate(periodSelected);
         let parse = String(date).replace(/\//g, ".").replace(/ /g,"");
-        let data = await getAvailability(parse);
+        let data = await getAvailability(parse, tour._id);
         setAvailability(data.total);
     }
 

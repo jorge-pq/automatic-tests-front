@@ -43,7 +43,13 @@ export const addDetails = async (values) => {
     return data;
 }
 
-export const getAvailability = async (period) => {
-    const {data} = await rget('api/booking/availability/'+ period, cookie.get('token'));
+export const getAvailability = async (period, tourId) => {
+    const {data} = await rget(`api/booking/availability/${period}/${tourId}`, cookie.get('token'));
+    return data;
+}
+
+
+export const getAvailabilities = async (tourId) => {
+    const {data} = await rget(`api/booking/availabilities/${tourId}`, cookie.get('token'));
     return data;
 }
