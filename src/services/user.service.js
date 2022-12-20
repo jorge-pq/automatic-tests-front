@@ -22,8 +22,8 @@ export const login = async (values) => {
 // };
 
 
-// export const getUsers = async () => {
-//     const {data} = await rget('user',cookie.get('token'));
-//     return data;
-// };
+export const getUsers = async (tenant, jwt) => {
+    const {data} = await rget('api/users/'+tenant, jwt);
+    return data;
+};
 

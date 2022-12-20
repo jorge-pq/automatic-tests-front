@@ -9,11 +9,18 @@ import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
 import Chip from '@mui/material/Chip';
 import AuthContext from '../../providers/AuthContext';
+import GroupIcon from '@mui/icons-material/Group';
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
+import { useRouter } from 'next/router';
+import { getTenant } from '../../utils/util';
 
 
 const TenantContainer = ({ data }) => {
 
     const { user } = React.useContext(AuthContext);
+
+    const goToUsers = (id) => router.push(`/${getTenant()}/users/${id}`);
 
     return (
         <TableContainer component={Paper}>
@@ -33,7 +40,7 @@ const TenantContainer = ({ data }) => {
                             <TableCell component="th" scope="row">
                                 {row.name}
                             </TableCell>
-                            {user?.role === 'super_admin' && 
+                            {user?.role === 'super_admin' &&
                                 <TableCell component="th" scope="row">
                                     <Stack direction="row" spacing={1}>
                                         {row.brokers.map((item) => (
@@ -42,6 +49,13 @@ const TenantContainer = ({ data }) => {
                                     </Stack>
                                 </TableCell>
                             }
+                            <TableCell align="right">
+                                <Tooltip title="USUARIOS">
+                                    <IconButton onClick={() => goToUsers(row._id)}>
+                                        <GroupIcon />
+                                    </IconButton>
+                                </Tooltip>
+                            </TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
