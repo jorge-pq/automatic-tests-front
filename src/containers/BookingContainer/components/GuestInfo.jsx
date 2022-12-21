@@ -95,7 +95,7 @@ const GuestInfo = ({ guests, addGuest, removeGuest, totalGuests, client, birthda
                  <b>{guests.length + 1 > totalGuests ? 'Se han insertado todos los huesped' : `Huesped ${guests.length + 1} / ${totalGuests}`}</b>
                 </Grid>
                 <Grid item xs={12}>
-                   <FormControlLabel control={<Switch onChange={handleClient} defaultChecked={active} />} label="Agregar cliente" />
+                   <FormControlLabel control={<Switch onChange={handleClient} defaultChecked={active} />} label="Agregar cliente como pasajero" />
                 </Grid>
                 <Grid item xs={4}>
                     <Controller

@@ -59,7 +59,7 @@ export default function HotelCard({item}) {
           {'Reservar'}
         </Button>
         <Button size="small" color="primary" onClick={e=>handleClick(e, item._id)}>
-          {'Ver disponibilidad'}
+          {'Disponibilidad'}
         </Button>
         <Popover
         id={id}
