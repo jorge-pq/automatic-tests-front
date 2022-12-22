@@ -13,8 +13,9 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import EditIcon from '@mui/icons-material/Edit'
 import { useMutation } from 'react-query';
-import { addClient } from '../../services/client.service';
+import { addClient, updateClient } from '../../services/client.service';
 import ClientCreateDialog from './ClientCreateDialog';
+import ClientEditDialog from './ClientEditDialog';
 import {useRouter} from 'next/router';
 
 
@@ -36,13 +37,23 @@ const ClientsContainer = ({ clients }) => {
         }
     });
 
+    const { mutate: update} = useMutation(updateClient, {
+        onSuccess: (data) => {
+            setOpenDialogEdit(false);
+            router.reload();
+        },
+        onError: (error) => {
+          alert('Error! ');
+        }
+      });
+
     const showDialogCreate = () => setOpenDialogCreate(true);
     const closeDialogCreate = () => setOpenDialogCreate(false);
 
     const closeDialogEdit = () => setOpenDialogEdit(false);
 
-    const showEdit = id => {
-        setSelected(id);
+    const onEdit = value => {
+        setSelected(value);
         setOpenDialogEdit(true);
     }
 
@@ -108,7 +119,7 @@ const ClientsContainer = ({ clients }) => {
                                     </TableCell>
                                     <TableCell align="center">
                                         <Tooltip title="EDITAR">
-                                            <IconButton>
+                                            <IconButton onClick={()=>onEdit(row)}>
                                                 <EditIcon />
                                             </IconButton>
                                         </Tooltip>
@@ -120,7 +131,7 @@ const ClientsContainer = ({ clients }) => {
                 </TableContainer>
             </Grid>
             <ClientCreateDialog open={openDialogCreate} close={closeDialogCreate} save={create} />
-
+           {selected && <ClientEditDialog open={openDialogEdit} client={selected} close={closeDialogEdit} save={update} />}                     
         </Grid>
     );
 };
