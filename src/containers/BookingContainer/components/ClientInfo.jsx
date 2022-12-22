@@ -5,8 +5,6 @@ import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import { Controller } from 'react-hook-form';
 import Autocomplete from '@mui/material/Autocomplete';
-import Divider from '@mui/material/Divider';
-import Typography from '@mui/material/Typography';
 
 const DatePickerCustom = styled(DatePicker)(({ theme }) => ({
     border: '1px solid #bfbfbf',

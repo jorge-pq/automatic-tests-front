@@ -33,6 +33,7 @@ import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import DateRangeIcon from '@mui/icons-material/DateRange';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import EditLocationAltIcon from '@mui/icons-material/EditLocationAlt';
+import PeopleIcon from '@mui/icons-material/People';
 import Popover from '@mui/material/Popover';
 import NightShelterIcon from '@mui/icons-material/NightShelter';
 
@@ -157,6 +158,8 @@ export default function Layout({ children, page }) {
 
   const goRoomTypes = () => router.push(`/${getTenant()}/config/room_types`);
 
+  const goToClients = () => router.push(`/${getTenant()}/clients`);
+
   const logout = () => {
     setAuth(false);
     cookie.remove('token');
@@ -276,6 +279,12 @@ export default function Layout({ children, page }) {
                     <AddBusinessIcon />
                   </ListItemIcon>
                   <ListItemText primary="Agregar minorista" />
+                </ListItemButton>
+                <ListItemButton onClick={goToClients}>
+                  <ListItemIcon>
+                    <PeopleIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Clientes" />
                 </ListItemButton>
               </>
             }
