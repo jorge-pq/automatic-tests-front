@@ -15,8 +15,12 @@ import EditIcon from '@mui/icons-material/Edit'
 import { useMutation } from 'react-query';
 import { addClient } from '../../services/client.service';
 import ClientCreateDialog from './ClientCreateDialog';
+import {useRouter} from 'next/router';
+
 
 const ClientsContainer = ({ clients }) => {
+
+    const router = useRouter();
 
     const [openDialogCreate, setOpenDialogCreate] = useState(false);
     const [openDialogEdit, setOpenDialogEdit] = useState(false);
@@ -25,6 +29,7 @@ const ClientsContainer = ({ clients }) => {
     const { mutate: create } = useMutation(addClient, {
         onSuccess: (data) => {
             setOpenDialogCreate(false);
+            router.reload();
         },
         onError: (error) => {
             alert('Error! ');
