@@ -28,6 +28,8 @@ const ClientsContainer = ({ clients }) => {
 
     const inputFileRef = useRef(null);
 
+    const [loading, setLoading] = useState(false);
+
     const [openDialogCreate, setOpenDialogCreate] = useState(false);
     const [openDialogEdit, setOpenDialogEdit] = useState(false);
     const [selected, setSelected] = useState();
@@ -73,10 +75,12 @@ const ClientsContainer = ({ clients }) => {
     }
 
     const handleExcel = async event => {
+        setLoading(true);
         if (event.target.files[0]) {
             let allowedExtension = /(.xls|.xlsx)$/i;
             if(!allowedExtension.exec(inputFileRef.current.value)){
                 alert("El fichero insertado no es válido.");
+                setLoading(false);
             }
             else{
                 let excel = await readXlsxFile(event.target.files[0]);
@@ -85,9 +89,11 @@ const ClientsContainer = ({ clients }) => {
                     bulkcreate({bulk: result});
                 } catch (error) {
                     alert("Hubo un error leyendo el fichero.");
+                    setLoading(false);
                 }
             }     
         }
+        setLoading(false);
         inputFileRef.current.value = "";
     };
 
@@ -103,7 +109,7 @@ const ClientsContainer = ({ clients }) => {
             </Grid>
             <Grid item xs={6}>
                 <Grid container justifyContent={'flex-end'}>
-                    <Button variant={'contained'} sx={{mr: 3}} onClick={openDialogImport} startIcon={<TextSnippetIcon />} >{'Importar clientes'}</Button>
+                    <Button variant={'contained'} sx={{mr: 3}} onClick={openDialogImport} disabled={loading} startIcon={<TextSnippetIcon />} >{loading ? 'Cargando...' :'Importar clientes'}</Button>
                     <Button variant={'contained'} onClick={showDialogCreate}>{'Agregar cliente'}</Button>
                 </Grid>
                 <input type="file" style={{ display: 'none' }} ref={inputFileRef} onChange={handleExcel} accept=".xls,.xlsx" />
