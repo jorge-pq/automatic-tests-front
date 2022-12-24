@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import Grid from '@mui/material/Grid';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -13,21 +13,36 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import EditIcon from '@mui/icons-material/Edit'
 import { useMutation } from 'react-query';
-import { addClient, updateClient } from '../../services/client.service';
+import { addClient, updateClient, addClientBulk } from '../../services/client.service';
 import ClientCreateDialog from './ClientCreateDialog';
 import ClientEditDialog from './ClientEditDialog';
 import {useRouter} from 'next/router';
+import readXlsxFile from 'read-excel-file';
+import TextSnippetIcon from '@mui/icons-material/TextSnippet';
+import {convertExcelToArray} from '../../utils/util';
 
 
 const ClientsContainer = ({ clients }) => {
 
     const router = useRouter();
 
+    const inputFileRef = useRef(null);
+
     const [openDialogCreate, setOpenDialogCreate] = useState(false);
     const [openDialogEdit, setOpenDialogEdit] = useState(false);
     const [selected, setSelected] = useState();
 
     const { mutate: create } = useMutation(addClient, {
+        onSuccess: (data) => {
+            setOpenDialogCreate(false);
+            router.reload();
+        },
+        onError: (error) => {
+            alert('Error! ');
+        }
+    });
+
+    const { mutate: bulkcreate } = useMutation(addClientBulk, {
         onSuccess: (data) => {
             setOpenDialogCreate(false);
             router.reload();
@@ -57,6 +72,30 @@ const ClientsContainer = ({ clients }) => {
         setOpenDialogEdit(true);
     }
 
+    const handleExcel = async event => {
+        if (event.target.files[0]) {
+            let allowedExtension = /(.xls|.xlsx)$/i;
+            if(!allowedExtension.exec(inputFileRef.current.value)){
+                alert("El fichero insertado no es válido.");
+            }
+            else{
+                let excel = await readXlsxFile(event.target.files[0]);
+                try {
+                    let result = convertExcelToArray(excel);
+                    bulkcreate({bulk: result});
+                } catch (error) {
+                    alert("Hubo un error leyendo el fichero.");
+                }
+            }     
+        }
+        inputFileRef.current.value = "";
+    };
+
+
+    const openDialogImport = event => {
+        inputFileRef.current.click();
+    };
+
     return (
         <Grid container>
             <Grid item xs={6}>
@@ -64,8 +103,10 @@ const ClientsContainer = ({ clients }) => {
             </Grid>
             <Grid item xs={6}>
                 <Grid container justifyContent={'flex-end'}>
+                    <Button variant={'contained'} sx={{mr: 3}} onClick={openDialogImport} startIcon={<TextSnippetIcon />} >{'Importar clientes'}</Button>
                     <Button variant={'contained'} onClick={showDialogCreate}>{'Agregar cliente'}</Button>
                 </Grid>
+                <input type="file" style={{ display: 'none' }} ref={inputFileRef} onChange={handleExcel} accept=".xls,.xlsx" />
             </Grid>
             <Grid item xs={12} mt={2}>
                 <TableContainer component={Paper}>

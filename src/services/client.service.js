@@ -7,6 +7,11 @@ export const addClient = async (values) => {
     return data;
 }
 
+export const addClientBulk = async (values) => {
+    const {data} = await rpost('api/clients/import',values, cookie.get('token'));
+    return data;
+}
+
 export const updateClient = async (values) => {
     const {data} = await rput('api/clients/'+values.id, values, cookie.get('token'));
     return data;

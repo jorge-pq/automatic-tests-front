@@ -44,3 +44,44 @@ export const normalizeUserCookie = (value) => {
         .replace(/%20/g, " ")
         .replace(/\\/g, ""));
 }
+
+export const convertExcelToArray = excel => {
+    const columns = excel[0].length;
+    let list = [];
+    for (let rows = 1; rows < excel.length; rows++) {
+        var item = new Object();
+        for (let column = 0; column < columns; column++) {
+            let key = getKey(column);
+            let value = excel[rows][column]
+            item[key] = value;
+        }
+        list.push(item);
+    }
+    return list;
+};
+
+
+function getKey(value){
+    switch (value) {
+        case 0:
+            return 'name'
+        case 1:
+             return 'secondname'
+        case 2:
+             return 'lastname'
+        case 3:
+            return 'phone'
+        case 4:
+            return 'email'
+        case 5:
+            return 'address'
+        case 6:
+            return 'state'
+        case 7:
+            return 'city'
+        case 8:
+            return 'zipcode'
+        default:
+            return 'nokey';
+    }
+}

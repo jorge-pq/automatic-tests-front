@@ -23,7 +23,8 @@
     "react-dates": "^21.8.0",
     "react-dom": "18.2.0",
     "react-hook-form": "^7.38.0",
-    "react-query": "^3.33.6"
+    "react-query": "^3.33.6",
+    "read-excel-file": "^5.5.3"
   },
   "scripts": {
     "dev": "next",
