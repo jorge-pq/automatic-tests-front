@@ -22,6 +22,7 @@ import TextSnippetIcon from '@mui/icons-material/TextSnippet';
 import {convertExcelToArray} from '../../utils/util';
 
 
+//---------------- Hacer paginado ----------------------
 const ClientsContainer = ({ clients }) => {
 
     const router = useRouter();
