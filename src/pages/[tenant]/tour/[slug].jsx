@@ -29,13 +29,13 @@ export async function getServerSideProps(ctx) {
 
     const tour = await getTourBySlug(ctx.params.slug, jwt);
     const types = await getRoomTypes(jwt);
-    const clients = await getClients(jwt);
+    const clients = await getClients(jwt, 1);
 
     return {
         props: {
             tour: tour,
             types: types,
-            clients: clients
+            clients: clients.data
         },
     }
 

@@ -20,10 +20,10 @@ import {useRouter} from 'next/router';
 import readXlsxFile from 'read-excel-file';
 import TextSnippetIcon from '@mui/icons-material/TextSnippet';
 import {convertExcelToArray} from '../../utils/util';
-
+import Pagination from '../../components/Pagination';
 
 //---------------- Hacer paginado ---------------------
-const ClientsContainer = ({ clients }) => {
+const ClientsContainer = ({ clients, page, totalPages }) => {
 
     const router = useRouter();
 
@@ -34,6 +34,12 @@ const ClientsContainer = ({ clients }) => {
     const [openDialogCreate, setOpenDialogCreate] = useState(false);
     const [openDialogEdit, setOpenDialogEdit] = useState(false);
     const [selected, setSelected] = useState();
+
+    const handleChange = (event, value) => {
+        console.log(value)
+        router.query.page = value;
+        router.push(router);
+    };
 
     const { mutate: create } = useMutation(addClient, {
         onSuccess: (data) => {
@@ -106,7 +112,7 @@ const ClientsContainer = ({ clients }) => {
     return (
         <Grid container>
             <Grid item xs={6}>
-                <Typography variant={'h6'}>{'Lista de hoteles'}</Typography>
+                <Typography variant={'h6'}>{'Lista de clientes'}</Typography>
             </Grid>
             <Grid item xs={6}>
                 <Grid container justifyContent={'flex-end'}>
@@ -148,7 +154,7 @@ const ClientsContainer = ({ clients }) => {
                                         {row.email}
                                     </TableCell>
                                     <TableCell component="th" scope="row">
-                                        {new Date(row.birthday).toLocaleDateString()}
+                                        {!isNaN(new Date(row.birthday).getTime()) ? new Date(row.birthday).toLocaleDateString(): ''}
                                     </TableCell>
                                     <TableCell component="th" scope="row">
                                         {row.clientID}
@@ -177,6 +183,11 @@ const ClientsContainer = ({ clients }) => {
                         </TableBody>
                     </Table>
                 </TableContainer>
+            </Grid>
+            <Grid item xs={12}>
+                 <Grid container justifyContent={'flex-end'} mt={3}>
+                    <Pagination totalPages={totalPages} page={page} handleChange={handleChange} />
+                </Grid>               
             </Grid>
             <ClientCreateDialog open={openDialogCreate} close={closeDialogCreate} save={create} />
            {selected && <ClientEditDialog open={openDialogEdit} client={selected} close={closeDialogEdit} save={update} />}                     

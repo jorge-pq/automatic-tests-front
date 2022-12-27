@@ -6,10 +6,10 @@ import { redirectToLogin } from '../../utils/util';
 import Layout from '../../layout';
 
 
-const Clients = ({ clients }) => {
+const Clients = ({ clients, page, totalPages }) => {
   return (
     <Layout page={'Clientes'}>
-      <ClientsContainer clients={clients} />
+      <ClientsContainer clients={clients} page={page} totalPages={totalPages} />
     </Layout>
   );
 
@@ -24,11 +24,14 @@ export async function getServerSideProps(ctx) {
     return redirectToLogin();
   }
 
-  const clients = await getClients(jwt);
+  let page = ctx.query.page || 1;
+  const clients = await getClients(jwt, page);
 
   return {
     props: {
-        clients: clients,
+        clients: clients.data,
+        totalPages: clients.pages,
+        page: page
     },
   }
 

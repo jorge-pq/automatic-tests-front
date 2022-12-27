@@ -87,8 +87,8 @@ export const removeRoomTypes = async (id) => {
     return data;
 }
 
-export const getClients = async (jwt) => {
-    const {data} = await rget('api/clients', jwt);
+export const getClients = async (jwt, page) => {
+    const {data} = await rget('api/clients?page='+page, jwt);
     return data;
 }
 

@@ -108,8 +108,8 @@ const CreateBooking = ({ open, close, save, totalGuests, totalPrice, clients }) 
     setValue("secondlastname", value?.secondlastname || '');
     setValue("phone", value?.phone || '');
     setValue("email", value?.email || '');
-    setBirthday(value?.birthday && new Date(value.birthday));
-    setValue("clientID", value?.clientID || '');
+    setBirthday(!isNaN(new Date(value?.birthday).getTime()) && new Date(value.birthday));
+    setValue("clientID", (value?.clientID && value?.clientID!=='false') || '');
     setValue("state", value?.state || '');
     setValue("city", value?.city || '');
     setValue("address", value?.address || '');
