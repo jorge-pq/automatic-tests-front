@@ -4,7 +4,12 @@ import DatePicker from 'react-datepicker';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import { Controller } from 'react-hook-form';
-import Autocomplete from '@mui/material/Autocomplete';
+import Button from '@mui/material/Button';
+import Divider from '@mui/material/Divider';
+import SearchIcon from '@mui/icons-material/Search';
+import InputAdornment from '@mui/material/InputAdornment';
+import IconButton from '@mui/material/IconButton';
+import ClearIcon from '@mui/icons-material/Clear';
 
 const DatePickerCustom = styled(DatePicker)(({ theme }) => ({
     border: '1px solid #bfbfbf',
@@ -17,25 +22,40 @@ const DatePickerCustom = styled(DatePicker)(({ theme }) => ({
 
 const errorText = { color: '#E8530E' };
 
-const ClientInfo = ({ birthday, setBirthday, control, errors, clients, clientSelected, handleClient }) => {
+const ClientInfo = ({ birthday, setBirthday, control, errors, clientPhone, handleClientPhone, handleClient, clear }) => {
 
     return (
         <Grid container spacing={2}>
-            <Grid item xs={6}>
-            <Autocomplete
-                  disablePortal
-                  id="combo-box-demo"
-                  options={clients}
-                  size={'small'}
-                  value={clientSelected}
-                  onChange={(event, item) => {
-                    handleClient(item);
+            <Grid item xs={3}>
+                <TextField
+                 size={'small'} 
+                 value={clientPhone} 
+                 onChange={handleClientPhone}
+                 fullWidth 
+                 label="Telefono" 
+                 InputProps={{
+                    endAdornment: <InputAdornment position="end">
+                        <IconButton
+                            aria-label="clear"
+                            onClick={clear}
+                            edge="end"
+                        >
+                            <ClearIcon />
+                        </IconButton>
+                  </InputAdornment>,
                   }}
-                  getOptionLabel={(option) => `${option.name} ${option.secondname || ''} ${option.lastname} ${option.secondlastname || ''}`}
-                  renderInput={(params) => <TextField {...params} label="Clientes" />}
-                />
+                 endAdornment={
+                    <InputAdornment position="end">
+                      
+                    </InputAdornment>
+                  }
+                 />
+            </Grid>
+            <Grid item xs={3}>
+                <Button variant='contained' startIcon={<SearchIcon />} onClick={handleClient}>{'Buscar cliente'}</Button>
             </Grid>
             <Grid item xs={6}></Grid>
+            <Divider sx={{ width: '100%', my: 2 }}/>
             <Grid item xs={3}>
                 <Controller
                     control={control}

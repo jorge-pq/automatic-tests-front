@@ -157,7 +157,7 @@ const ClientsContainer = ({ clients, page, totalPages }) => {
                                         {!isNaN(new Date(row.birthday).getTime()) ? new Date(row.birthday).toLocaleDateString(): ''}
                                     </TableCell>
                                     <TableCell component="th" scope="row">
-                                        {row.clientID}
+                                        {row.clientID && row.clientID !== 'false' ? row.clientID : ''}
                                     </TableCell>
                                     <TableCell component="th" scope="row">
                                         {row.state}

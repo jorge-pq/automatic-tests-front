@@ -26,7 +26,7 @@ function getOfferPrice(offers, dateSelected, defaultPrice, tenantType) {
 
 const selector = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
 
-const BookingContainer = ({ hotel, roomTypes, clients }) => {
+const BookingContainer = ({ hotel, roomTypes }) => {
 
     const { user } = useContext(AuthContext);
     const router = useRouter();
@@ -266,7 +266,6 @@ const BookingContainer = ({ hotel, roomTypes, clients }) => {
                 open={openBookingDialog}
                 close={closeBookingDialog}
                 save={save}
-                clients={clients}
                 totalGuests={getTotalPersons()}
                 totalPrice={getTotalPrice()}
             />

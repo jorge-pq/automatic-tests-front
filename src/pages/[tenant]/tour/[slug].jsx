@@ -1,6 +1,6 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
-import { getRoomTypes, getClients } from '../../../services/hotels.service';
+import { getRoomTypes } from '../../../services/hotels.service';
 import { getTourBySlug } from '../../../services/tours.service';
 import { getCookie } from '../../../lib/session';
 import { redirectToLogin } from '../../../utils/util';
@@ -10,10 +10,10 @@ const BookingTourContainer = dynamic(() => import('../../../containers/BookingTo
     suspense: true,
 })
 
-const Tour = ({ tour, types, clients }) => {
+const Tour = ({ tour, types }) => {
     return (
         <Layout page={tour.name}>
-            <BookingTourContainer tour={tour} roomTypes={types} clients={clients} />
+            <BookingTourContainer tour={tour} roomTypes={types} />
         </Layout>
     );
 };
@@ -29,13 +29,11 @@ export async function getServerSideProps(ctx) {
 
     const tour = await getTourBySlug(ctx.params.slug, jwt);
     const types = await getRoomTypes(jwt);
-    const clients = await getClients(jwt, 1);
 
     return {
         props: {
             tour: tour,
-            types: types,
-            clients: clients.data
+            types: types
         },
     }
 

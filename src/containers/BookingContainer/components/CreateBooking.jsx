@@ -19,7 +19,8 @@ import ClientInfo from './ClientInfo';
 import GuestInfo from './GuestInfo';
 import PayInfo from './PayInfo';
 import { useForm } from 'react-hook-form';
-
+import { getClientByPhone } from '../../../services/client.service';
+import { useMutation } from 'react-query';
 
 const ColorlibConnector = styled(StepConnector)(({ theme }) => ({
   [`&.${stepConnectorClasses.alternativeLabel}`]: {
@@ -88,7 +89,7 @@ function fieldsNotRequired(item){
   return item !== 'secondname' && item !== 'secondlastname'
 }  
 
-const CreateBooking = ({ open, close, save, totalGuests, totalPrice, clients }) => {
+const CreateBooking = ({ open, close, save, totalGuests, totalPrice }) => {
 
   const { getValues, formState: { errors }, setError, control, clearErrors, setValue } = useForm();
 
@@ -100,22 +101,39 @@ const CreateBooking = ({ open, close, save, totalGuests, totalPrice, clients }) 
   const service = 2.5.toFixed(2);
   const [paid, setPaid] = useState(0);
 
-  const [clientSelected, setClientSelected] = useState();
+  const [clientPhone, setClientPhone] = useState('');
+
+  const handleClientPhone = e => setClientPhone(e.target.value);
+
+  const { mutate: findClient } = useMutation(getClientByPhone, {
+    onSuccess: (value) => {
+      setValue("name", value?.name || '');
+      setValue("secondname", value?.secondname || '');
+      setValue("lastname", value?.lastname || '');
+      setValue("secondlastname", value?.secondlastname || '');
+      setValue("phone", value?.phone || '');
+      setValue("email", value?.email || '');
+      setBirthday(!isNaN(new Date(value?.birthday).getTime()) && new Date(value.birthday));
+      setValue("clientID", (value?.clientID && value?.clientID!=='false') ? value?.clientID : '');
+      setValue("state", value?.state || '');
+      setValue("city", value?.city || '');
+      setValue("address", value?.address || '');
+      setValue("zipcode", value?.zipcode || '');
+      setClientSelected(value);
+    },
+    onError: (error) => {
+      alert(error.response.data.message);
+    }
+  });
+
   const handleClient = value => {
-    setValue("name", value?.name || '');
-    setValue("secondname", value?.secondname || '');
-    setValue("lastname", value?.lastname || '');
-    setValue("secondlastname", value?.secondlastname || '');
-    setValue("phone", value?.phone || '');
-    setValue("email", value?.email || '');
-    setBirthday(!isNaN(new Date(value?.birthday).getTime()) && new Date(value.birthday));
-    setValue("clientID", (value?.clientID && value?.clientID!=='false') || '');
-    setValue("state", value?.state || '');
-    setValue("city", value?.city || '');
-    setValue("address", value?.address || '');
-    setValue("zipcode", value?.zipcode || '');
-    setClientSelected(value);
+    findClient({phone: clientPhone})
   } 
+
+  const clear = () => {
+    setClientPhone('');
+    findClient({phone: ''})
+  }
 
   const handlePaid = e => setPaid(e.target.value);
 
@@ -251,9 +269,10 @@ const CreateBooking = ({ open, close, save, totalGuests, totalPrice, clients }) 
                   setBirthday={setBirthday}
                   control={control}
                   errors={errors}
-                  clients={clients}
-                  clientSelected={clientSelected}
+                  clientPhone={clientPhone}
+                  handleClientPhone={handleClientPhone}
                   handleClient={handleClient}
+                  clear={clear}
                 />
             }
             {activeStep === 1 &&

@@ -12,6 +12,12 @@ export const addClientBulk = async (values) => {
     return data;
 }
 
+
+export const getClientByPhone = async (values) => {
+    const {data} = await rpost('api/clients/search-phone',values, cookie.get('token'));
+    return data;
+}
+
 export const updateClient = async (values) => {
     const {data} = await rput('api/clients/'+values.id, values, cookie.get('token'));
     return data;
