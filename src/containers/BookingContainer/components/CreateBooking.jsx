@@ -105,21 +105,29 @@ const CreateBooking = ({ open, close, save, totalGuests, totalPrice }) => {
 
   const handleClientPhone = e => setClientPhone(e.target.value);
 
+  const [searchLoading, setSearchLoading] = useState(false);
+
   const { mutate: findClient } = useMutation(getClientByPhone, {
     onSuccess: (value) => {
-      setValue("name", value?.name || '');
-      setValue("secondname", value?.secondname || '');
-      setValue("lastname", value?.lastname || '');
-      setValue("secondlastname", value?.secondlastname || '');
-      setValue("phone", value?.phone || '');
-      setValue("email", value?.email || '');
-      setBirthday(!isNaN(new Date(value?.birthday).getTime()) && new Date(value.birthday));
-      setValue("clientID", (value?.clientID && value?.clientID!=='false') ? value?.clientID : '');
-      setValue("state", value?.state || '');
-      setValue("city", value?.city || '');
-      setValue("address", value?.address || '');
-      setValue("zipcode", value?.zipcode || '');
-      setClientSelected(value);
+      if(value){
+        setSearchLoading(false);
+        setValue("name", value?.name || '');
+        setValue("secondname", value?.secondname || '');
+        setValue("lastname", value?.lastname || '');
+        setValue("secondlastname", value?.secondlastname || '');
+        setValue("phone", value?.phone || '');
+        setValue("email", value?.email || '');
+        setBirthday(!isNaN(new Date(value?.birthday).getTime()) && new Date(value.birthday));
+        setValue("clientID", (value?.clientID && value?.clientID !== 'false') ? value?.clientID : '');
+        setValue("state", value?.state || '');
+        setValue("city", value?.city || '');
+        setValue("address", value?.address || '');
+        setValue("zipcode", value?.zipcode || '');
+      }
+      else{
+        setSearchLoading(false);
+        alert('No existe ningun cliente con este telefono.')
+      }
     },
     onError: (error) => {
       alert(error.response.data.message);
@@ -127,12 +135,24 @@ const CreateBooking = ({ open, close, save, totalGuests, totalPrice }) => {
   });
 
   const handleClient = value => {
+    setSearchLoading(true);
     findClient({phone: clientPhone})
   } 
 
   const clear = () => {
     setClientPhone('');
-    findClient({phone: ''})
+    setValue("name", '');
+    setValue("secondname", '');
+    setValue("lastname", '');
+    setValue("secondlastname", '');
+    setValue("phone", '');
+    setValue("email", '');
+    setBirthday();
+    setValue("clientID", '');
+    setValue("state", '');
+    setValue("city", '');
+    setValue("address", '');
+    setValue("zipcode", '');
   }
 
   const handlePaid = e => setPaid(e.target.value);
@@ -273,6 +293,7 @@ const CreateBooking = ({ open, close, save, totalGuests, totalPrice }) => {
                   handleClientPhone={handleClientPhone}
                   handleClient={handleClient}
                   clear={clear}
+                  searchLoading={searchLoading}
                 />
             }
             {activeStep === 1 &&

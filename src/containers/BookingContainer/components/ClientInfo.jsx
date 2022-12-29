@@ -10,6 +10,8 @@ import SearchIcon from '@mui/icons-material/Search';
 import InputAdornment from '@mui/material/InputAdornment';
 import IconButton from '@mui/material/IconButton';
 import ClearIcon from '@mui/icons-material/Clear';
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const DatePickerCustom = styled(DatePicker)(({ theme }) => ({
     border: '1px solid #bfbfbf',
@@ -22,7 +24,7 @@ const DatePickerCustom = styled(DatePicker)(({ theme }) => ({
 
 const errorText = { color: '#E8530E' };
 
-const ClientInfo = ({ birthday, setBirthday, control, errors, clientPhone, handleClientPhone, handleClient, clear }) => {
+const ClientInfo = ({ birthday, setBirthday, control, errors, clientPhone, handleClientPhone, handleClient, clear, searchLoading }) => {
 
     return (
         <Grid container spacing={2}>
@@ -182,6 +184,12 @@ const ClientInfo = ({ birthday, setBirthday, control, errors, clientPhone, handl
                     errors.zipcode && <label style={errorText}>{'El código postal es requerido'}</label>
                 }
             </Grid>
+            <Backdrop
+                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                open={searchLoading}
+            >
+                <CircularProgress color="inherit" />
+            </Backdrop>
         </Grid>
     );
 };

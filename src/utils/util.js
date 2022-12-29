@@ -52,7 +52,7 @@ export const convertExcelToArray = excel => {
         var item = new Object();
         for (let column = 0; column < columns; column++) {
             let key = getKey(column);
-            let value = excel[rows][column]
+            let value = column === 3 ? String(excel[rows][column]).replace(/[{()}-]/g,'') : excel[rows][column]
             item[key] = value;
         }
         list.push(item);
