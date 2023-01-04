@@ -53,3 +53,8 @@ export const getAvailabilities = async (tourId) => {
     const {data} = await rget(`api/booking/availabilities/${tourId}`, cookie.get('token'));
     return data;
 }
+
+export const upload = async (values) => {
+    const {data} = await rpost('api/tours/gallery',values, cookie.get('token'));
+    return data;
+}

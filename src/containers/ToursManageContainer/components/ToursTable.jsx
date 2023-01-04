@@ -19,7 +19,7 @@ export default function HotelsTable({ data, showEdit, removeHotel }) {
 
     const goToTourDetails = (id) => router.push(`/${getTenant()}/manage/tour/${id}`);
 
-    // const goToGallery = (id) => router.push(`/${getTenant()}/manage/gallery/${id}`);
+    const goToGallery = (id) => router.push(`/${getTenant()}/manage/gallery/${id}`);
 
     return (
         <TableContainer component={Paper}>
@@ -72,11 +72,11 @@ export default function HotelsTable({ data, showEdit, removeHotel }) {
                                <Chip label={row.active? 'Activo' : 'Inactivo'} color={row.active ? 'success' : 'error'} />
                             </TableCell>
                             <TableCell align="right">
-                            {/* <Tooltip title="Ver Imágenes">
+                            <Tooltip title="Ver Imágenes">
                                     <IconButton onClick={() => goToGallery(row._id)}>
                                         <ImageIcon />
                                     </IconButton>
-                                </Tooltip> */}
+                                </Tooltip>
                                 
                                 <Tooltip title="Ver Detalles">
                                     <IconButton onClick={() => goToTourDetails(row._id)}>

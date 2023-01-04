@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Grid, Typography, Divider, Stack, Button } from '@mui/material';
-import { upload } from '../../services/hotels.service';
+// import { upload } from '../../services/hotels.service';
+import { upload } from '../../services/tours.service';
 import { useMutation } from 'react-query';
 import { useRouter } from 'next/router';
 import ImageCard from './ImageCard';

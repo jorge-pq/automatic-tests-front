@@ -52,9 +52,9 @@ export default function HotelCard({ item }) {
     setOpenDialog(true);
   }
 
-  // const handleGallery = slug => {
-  //   router.push(`/${getTenant()}/hotel/gallery/${slug}`);
-  // }
+  const handleGallery = slug => {
+    router.push(`/${getTenant()}/hotel/gallery/${slug}`);
+  }
 
   return (
     <>
@@ -99,7 +99,7 @@ export default function HotelCard({ item }) {
               }
             </ul>
           </Popover>
-          <Button size="small" color="primary" disabled>
+          <Button size="small" color="primary" onClick={()=>handleGallery(item.slug)}>
             {'Galeria'}
           </Button>
         </CardActions>

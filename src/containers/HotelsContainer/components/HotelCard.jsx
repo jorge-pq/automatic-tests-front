@@ -42,7 +42,7 @@ export default function HotelCard({item}) {
         <Button size="small" color="primary" onClick={()=>handleBooking(item.slug)}>
           {'Reservar'}
         </Button>
-        <Button size="small" color="primary" onClick={()=>handleGallery(item.slug)}>
+        <Button size="small" color="primary" disabled onClick={()=>handleGallery(item.slug)}>
           {'Galeria'}
         </Button>
       </CardActions>

@@ -1,5 +1,6 @@
 import React from 'react';
-import {getHotelBySlug} from '../../../../services/hotels.service';
+// import {getHotelBySlug} from '../../../../services/hotels.service';
+import {getTourBySlug} from '../../../../services/tours.service';
 import GalleryContainer from '../../../../containers/GalleryContainer';
 import Layout from '../../../../layout';
 import { redirectToLogin } from '../../../../utils/util';
@@ -22,7 +23,7 @@ export async function getServerSideProps(ctx) {
         return redirectToLogin();
     }
 
-    const hotel = await getHotelBySlug(ctx.params.slug, jwt);
+    const hotel = await getTourBySlug(ctx.params.slug, jwt);
     return {
         props: {
             hotel: hotel,
