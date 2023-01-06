@@ -24,6 +24,7 @@ const AddUserContainer = () => {
   });
 
   const onSubmit = (data) => {
+    data.phone = String(data.phone).replace(/[{()}-]/g,'');
     createUser(data);
   }
 

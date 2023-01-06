@@ -25,6 +25,7 @@ const CreateTenantContainer = () => {
   });
 
   const onSubmit = (data) => {
+    data.phone = String(data.phone).replace(/[{()}-]/g,'');
     createTenant(data);
   }
 
