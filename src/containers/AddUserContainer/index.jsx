@@ -4,7 +4,10 @@ import { Controller, useForm } from 'react-hook-form';
 import { addUser } from '../../services/tenant.service';
 import { useMutation } from 'react-query';
 import { useRouter } from 'next/router';
-
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
 
 const errorText = { color: '#E8530E' };
 
@@ -55,6 +58,30 @@ const AddUserContainer = () => {
                 />
                 {
                   errors.phone && <label style={errorText}>{'El telefono es requerido'}</label>
+                }
+              </Grid>
+              <Grid item md={7} xs={11}>
+                <Controller
+                  control={control}
+                  name="userRole"
+                  rules={{ required: true }}
+                  render={({ field }) =>
+                  <FormControl sx={{minWidth: 120 }} fullWidth size="small">
+                  <InputLabel id="demo-select-small">{'Role'}</InputLabel>
+                  <Select
+                  labelId="demo-select-small"
+                  id="demo-select-small"
+                  {...field}
+                  label="Rol"
+                >
+                  <MenuItem value={'administrator'}>{'Administrador'}</MenuItem>
+                  <MenuItem value={'employee'}>{'Empleado'}</MenuItem>
+                </Select>  
+                </FormControl>
+                }
+                />
+                {
+                  errors.phone && <label style={errorText}>{'El rol es requerido'}</label>
                 }
               </Grid>
               <Grid item md={7} xs={11}>

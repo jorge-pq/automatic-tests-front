@@ -9,14 +9,29 @@ import Paper from '@mui/material/Paper';
 import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 import EditIcon from '@mui/icons-material/Edit'
+import PasswordIcon from '@mui/icons-material/Password';
 import { useMutation } from 'react-query';
 import { updatePassword } from '../../services/user.service';
 import PasswordEditDialog from './PasswordEditDialog';
+
+
+function getRole(value){
+    switch (value) {
+        case 'administrator':
+            return "Adnministrador"
+        case 'employee':
+            return "Empleado"
+        default:
+            "Administrador";
+    }
+}
 
 const UsersContainer = ({ users }) => {
 
     const [openDialogEdit, setOpenDialogEdit] = useState(false);
     const [selected, setSelected] = useState();
+    const [userSelected, setUserSelected] = useState();
+
 
     const { mutate: editPass } = useMutation(updatePassword, {
         onSuccess: (data) => {
@@ -29,9 +44,13 @@ const UsersContainer = ({ users }) => {
 
     const closeCreateDialogEdit = () => setOpenDialogEdit(false);
 
-    const showEdit = id => {
+    const showEditPass = id => {
         setSelected(id);
         setOpenDialogEdit(true);
+    }
+
+    const showEdit = user => {
+        setUserSelected(user);
     }
 
     return (
@@ -63,15 +82,20 @@ const UsersContainer = ({ users }) => {
                                     {row.phone}
                                 </TableCell>
                                 <TableCell component="th" scope="row">
-                                    {row.role}
+                                    {getRole(row.role)}
                                 </TableCell>
                                 {/* <TableCell component="th" scope="row">
                            <Chip label={row.active? 'Activo' : 'Inactivo'} color={row.active ? 'success' : 'error'} />
                         </TableCell> */}
                                 <TableCell align="center">
-                                    <Tooltip title="Editar contraseña">
-                                        <IconButton onClick={() => showEdit(row._id)}>
+                                <Tooltip title="Editar usuario">
+                                        <IconButton onClick={() => showEdit(row)}>
                                             <EditIcon />
+                                        </IconButton>
+                                    </Tooltip>
+                                    <Tooltip title="Editar contraseña">
+                                        <IconButton onClick={() => showEditPass(row._id)}>
+                                            <PasswordIcon />
                                         </IconButton>
                                     </Tooltip>
                                 </TableCell>
