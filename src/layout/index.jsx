@@ -33,9 +33,10 @@ import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import DateRangeIcon from '@mui/icons-material/DateRange';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import EditLocationAltIcon from '@mui/icons-material/EditLocationAlt';
-import PeopleIcon from '@mui/icons-material/People';
+import ContactsIcon from '@mui/icons-material/Contacts';
 import Popover from '@mui/material/Popover';
 import NightShelterIcon from '@mui/icons-material/NightShelter';
+import GroupIcon from '@mui/icons-material/Group';
 
 const drawerWidth = 240;
 
@@ -160,6 +161,8 @@ export default function Layout({ children, page }) {
 
   const goToClients = () => router.push(`/${getTenant()}/clients`);
 
+  const goToUsers = () => router.push(`/${getTenant()}/users/${user.tenant._id}`);
+
   const logout = () => {
     setAuth(false);
     cookie.remove('token');
@@ -282,7 +285,7 @@ export default function Layout({ children, page }) {
                 </ListItemButton>
                 <ListItemButton onClick={goToClients}>
                   <ListItemIcon>
-                    <PeopleIcon />
+                    <ContactsIcon />
                   </ListItemIcon>
                   <ListItemText primary="Clientes" />
                 </ListItemButton>
@@ -315,6 +318,15 @@ export default function Layout({ children, page }) {
               </ListItemButton>
             }
             <Divider sx={{ my: 1 }} />
+            {
+              (user?.tenant?.type === "Wholesaler" || user?.tenant?.type === "Retail") &&
+              <ListItemButton onClick={goToUsers}>
+                <ListItemIcon>
+                  <GroupIcon />
+                </ListItemIcon>
+                <ListItemText primary="Usuarios" />
+              </ListItemButton>
+            }
             <ListItemButton onClick={goToAddUser}>
               <ListItemIcon>
                 <PersonAddIcon />
