@@ -41,6 +41,7 @@ const UsersContainer = ({ users }) => {
                     <TableHead>
                         <TableRow>
                             <TableCell>{'Nombre'}</TableCell>
+                            <TableCell>{'Usuario'}</TableCell>
                             <TableCell>{'Telefono'}</TableCell>
                             <TableCell>{'Rol'}</TableCell>
                             <TableCell align="center">{'Acción'}</TableCell>
@@ -54,6 +55,9 @@ const UsersContainer = ({ users }) => {
                             >
                                 <TableCell component="th" scope="row">
                                     {row.fullname}
+                                </TableCell>
+                                <TableCell component="th" scope="row">
+                                    {row.username}
                                 </TableCell>
                                 <TableCell component="th" scope="row">
                                     {row.phone}
