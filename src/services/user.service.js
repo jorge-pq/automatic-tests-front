@@ -11,10 +11,10 @@ export const login = async (values) => {
 //     return data;
 // };
 
-// export const update = async (values) => {
-//     const {data} = await rput('user/update', values);
-//     return data;
-// };
+export const update = async (values) => {
+    const {data} = await rput('api/user/update', values);
+    return data;
+};
 
 // export const remove = async (id) => {
 //     const {data} = await rdelete('user/'+id);

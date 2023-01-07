@@ -11,8 +11,9 @@ import IconButton from '@mui/material/IconButton';
 import EditIcon from '@mui/icons-material/Edit'
 import PasswordIcon from '@mui/icons-material/Password';
 import { useMutation } from 'react-query';
-import { updatePassword } from '../../services/user.service';
+import { updatePassword, update } from '../../services/user.service';
 import PasswordEditDialog from './PasswordEditDialog';
+import UserEditDialog from './UserEditDialog';
 
 
 function getRole(value){
@@ -29,6 +30,7 @@ function getRole(value){
 const UsersContainer = ({ users }) => {
 
     const [openDialogEdit, setOpenDialogEdit] = useState(false);
+    const [openDialogUserEdit, setOpenDialogUserEdit] = useState(false);
     const [selected, setSelected] = useState();
     const [userSelected, setUserSelected] = useState();
 
@@ -42,7 +44,17 @@ const UsersContainer = ({ users }) => {
         }
     });
 
+    const { mutate: editUser } = useMutation(update, {
+        onSuccess: (data) => {
+            setOpenDialogUserEdit(false);
+        },
+        onError: (error) => {
+            alert('Error! ');
+        }
+    });
+
     const closeCreateDialogEdit = () => setOpenDialogEdit(false);
+    const closeDialogUserEdit = () => setOpenDialogUserEdit(false);
 
     const showEditPass = id => {
         setSelected(id);
@@ -51,6 +63,7 @@ const UsersContainer = ({ users }) => {
 
     const showEdit = user => {
         setUserSelected(user);
+        setOpenDialogUserEdit(true);
     }
 
     return (
@@ -106,6 +119,9 @@ const UsersContainer = ({ users }) => {
             </TableContainer>
             {
                 selected && <PasswordEditDialog open={openDialogEdit} userId={selected} close={closeCreateDialogEdit} save={editPass} />
+            }
+            {
+                userSelected && <UserEditDialog open={openDialogUserEdit} user={userSelected} close={closeDialogUserEdit} save={editUser} />
             }
         </>
 
