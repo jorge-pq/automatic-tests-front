@@ -117,14 +117,18 @@ const ClientInfo = ({ birthday, setBirthday, control, errors, clientPhone, handl
                 }
             </Grid>
             <Grid item xs={3}>
-                <DatePickerCustom
+                {/* <DatePickerCustom
                     selected={birthday}
                     onChange={(date) => setBirthday(date)}
-                    withPortal
+                    // withPortal
                     isClearable={true}
                     showYearDropdown
                     placeholderText={'Fecha de nacimiento'}
                 />
+                {
+                    errors.birthday && !birthday && <label style={errorText}>{'La fecha de nacimiento es requerida'}</label>
+                } */}
+                <input value={birthday} onChange={e=>setBirthday(e.target.value)} type={'date'} style={{width: '100%', height: '40px', padding: '8.5px 14px', borderRadius: '4px', borderColor: '#ebe4e4'}} />
                 {
                     errors.birthday && !birthday && <label style={errorText}>{'La fecha de nacimiento es requerida'}</label>
                 }
