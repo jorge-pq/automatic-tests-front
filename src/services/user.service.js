@@ -12,7 +12,7 @@ export const login = async (values) => {
 // };
 
 export const update = async (values) => {
-    const {data} = await rput('api/user/update', values);
+    const {data} = await rput('api/user/update', values, cookie.get('token'));
     return data;
 };
 

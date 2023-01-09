@@ -14,12 +14,12 @@ import { useMutation } from 'react-query';
 import { updatePassword, update } from '../../services/user.service';
 import PasswordEditDialog from './PasswordEditDialog';
 import UserEditDialog from './UserEditDialog';
-
+import {useRouter} from 'next/router';
 
 function getRole(value){
     switch (value) {
         case 'administrator':
-            return "Adnministrador"
+            return "Administrador"
         case 'employee':
             return "Empleado"
         default:
@@ -28,6 +28,8 @@ function getRole(value){
 }
 
 const UsersContainer = ({ users }) => {
+
+    const router = useRouter();
 
     const [openDialogEdit, setOpenDialogEdit] = useState(false);
     const [openDialogUserEdit, setOpenDialogUserEdit] = useState(false);
@@ -47,6 +49,7 @@ const UsersContainer = ({ users }) => {
     const { mutate: editUser } = useMutation(update, {
         onSuccess: (data) => {
             setOpenDialogUserEdit(false);
+            router.reload();
         },
         onError: (error) => {
             alert('Error! ');
