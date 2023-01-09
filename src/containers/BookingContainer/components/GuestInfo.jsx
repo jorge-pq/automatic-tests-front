@@ -19,6 +19,8 @@ import EditIcon from '@mui/icons-material/EditOutlined';
 import { Controller, useForm } from 'react-hook-form';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
+import { format, parseISO } from 'date-fns'
+
 
 const DatePickerCustom = styled(DatePicker)(({ theme }) => ({
     border: '1px solid #bfbfbf',
@@ -61,7 +63,7 @@ const GuestInfo = ({ guests, addGuest, removeGuest, totalGuests, client, birthda
         setValue('contactPhone', '');
         setValue('lastname', '');
         setValue('passport', '');
-        setBirthday();
+        setBirthday('');
         setExpireDate();
     }
 
@@ -78,9 +80,12 @@ const GuestInfo = ({ guests, addGuest, removeGuest, totalGuests, client, birthda
     const handleClient = e => {
         setActive(e.target.checked);
         if(e.target.checked){
-            setValue('name', client.name + ' ' + client.secondname || '');
-            setValue('lastname', client.lastname + ' ' + client.secondlastname || '');
-            setBirthday(new Date(birthdayClient));
+            setValue('name', client.name + ' ' + (client.secondname || ''));
+            setValue('lastname', client.lastname + ' ' + (client.secondlastname || ''));
+            let d = new Date(birthdayClient);
+            d.setDate(d.getDate() + 1);
+            d = format(d, 'yyyy-MM-dd');
+            setBirthday(d);
         }
         else{
             clear();

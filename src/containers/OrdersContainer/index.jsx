@@ -52,6 +52,7 @@ const OrdersContainer = ({ bookings }) => {
 
     const router = useRouter();
     const [selected, setSelected] = useState();
+    const [id, setid] = useState();
     const [showEditDialog, setShowEditDialog] = useState();
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
@@ -95,6 +96,7 @@ const OrdersContainer = ({ bookings }) => {
     const handleEdit = (id) => {
         let b = bookings.find(d => d._id === id);
         setSelected(b);
+        setid(b._id);
         setShowEditDialog(true);
     }
 
@@ -227,6 +229,7 @@ const OrdersContainer = ({ bookings }) => {
                 </TableContainer>
                 {selected &&
                     <OrderEditDialog
+                        id={id}
                         open={showEditDialog}
                         booking={selected}
                         close={() => setShowEditDialog(false)}

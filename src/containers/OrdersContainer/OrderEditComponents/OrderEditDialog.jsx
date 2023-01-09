@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
@@ -19,7 +19,7 @@ import ClientInfo from './ClientInfo';
 import GuestInfo from './GuestInfo';
 import PayInfo from './PayInfo';
 import { useForm } from 'react-hook-form';
-
+import { format } from 'date-fns'
 
 const ColorlibConnector = styled(StepConnector)(({ theme }) => ({
   [`&.${stepConnectorClasses.alternativeLabel}`]: {
@@ -87,10 +87,10 @@ function ColorlibStepIcon(props) {
 function fieldsNotRequired(item){
   return item !== 'secondname' && item !== 'secondlastname'
 }  
-const OrderEditDialog = ({booking, open, close, save, totalGuests, totalPrice }) => {
+const OrderEditDialog = ({id, booking, open, close, save, totalGuests, totalPrice }) => {
   const { getValues, formState: { errors }, setError, control, clearErrors } = useForm();
 
-  const [birthday, setBirthday] = useState(new Date(booking.client.birthday));
+  const [birthday, setBirthday] = useState();
   const [guests, setGuests] = useState(booking.guests);
 
   const [payType, setPayType] = useState(booking.pay.payType);
@@ -103,6 +103,22 @@ const OrderEditDialog = ({booking, open, close, save, totalGuests, totalPrice })
   const handleDiscount = (e) => {
     setDiscount(e.target.value);
   }
+
+ 
+
+  useEffect(() => {
+    if(booking.client.birthday){
+      console.log(booking.client.birthday)
+      setBirthday(format(new Date(booking.client.birthday), 'yyyy-MM-dd'));
+    }
+    else{
+      setBirthday();
+    }
+    
+    return () => {
+      setBirthday();
+    };
+  }, [id]);
 
   function getBalance() {
     let result = (parseFloat(paid) - (parseFloat(totalPrice) + parseFloat(service) - parseFloat(discount))).toFixed(2);
