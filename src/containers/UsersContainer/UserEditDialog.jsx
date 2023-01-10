@@ -22,11 +22,11 @@ export default function PasswordEditDialog({ open, close, save, user }) {
     useEffect(() => {
         setValue("fullname", user.fullname);
         setValue("phone", user.phone);
-        setValue("role", user.role);
+        setValue("userRole", user.role);
         return () => {
             setValue("fullname", '');
             setValue("phone", '');
-            setValue("role", '');
+            setValue("userRole", '');
         };
     }, [user]);
 
@@ -69,7 +69,7 @@ export default function PasswordEditDialog({ open, close, save, user }) {
                             <Grid item md={7} xs={11}>
                                 <Controller
                                     control={control}
-                                    name="role"
+                                    name="userRole"
                                     rules={{ required: true }}
                                     render={({ field }) =>
                                         <FormControl sx={{ minWidth: 120 }} fullWidth size="small">

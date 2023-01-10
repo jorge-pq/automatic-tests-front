@@ -259,6 +259,8 @@ export default function Layout({ children, page }) {
             </Popover>
             {user?.tenant?.type === "Wholesaler" &&
               <>
+              {user?.role === 'administrator' &&
+                <>
                 <ListItemButton onClick={goToManage}>
                   <ListItemIcon>
                     <LocalHotelIcon />
@@ -283,6 +285,8 @@ export default function Layout({ children, page }) {
                   </ListItemIcon>
                   <ListItemText primary="Agregar minorista" />
                 </ListItemButton>
+                </>
+            }
                 <ListItemButton onClick={goToClients}>
                   <ListItemIcon>
                     <ContactsIcon />
@@ -300,7 +304,7 @@ export default function Layout({ children, page }) {
               </ListItemButton>
             }
             {
-              user?.tenant?.type === "Retail" &&
+              user?.tenant?.type === "Retail" && user?.role === 'administrator' &&
               <ListItemButton onClick={goToPrices}>
                 <ListItemIcon>
                   <AttachMoneyIcon />
@@ -319,7 +323,7 @@ export default function Layout({ children, page }) {
             }
             <Divider sx={{ my: 1 }} />
             {
-              (user?.tenant?.type === "Wholesaler" || user?.tenant?.type === "Retail") &&
+              (user?.tenant?.type === "Wholesaler" || user?.tenant?.type === "Retail") && user?.role === 'administrator' &&
               <ListItemButton onClick={goToUsers}>
                 <ListItemIcon>
                   <GroupIcon />
@@ -327,19 +331,22 @@ export default function Layout({ children, page }) {
                 <ListItemText primary="Usuarios" />
               </ListItemButton>
             }
-            <ListItemButton onClick={goToAddUser}>
+            {
+              user?.role === 'administrator' && 
+              <ListItemButton onClick={goToAddUser}>
               <ListItemIcon>
                 <PersonAddIcon />
               </ListItemIcon>
               <ListItemText primary="Agregar usuario" />
             </ListItemButton>
+            }
             <ListItemButton>
               <ListItemIcon>
                 <PasswordIcon />
               </ListItemIcon>
               <ListItemText primary="Cambiar contraseña" />
             </ListItemButton>
-            {user?.tenant?.type === "Wholesaler" &&
+            {user?.tenant?.type === "Wholesaler" &&  user?.role === 'administrator' && 
               <>
                 <ListItemButton onClick={handleClick}>
                   <ListItemIcon>
