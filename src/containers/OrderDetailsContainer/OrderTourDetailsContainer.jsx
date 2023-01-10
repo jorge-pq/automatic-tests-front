@@ -1,14 +1,22 @@
 import React from 'react';
 import { Grid, Paper, Typography, Divider, Button, Stack } from '@mui/material';
-import JsPDF from 'jspdf';
+// import JsPDF from 'jspdf';
 
 const OrderTourDetailsContainer = ({ order }) => {
 
-    const exportPdf = () => {
-        const report = new JsPDF('portrait', 'pt', 'a3');
-        report.html(document.querySelector('#report')).then(() => {
-            report.save('comprobante.pdf');
-        });
+    // const exportPdf = () => {
+    //     const report = new JsPDF('portrait', 'pt', 'a3');
+    //     report.html(document.querySelector('#report')).then(() => {
+    //         report.save('comprobante.pdf');
+    //     });
+    // }
+
+    const print = () => {
+        let printContents = document.getElementById('report').innerHTML;
+        let originalContents = document.body.innerHTML;
+        document.body.innerHTML = printContents;
+        window.print();
+       document.body.innerHTML = originalContents; 
     }
 
     return (
@@ -17,6 +25,9 @@ const OrderTourDetailsContainer = ({ order }) => {
                 <div id="report" style={{ width: '100%' }}>
                     <Paper elevation={3} sx={{ p: 3 }}>
                         <Grid container justifyContent={'space-between'}>
+                            <Grid item xs={12} mb={2}>
+                                <Typography variant='h5'>{order.agencyInfo?.name}</Typography>
+                            </Grid>
                             <Grid item>
                                 <Typography><b>{'No. Reserva: '}</b>{order.code}</Typography>
                             </Grid>
@@ -169,12 +180,15 @@ const OrderTourDetailsContainer = ({ order }) => {
             <Grid item xs={3}>
                 <Paper elevation={3} sx={{ p: 3 }}>
                     <Stack direction={'column'} spacing={2}>
+                    <Button variant='contained' size='small' onClick={print}>
+                            {'Imprimir'}
+                        </Button>
                         <Button variant='contained' disabled size='small'>
                             {'Enviar por correo'}
                         </Button>
-                        <Button variant='contained' size='small' onClick={exportPdf}>
+                        {/* <Button variant='contained' size='small' onClick={exportPdf}>
                             {'Exportar PDF'}
-                        </Button>
+                        </Button> */}
                         <Button variant='contained' disabled size='small'>
                             {'Comprobante de pago'}
                         </Button>
