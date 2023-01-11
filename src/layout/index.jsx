@@ -303,7 +303,7 @@ export default function Layout({ children, page }) {
                 <ListItemText primary="Agregar mayorista" />
               </ListItemButton>
             }
-            {
+            {/* {
               user?.tenant?.type === "Retail" && user?.role === 'administrator' &&
               <ListItemButton onClick={goToPrices}>
                 <ListItemIcon>
@@ -311,7 +311,7 @@ export default function Layout({ children, page }) {
                 </ListItemIcon>
                 <ListItemText primary="Gestionar precios" />
               </ListItemButton>
-            }
+            } */}
             {
               (user?.tenant?.type === "Wholesaler" || user?.tenant?.type === "Retail") &&
               <ListItemButton onClick={goToOrders}>

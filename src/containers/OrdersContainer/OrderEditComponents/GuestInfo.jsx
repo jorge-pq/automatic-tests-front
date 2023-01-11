@@ -125,7 +125,7 @@ const GuestInfo = ({ guests, addGuest, removeGuest, totalGuests }) => {
                     }
                 </Grid>
                 <Grid item xs={4}>
-                    <DatePickerCustom
+                    {/* <DatePickerCustom
                         selected={expireDate}
                         onChange={(date) => handleExpireDate(date)}
                         withPortal
@@ -136,7 +136,11 @@ const GuestInfo = ({ guests, addGuest, removeGuest, totalGuests }) => {
                     />
                     {
                         errors.expireDate && !expireDate && <label style={errorText}>{'La fecha de vencimiento del pasaporte es requerida'}</label>
-                    }
+                    } */}
+                    <input value={expireDate} onChange={e => handleExpireDate(e.target.value)} pattern="[0-9]{4}-[0-9]{2}" type={'month'} style={{ width: '100%', height: '40px', padding: '8.5px 14px', borderRadius: '4px', borderColor: '#ebe4e4' }} />
+                    {
+                        errors.expireDate && !expireDate && <label style={errorText}>{'La fecha de vencimiento del pasaporte es requerida'}</label>
+                    } 
                 </Grid>
                 <Grid item xs={12}>
                     <Grid container justifyContent={'flex-end'}>
