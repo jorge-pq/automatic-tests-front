@@ -25,9 +25,6 @@ const OrderTourDetailsContainer = ({ order }) => {
                 <div id="report" style={{ width: '100%' }}>
                     <Paper elevation={3} sx={{ p: 3 }}>
                         <Grid container justifyContent={'space-between'}>
-                            <Grid item xs={12} mb={2}>
-                                <Typography variant='h5'>{order.agencyInfo?.name}</Typography>
-                            </Grid>
                             <Grid item>
                                 <Typography><b>{'No. Reserva: '}</b>{order.code}</Typography>
                             </Grid>
@@ -36,6 +33,9 @@ const OrderTourDetailsContainer = ({ order }) => {
                             </Grid>
                             <Grid item xs={12} mt={3} mb={1}>
                                 <Typography variant='h6'>{'Datos de la oficina'}</Typography>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <Typography><b>{'Nombre: '}</b>{order.agencyInfo?.name}</Typography>
                             </Grid>
                             <Grid item xs={12}>
                                 <Typography><b>{'Dirección: '}</b>{order.agencyInfo?.address}</Typography>
@@ -86,7 +86,7 @@ const OrderTourDetailsContainer = ({ order }) => {
                                 <Typography variant='h6'>{'Datos de la reserva'}</Typography>
                             </Grid>
                             <Grid item xs={12}>
-                                <Typography><b>{'Hotel: '}</b>{order.hotel.name}</Typography>
+                                <Typography><b>{order.type === 'tour'? 'Tour: ' : 'Hotel: '}</b>{order.hotel.name}</Typography>
                             </Grid>
                             <Grid item xs={12}>
                                 <Typography><b>{'Fecha: '}</b>{order.order[0].period}</Typography>
