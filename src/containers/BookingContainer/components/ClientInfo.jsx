@@ -128,7 +128,10 @@ const ClientInfo = ({ birthday, setBirthday, control, errors, clientPhone, handl
                 {
                     errors.birthday && !birthday && <label style={errorText}>{'La fecha de nacimiento es requerida'}</label>
                 } */}
-                <input value={birthday} onChange={e=>setBirthday(e.target.value)} type={'date'} style={{width: '100%', height: '40px', padding: '8.5px 14px', borderRadius: '4px', borderColor: '#ebe4e4'}} />
+                <input value={birthday} placeholder={'Fecha de nacimiento'} 
+                 onFocus={(e) => (e.target.type = "date")}
+                 onBlur={(e) => (e.target.type = "text")}
+                onChange={e=>setBirthday(e.target.value)} style={{width: '100%', height: '40px', padding: '8.5px 14px', borderRadius: '4px', borderColor: '#ebe4e4'}} />
                 {
                     errors.birthday && !birthday && <label style={errorText}>{'La fecha de nacimiento es requerida'}</label>
                 }

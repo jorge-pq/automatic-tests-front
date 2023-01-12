@@ -64,7 +64,7 @@ const GuestInfo = ({ guests, addGuest, removeGuest, totalGuests, client, birthda
         setValue('lastname', '');
         setValue('passport', '');
         setBirthday('');
-        setExpireDate();
+        setExpireDate('');
     }
 
     const handleBirthday = date => {
@@ -136,7 +136,11 @@ const GuestInfo = ({ guests, addGuest, removeGuest, totalGuests, client, birthda
                     {
                         errors.birthday && !birthday && <label style={errorText}>{'La fecha de nacimiento es requerida'}</label>
                     } */}
-                    <input value={birthday} onChange={e => setBirthday(e.target.value)} type={'date'} style={{ width: '100%', height: '40px', padding: '8.5px 14px', borderRadius: '4px', borderColor: '#ebe4e4' }} />
+                    <input value={birthday}
+                     onFocus={(e) => (e.target.type = "date")}
+                     onBlur={(e) => (e.target.type = "text")}
+                     placeholder={'Fecha de nacimiento'} 
+                    onChange={e => setBirthday(e.target.value)} style={{ width: '100%', height: '40px', padding: '8.5px 14px', borderRadius: '4px', borderColor: '#ebe4e4' }} />
                     {
                         errors.birthday && !birthday && <label style={errorText}>{'La fecha de nacimiento es requerida'}</label>
                     }
@@ -164,7 +168,11 @@ const GuestInfo = ({ guests, addGuest, removeGuest, totalGuests, client, birthda
                     {
                         errors.expireDate && !expireDate && <label style={errorText}>{'La fecha de vencimiento del pasaporte es requerida'}</label>
                     } */}
-                    <input value={expireDate} onChange={e => handleExpireDate(e.target.value)} pattern="[0-9]{4}-[0-9]{2}" type={'month'} style={{ width: '100%', height: '40px', padding: '8.5px 14px', borderRadius: '4px', borderColor: '#ebe4e4' }} />
+                    <input value={expireDate} onChange={e => handleExpireDate(e.target.value)}
+                    onFocus={(e) => (e.target.type = "month")}
+                    onBlur={(e) => (e.target.type = "text")}
+                    placeholder={'Fecha de vencimiento del pasaporte'}
+                    pattern="[0-9]{4}-[0-9]{2}"  style={{ width: '100%', height: '40px', padding: '8.5px 14px', borderRadius: '4px', borderColor: '#ebe4e4' }} />
                     {
                         errors.expireDate && !expireDate && <label style={errorText}>{'La fecha de vencimiento del pasaporte es requerida'}</label>
                     } 
