@@ -193,7 +193,8 @@ const TourDetailsEditDialog = ({ selected, id, open, close, save, types }) => {
   const editPrices = (newPrices, id) => {
     let index = typesAdded.findIndex(d => d.id == id);
     let offers = typesAdded[index].offers;
-    let offerIndex = offers.findIndex(d => d == newPrices.room);
+    let offerIndex = offers.findIndex(d => d.room == newPrices.room);
+    console.log(offerIndex)
     offers[offerIndex] = newPrices;
     let upd = [...typesAdded];
     upd[index].offers = offers;
