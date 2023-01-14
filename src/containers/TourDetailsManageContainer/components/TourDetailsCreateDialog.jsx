@@ -57,6 +57,8 @@ const TourDetailsCreateDialog = ({ id, open, close, save, types, getRoomTypePers
   const [openUpdateOffersDialog, setOpenUpdateOffersDialog] = useState(false);
   const [typeUpdateSelected, setTypeUpdateSelected] = useState('');
 
+  const [openUpdateAvalaibilityDialog, setOpenUpdateAvalaibilityDialog] = useState(false);
+  const [periodUpdateSelected, setPeriodUpdateSelected] = useState();
 
   const handleType = value => {
     setTypeSelected(value);
@@ -178,6 +180,17 @@ const TourDetailsCreateDialog = ({ id, open, close, save, types, getRoomTypePers
     setTypesAdded(upd);
   }
 
+  const editPrices = (newPrices, id) => {
+    let index = typesAdded.findIndex(d => d.id == id);
+    let offers = typesAdded[index].offers;
+    let offerIndex = offers.findIndex(d => d.room == newPrices.room);
+    console.log(offerIndex)
+    offers[offerIndex] = newPrices;
+    let upd = [...typesAdded];
+    upd[index].offers = offers;
+    setTypesAdded(upd);
+  }
+
   const editOffersToType = value => {
     setOpenUpdateOffersDialog(true);
     setTypeUpdateSelected(value);
@@ -191,6 +204,22 @@ const TourDetailsCreateDialog = ({ id, open, close, save, types, getRoomTypePers
     setTypesAdded(upd);
     setOpenUpdateOffersDialog(false);
     setTypeUpdateSelected('');
+  }
+
+  const editAvalaibilityToPeriod = value => {
+    setOpenUpdateAvalaibilityDialog(true);
+    setPeriodUpdateSelected(value);
+  }
+
+  const updateAvalaibility = (value, id, period, date) => {
+    let index = typesAdded.findIndex(d => d.id == id);
+    let upd = [...typesAdded];
+    upd[index].availability = value;
+    upd[index].period = period;
+    upd[index].date = date;
+    setTypesAdded(upd);
+    setOpenUpdateAvalaibilityDialog(false);
+    setPeriodUpdateSelected();
   }
 
   const typesFiltered = item => {
@@ -458,7 +487,7 @@ const TourDetailsCreateDialog = ({ id, open, close, save, types, getRoomTypePers
             </Grid>
           </Grid>
           <Grid item xs={12} mt={2}>
-            <TypesTable data={typesAdded} removeType={removeType} removeTypeOfferAdded={removeTypeOfferAdded} editOffersToType={editOffersToType} />
+            <TypesTable data={typesAdded} removeType={removeType} removeTypeOfferAdded={removeTypeOfferAdded} editOffersToType={editOffersToType} editAvalaibilityToPeriod={editAvalaibilityToPeriod} editPrices={editPrices}/>
           </Grid>
 
         </Grid>
@@ -471,6 +500,15 @@ const TourDetailsCreateDialog = ({ id, open, close, save, types, getRoomTypePers
           types={types}      
           offersType={offersType}
         />
+         {
+          periodUpdateSelected &&
+          <EditAvalaibility
+            open={openUpdateAvalaibilityDialog}
+            close={() => setOpenUpdateAvalaibilityDialog(false)}
+            selected={periodUpdateSelected}
+            updateAvalaibility={updateAvalaibility}
+          />
+        }
       </DialogContent>
       <DialogActions>
         <Button onClick={close}>Cerrar</Button>
