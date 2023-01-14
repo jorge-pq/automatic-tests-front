@@ -11,7 +11,8 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-
+import Switch from '@mui/material/Switch';
+import FormControlLabel from '@mui/material/FormControlLabel';
 
 const errorText = { color: '#E8530E' };
 
@@ -90,7 +91,13 @@ export default function PasswordEditDialog({ open, close, save, user }) {
                                     errors.phone && <label style={errorText}>{'El rol es requerido'}</label>
                                 }
                             </Grid>
-
+                            <Grid item md={7} xs={11}>
+                                <Controller
+                                    control={control}
+                                    name="active"
+                                    defaultValue={user.active}
+                                    render={({ field }) => <FormControlLabel control={<Switch {...field} defaultChecked={user.active} />} label="Activo" />}
+                                /></Grid>
                         </Grid>
                     </Grid>
 

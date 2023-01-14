@@ -15,6 +15,8 @@ import { updatePassword, update } from '../../services/user.service';
 import PasswordEditDialog from './PasswordEditDialog';
 import UserEditDialog from './UserEditDialog';
 import {useRouter} from 'next/router';
+import Chip from '@mui/material/Chip';
+
 
 function getRole(value){
     switch (value) {
@@ -79,6 +81,7 @@ const UsersContainer = ({ users }) => {
                             <TableCell>{'Usuario'}</TableCell>
                             <TableCell>{'Telefono'}</TableCell>
                             <TableCell>{'Rol'}</TableCell>
+                            <TableCell>{'Activo'}</TableCell>
                             <TableCell align="center">{'Acción'}</TableCell>
                         </TableRow>
                     </TableHead>
@@ -100,9 +103,9 @@ const UsersContainer = ({ users }) => {
                                 <TableCell component="th" scope="row">
                                     {getRole(row.role)}
                                 </TableCell>
-                                {/* <TableCell component="th" scope="row">
-                           <Chip label={row.active? 'Activo' : 'Inactivo'} color={row.active ? 'success' : 'error'} />
-                        </TableCell> */}
+                                <TableCell component="th" scope="row">
+                                    <Chip label={row.active ? 'Activo' : 'Inactivo'} color={row.active ? 'success' : 'error'} />
+                                </TableCell>
                                 <TableCell align="center">
                                 <Tooltip title="Editar usuario">
                                         <IconButton onClick={() => showEdit(row)}>
