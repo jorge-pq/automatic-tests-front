@@ -189,6 +189,16 @@ const TourDetailsEditDialog = ({ selected, id, open, close, save, types }) => {
     upd[index].offers = offersUpd;
     setTypesAdded(upd);
   }
+  
+  const editPrices = (newPrices, id) => {
+    let index = typesAdded.findIndex(d => d.id == id);
+    let offers = typesAdded[index].offers;
+    let offerIndex = offers.findIndex(d => d == newPrices.room);
+    offers[offerIndex] = newPrices;
+    let upd = [...typesAdded];
+    upd[index].offers = offers;
+    setTypesAdded(upd);
+  }
 
   const editOffersToType = value => {
     setOpenUpdateOffersDialog(true);
@@ -210,10 +220,12 @@ const TourDetailsEditDialog = ({ selected, id, open, close, save, types }) => {
     setPeriodUpdateSelected(value);
   }
 
-  const updateAvalaibility = (value, id) => {
+  const updateAvalaibility = (value, id, period, date) => {
     let index = typesAdded.findIndex(d => d.id == id);
     let upd = [...typesAdded];
     upd[index].availability = value;
+    upd[index].period = period;
+    upd[index].date = date;
     setTypesAdded(upd);
     setOpenUpdateAvalaibilityDialog(false);
     setPeriodUpdateSelected();
@@ -475,7 +487,7 @@ const TourDetailsEditDialog = ({ selected, id, open, close, save, types }) => {
             </Grid>
           </Grid>
           <Grid item xs={12} mt={2}>
-            <TypesTable data={typesAdded} removeType={removeType} removeTypeOfferAdded={removeTypeOfferAdded} editOffersToType={editOffersToType} editAvalaibilityToPeriod={editAvalaibilityToPeriod} />
+            <TypesTable data={typesAdded} removeType={removeType} removeTypeOfferAdded={removeTypeOfferAdded} editOffersToType={editOffersToType} editAvalaibilityToPeriod={editAvalaibilityToPeriod} editPrices={editPrices} />
           </Grid>
 
         </Grid>

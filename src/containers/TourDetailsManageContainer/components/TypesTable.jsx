@@ -14,7 +14,7 @@ import OffersChip from './OffersChip';
 import { format } from 'date-fns'
 
 
-export default function TypesTable({ data, removeType, removeTypeOfferAdded, editOffersToType, editAvalaibilityToPeriod }) {
+export default function TypesTable({ data, removeType, removeTypeOfferAdded, editOffersToType, editAvalaibilityToPeriod, editPrices }) {
 
   return (
     <TableContainer component={Paper}>
@@ -40,10 +40,10 @@ export default function TypesTable({ data, removeType, removeTypeOfferAdded, edi
                 {row.availability}
               </TableCell>
               <TableCell align="left">
-                <OffersChip data={row.offers} handleDeleteOffer={(item) => removeTypeOfferAdded(item, row.id)} />
+                <OffersChip data={row.offers} handleDeleteOffer={(item) => removeTypeOfferAdded(item, row.id)} savePrices={(item) => editPrices(item, row.id)} />
               </TableCell>
               <TableCell align="center">
-                <IconButton title='EDITAR DISPONIBILIDAD' onClick={() => editAvalaibilityToPeriod(row)}>
+                <IconButton title='EDITAR' onClick={() => editAvalaibilityToPeriod(row)}>
                   <EditIcon />
                 </IconButton>
                 {
