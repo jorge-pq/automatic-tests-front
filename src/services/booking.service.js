@@ -7,8 +7,8 @@ export const addBooking = async (values) => {
     return data;
 }
 
-export const getBookings = async (jwt) => {
-    const {data} = await rget('api/booking', jwt);
+export const getBookings = async (jwt, page) => {
+    const {data} = await rget('api/booking?page='+page, jwt);
     return data;
 };
 

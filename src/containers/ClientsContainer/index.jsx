@@ -36,7 +36,6 @@ const ClientsContainer = ({ clients, page, totalPages }) => {
     const [selected, setSelected] = useState();
 
     const handleChange = (event, value) => {
-        console.log(value)
         router.query.page = value;
         router.push(router);
     };

@@ -21,6 +21,8 @@ import { updateBooking } from '../../services/booking.service';
 import { useMutation } from 'react-query';
 import OrderEditDialog from './OrderEditComponents/OrderEditDialog'
 import TextField from '@mui/material/TextField';
+import Pagination from '../../components/Pagination';
+
 
 function getColorStatus(state) {
     let color = 'default'
@@ -48,7 +50,7 @@ const options = [
 
 const ITEM_HEIGHT = 48;
 
-const OrdersContainer = ({ bookings }) => {
+const OrdersContainer = ({ bookings, page, totalPages }) => {
 
     const router = useRouter();
     const [selected, setSelected] = useState();
@@ -58,12 +60,18 @@ const OrdersContainer = ({ bookings }) => {
     const open = Boolean(anchorEl);
 
     const [filter, setFilter] = useState({
-        state: ''
+        state: '',
+        code:''
     });
     
-    const handleFilter = value => {
-        setFilter({...filter, state: value});
+    const handleFilter = (value, field) => {
+        setFilter({...filter, [field]: value});
     }
+
+    const handleChange = (event, value) => {
+        router.query.page = value;
+        router.push(router);
+    };
 
     const { mutate: save } = useMutation(updateBooking, {
         onSuccess: (data) => {
@@ -120,7 +128,7 @@ const OrdersContainer = ({ bookings }) => {
     }
 
     const filtered = item => {
-        return filter.state ? item.state === filter.state : (item.state === options[0] || item.state === options[1]) 
+        return ((filter.state ? item.state === filter.state : (item.state === options[0] || item.state === options[1])) && item.code.includes(filter.code)) 
     }
 
     return (
@@ -136,23 +144,26 @@ const OrdersContainer = ({ bookings }) => {
                     size={'small'}
                     value={filter.state}
                     onChange={(event, value) => {
-                        handleFilter(value);
+                        handleFilter(value, 'state');
                     }}
                     getOptionLabel={(option) => option}
                     renderInput={(params) => <TextField fullWidth {...params} label="Estado" />}
                 />
+            </Grid>
+            <Grid item xs={3} my={3} ml={2}>
+              <TextField fullWidth onChange={e=>handleFilter(e.target.value, 'code')} value={filter.code} size='small' label="Código" />
             </Grid>
             <Grid item xs={12}>
                 <TableContainer component={Paper}>
                     <Table sx={{ minWidth: 300 }} aria-label="simple table">
                         <TableHead>
                             <TableRow>
+                                <TableCell align="center">{'Fecha creación'}</TableCell>
                                 <TableCell align="center">{'Código'}</TableCell>
                                 <TableCell align="center">{'Agencia'}</TableCell>
                                 <TableCell align="center">{'Hotel / Tour'}</TableCell>
                                 <TableCell align="center">{'Cliente'}</TableCell>
                                 <TableCell align="center">{'Fecha reservación'}</TableCell>
-                                <TableCell align="center">{'Fecha creación'}</TableCell>
                                 <TableCell align="center">{'Estado'}</TableCell>
                                 <TableCell align="center">{'Acción'}</TableCell>
                             </TableRow>
@@ -163,6 +174,9 @@ const OrdersContainer = ({ bookings }) => {
                                     key={row._id}
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                 >
+                                    <TableCell component="th" scope="row" align="center">
+                                        {new Date(row.creationDate).toLocaleDateString()}
+                                    </TableCell>
                                     <TableCell component="th" scope="row" align="center">
                                         {row.code}
                                     </TableCell>
@@ -177,9 +191,6 @@ const OrdersContainer = ({ bookings }) => {
                                     </TableCell>
                                     <TableCell component="th" scope="row" align="center">
                                         {row.type === "hotel" || !row.type ? getBookingDate(row.order[0].date) : row.order[0].period}
-                                    </TableCell>
-                                    <TableCell component="th" scope="row" align="center">
-                                        {new Date(row.creationDate).toLocaleDateString()}
                                     </TableCell>
                                     <TableCell component="th" scope="row" align="center">
                                         <Chip label={row.state} color={getColorStatus(row.state)} />
@@ -238,6 +249,13 @@ const OrdersContainer = ({ bookings }) => {
                         totalPrice={getTotalPrice()}
                     />}
             </Grid>
+
+            <Grid item xs={12}>
+                 <Grid container justifyContent={'flex-end'} mt={3}>
+                    <Pagination totalPages={totalPages} page={page} handleChange={handleChange} />
+                </Grid>               
+            </Grid>
+
         </Grid>
     );
 };
