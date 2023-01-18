@@ -9,6 +9,7 @@ import { getTenant } from '../../utils/util';
 import { getAvailabilities } from '../../services/tours.service';
 import Popover from '@mui/material/Popover';
 import GuestsList from './GuestsList';
+import Box from '@mui/material/Box';
 
 const DEFAULT_IMAGE = 'https://www.blauhotels.com/cache/63/20/632054992db0d81ab98c4125df16c427.jpg';
 
@@ -22,6 +23,7 @@ export default function HotelCard({ item }) {
   const [openDialog, setOpenDialog] = useState(false);
 
   const [anchorEl, setAnchorEl] = useState(null);
+  const [anchorDescEl, setAnchorDescEl] = useState(null);
 
   const handleClick = async (event, id) => {
     setAnchorEl(event.currentTarget);
@@ -29,13 +31,23 @@ export default function HotelCard({ item }) {
     setList(data.data);
   };
 
+  const showDescription = (event) => {
+    event.preventDefault();
+    setAnchorDescEl(event.currentTarget);
+  };
+
   const handleClose = () => {
     setAnchorEl(null);
   };
 
-  const open = Boolean(anchorEl);
-  const id = open ? 'simple-popper' : undefined;
+  const handleCloseDesc = () => {
+    setAnchorDescEl(null);
+  };
 
+  const open = Boolean(anchorEl);
+  const openDesc = Boolean(anchorDescEl);
+  const id = open ? 'simple-popper' : undefined;
+  const descid = open ? 'desc-popper' : undefined;
 
   const closeGuestsDialog = () => {
     setOpenDialog(false);
@@ -59,7 +71,7 @@ export default function HotelCard({ item }) {
   return (
     <>
       <Card sx={{ maxWidth: 345 }}>
-        <CardActionArea onClick={() => handleBooking(item.slug)}>
+        <CardActionArea>
           <CardMedia
             component="img"
             height="140"
@@ -70,6 +82,21 @@ export default function HotelCard({ item }) {
             <Typography gutterBottom variant="h5" component="div">
               {item.name}
             </Typography>
+            {item.description && <Typography sx={{textDecoration: 'underline'}} variant='caption' onClick={showDescription}>{'Ver descripción'}</Typography> }
+            <Popover
+              id={descid}
+              open={openDesc}
+              anchorEl={anchorDescEl}
+              onClose={handleCloseDesc}
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'left',
+              }}
+            >
+              <Box p={2}>
+                {item.description}
+              </Box>
+            </Popover>
           </CardContent>
         </CardActionArea>
         <CardActions>
@@ -99,12 +126,12 @@ export default function HotelCard({ item }) {
               }
             </ul>
           </Popover>
-          <Button size="small" color="primary" onClick={()=>handleGallery(item.slug)}>
+          <Button size="small" color="primary" onClick={() => handleGallery(item.slug)}>
             {'Galeria'}
           </Button>
         </CardActions>
       </Card>
-      {periodSelected && <GuestsList guests={guests} period={periodSelected} open={openDialog} close={closeGuestsDialog} />}   
+      {periodSelected && <GuestsList guests={guests} period={periodSelected} open={openDialog} close={closeGuestsDialog} />}
     </>
   );
 }

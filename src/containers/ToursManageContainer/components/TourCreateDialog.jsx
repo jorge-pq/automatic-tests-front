@@ -54,6 +54,17 @@ export default function TourCreateDialog({ open, close, save }) {
             <Grid item xs={12}>
               <Controller
                 control={control}
+                name="description"
+                rules={{ required: true }}
+                render={({ field }) => <textarea style={{ width: '100%' }} rows={7} placeholder={'Descripción *'} {...field} />}
+              />
+              {
+                errors.description && <label style={errorText}>{'La descripción es requerida'}</label>
+              }
+            </Grid>
+            <Grid item xs={12}>
+              <Controller
+                control={control}
                 name="category"
                 rules={{ required: true }}
                 render={({ field }) => <Autocomplete
