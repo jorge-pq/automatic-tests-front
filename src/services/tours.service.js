@@ -12,6 +12,11 @@ export const getToursActive = async (jwt) => {
     return data;
 };
 
+export const getToursSales = async (page, type) => {
+    const {data} = await rget(`api/tours/report/sales?date=${type}&page=${page}`, cookie.get('token'));
+    return data;
+};
+
 export const addTour = async (values) => {
     const {data} = await rpost('api/tours/create',values, cookie.get('token'));
     return data;
