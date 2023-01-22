@@ -18,6 +18,10 @@ export const getClientByPhone = async (values) => {
     return data;
 }
 
+export const getClientCount = async () => {
+    const {data} = await rget('api/clients/count', cookie.get('token'));
+    return data;
+};
 export const updateClient = async (values) => {
     const {data} = await rput('api/clients/'+values.id, values, cookie.get('token'));
     return data;
