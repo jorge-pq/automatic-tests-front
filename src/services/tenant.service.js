@@ -16,3 +16,8 @@ export const addUser = async (values) => {
     return data;
 };
 
+
+export const getAgenciesSales = async (page, type) => {
+    const {data} = await rget(`api/tenant/report/sales?date=${type}&page=${page}`, cookie.get('token'));
+    return data;
+};
