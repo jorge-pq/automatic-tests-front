@@ -1,30 +1,14 @@
-import * as React from 'react';
-import {getCookie} from '../lib/session';
-import {redirectToLogin, redirectToTenat, normalizeUserCookie} from '../utils/util';
+import AutomaticTestsContainer from '../containers/AutomaticTestsContainer';
+import Layout from '../layout';
 
-
-const Index = () => {
+const Home = () => {
   return (
-    <>
-    </>
+    <Layout>
+      <AutomaticTestsContainer />
+    </Layout>
   );
 
 }
 
 
-export async function getServerSideProps(ctx) {
-
-  let jwt = getCookie("token", ctx.req);
-	
-	if (!jwt) {
-		return redirectToLogin();
-	}
-
-  let user = normalizeUserCookie(getCookie('user', ctx.req));
-
-  return redirectToTenat(user.tenant?.name);
-
-}
-
-
-export default Index;
+export default Home;
