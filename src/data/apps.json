@@ -1,0 +1,66 @@
+[
+    {
+        "id": 35,
+        "name": "Autorizador Acceso Login"
+    },
+    {
+        "id": 37,
+        "name": "Autorizador Histórico"
+    },
+    {
+        "id": 47,
+        "name": "Avance Grafico"
+    },
+    {
+        "id": 57,
+        "name": "MensajeriaApp APK"
+    },
+    {
+        "id": 317,
+        "name": "ServicioSoaWebDinamico"
+    },
+    {
+        "id": 325,
+        "name": "ServicioSoaSeguimiento"
+    },
+    {
+        "id": 479,
+        "name": "Prototipo Portal Formularios"
+    },
+    {
+        "id": 506,
+        "name": "Desarrollos en Arranque"
+    },
+    {
+        "id": 10514,
+        "name": "Archivo"
+    },
+    {
+        "id": 10524,
+        "name": "ServicioSoaValidaciones"
+    },
+    {
+        "id": 10526,
+        "name": "Préstamo Infonavit"
+    },
+    {
+        "id": 10528,
+        "name": "GeneradorDocumentosHubSpot"
+    },
+    {
+        "id": 10541,
+        "name": "ActualizarCodigoPostalFiscal"
+    },
+    {
+        "id": 10542,
+        "name": "Comisiones Agente"
+    },
+    {
+        "id": 10545,
+        "name": "Engagement Gx"
+    },
+    {
+        "id": 10548,
+        "name": "Engagement Center"
+    }
+]

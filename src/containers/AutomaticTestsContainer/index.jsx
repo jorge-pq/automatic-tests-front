@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Grid from '@mui/material/Grid';
 import Search from './components/Search';
 import Stack from '@mui/material/Stack';
@@ -16,10 +16,13 @@ import ClickAwayListener from '@mui/material/ClickAwayListener';
 import TextField from '@mui/material/TextField';
 import Grow from '@mui/material/Grow';
 import Paper from '@mui/material/Paper';
+import Alert from '@mui/material/Alert';
 import TextareaAutosize from '@mui/material/TextareaAutosize';
 import AuthorizationTab from './components/AuthorizationTab';
 import HeadersTab from './components/HeadersTab';
 import BodyTab from './components/BodyTab';
+import Aside from './components/Aside';
+import {rget, rpost, rput, rdelete} from '../../lib/request';
 
 
 function a11yProps(index) {
@@ -29,13 +32,28 @@ function a11yProps(index) {
     };
 }
 
-const options = ['EQUAL', 'CONTAINS', 'STATUS', 'TOBE'];
+const options = ['EQUAL', 'CONTAINS', 'STATUS'];
 
+const methods = ['GET', 'POST', 'PUT', 'DELETE'];
 
 const AutomaticTestsContainer = () => {
 
     const [open, setOpen] = React.useState(false);
     const anchorRef = React.useRef(null);
+
+    const [selectedMethod, setSelectedMethod] = React.useState('');
+    const [response, setResponse] = useState('');
+    const [expect, setExpect] = useState('');
+    const [statusRequest, setStatusRequest] = useState(0);
+    const [testResult, setTestResult] = useState({
+        message: '',
+        type: ''
+    });
+    const [url, setUrl] = useState('');
+
+    const handleUrl = e => setUrl(e.target.value);
+
+    const handleExpect = e => setExpect(e.target.value);
 
     const [currentTab, setCurrentTab] = React.useState(0);
 
@@ -58,20 +76,103 @@ const AutomaticTestsContainer = () => {
         if (anchorRef.current && anchorRef.current.contains(event.target)) {
             return;
         }
-
         setOpen(false);
     };
 
+    const handleMethod = value => setSelectedMethod(value);
+
+    const send = async () => {
+        if(url){
+            switch (selectedMethod) {
+                case methods[0]:
+                    let getResponse = await rget(url, null);
+                    setResponse(JSON.stringify(getResponse.data));
+                    setStatusRequest(getResponse.status);
+                    break;
+                case methods[1]:
+                    let postResponse = await rpost(url, null, null);
+                    break;
+                case methods[2]:
+                    let putResponse = await rput(url, null, null);
+                    break;
+                case methods[3]:
+                    let delResponse = await rdelete(url, null);
+                    break;
+                default:
+                    let defaultResponse = await rget(url, null);
+                    setResponse(JSON.stringify(defaultResponse.data));
+                    setStatusRequest(defaultResponse.status);
+                    break;
+            }
+        }
+        
+    }
+
+    const runTest = () => {
+        if (selectedIndex === -1 || !expect) {
+            setTestResult({ type: 'error', message: 'Select a type and expect value for the test!' })
+        }
+        else {
+            switch (options[selectedIndex]) {
+                case options[0]:
+                    verifyEqual();
+                    break;
+                case options[1]:
+                    verifyContains();
+                    break;
+                case options[2]:
+                    verifyStatus();
+                    break;
+            }
+        }
+    }
+
+    function verifyStatus() {
+        if(parseFloat(expect) === parseFloat(statusRequest)){
+            setTestResult({type: 'success', message: 'Test passed successfully!'});
+        }
+        else{
+            setTestResult({type: 'error', message: 'Test failed!'});
+        }
+    }
+
+    function verifyContains() {
+        if(String(response).includes(expect)){
+            setTestResult({type: 'success', message: 'Test passed successfully!'});
+        }
+        else{
+            setTestResult({type: 'error', message: 'Test failed!'});
+        }
+    }
+
+    function verifyEqual() {
+        if(response === expect){
+            setTestResult({type: 'success', message: 'Test passed successfully!'});
+        }
+        else{
+            setTestResult({type: 'error', message: 'Test failed!'});
+        }
+    }
+
+    const closeAlert = () => {
+        setTestResult({...testResult, message: ''})
+    }
+
     return (
-        <Grid container justifyContent={'center'}>
-            <Grid xs={12} md={8} item>
+        <Grid container spacing={3}>
+            <Grid xs={12} md={3} pt={3} item>
+                <Paper elevation={3} p={1}>
+                    <Aside/>
+                </Paper>
+            </Grid>
+            <Grid xs={12} md={9} item>
                 <Grid container spacing={2}>
-                    <Grid item xs={9}>
-                        <Search />
+                    <Grid item xs={9} sx={{zIndex: 9}}>
+                        <Search url={url} onChange={handleUrl} methods={methods} selectedMethod={selectedMethod} handleMethod={handleMethod} />
                     </Grid>
                     <Grid item xs={3}>
                         <Stack direction={'row'} justifyContent={'flex-end'} spacing={2} sx={{ paddingTop: '2px' }}>
-                            <Button variant='contained'>{'Send'}</Button>
+                            <Button variant='contained' onClick={send}>{'Send'}</Button>
                             <Button variant='contained'>{'Save'}</Button>
                         </Stack>
                     </Grid>
@@ -92,7 +193,8 @@ const AutomaticTestsContainer = () => {
                         { currentTab === 3 && <BodyTab /> }
                     </Grid>
                     <Grid item xs={12}>
-                        <Typography variant='overline'>{'Test Results'}</Typography>
+                        <Typography variant='overline'>{'Test'}</Typography>
+                       { testResult.message && <Alert severity={testResult.type} onClose={closeAlert}>{testResult.message}</Alert>} 
                     </Grid>
                     <Grid item xs={12}>
                         <Stack direction={'row'} spacing={2}>
@@ -147,11 +249,12 @@ const AutomaticTestsContainer = () => {
                                     </Grow>
                                 )}
                             </Popper>
-                            <TextField variant='outlined' size='small' fullWidth label={'Expect'} />
+                            <TextField variant='outlined' value={expect} onChange={handleExpect} size='small' fullWidth label={'Expect'} />
+                            <Button variant='contained' onClick={runTest}>{'Test'}</Button>
                         </Stack>
                     </Grid>
                     <Grid xs={12} item>
-                        <TextareaAutosize placeholder="Response" minRows={7} style={{width: '100%'}} />                                    
+                        <TextareaAutosize value={response} placeholder="Response" minRows={7} disabled style={{width: '100%'}} />                                    
                     </Grid>
                 </Grid>
             </Grid>

@@ -11,20 +11,13 @@ import MenuList from '@mui/material/MenuList';
 import TextField from '@mui/material/TextField';
 
 
+export default function Search({url, onChange, methods, handleMethod, selectedMethod}) {
 
-const options = ['GET', 'POST', 'PUT', 'DELETE'];
-
-export default function Search() {
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef(null);
-  const [selectedIndex, setSelectedIndex] = React.useState(-1);
-
-  const handleClick = () => {
-    console.info(`You clicked ${options[selectedIndex]}`);
-  };
-
-  const handleMenuItemClick = (event, index) => {
-    setSelectedIndex(index);
+ 
+  const handleMenuItemClick = (value) => {
+    handleMethod(value);
     setOpen(false);
   };
 
@@ -47,19 +40,19 @@ export default function Search() {
           ref={anchorRef}
           size="small"
           color='info'
-          sx={{width: '150px'}}
+          sx={{ width: '150px' }}
           aria-controls={open ? 'split-button-menu' : undefined}
           aria-expanded={open ? 'true' : undefined}
           aria-label="select merge strategy"
           aria-haspopup="menu"
           onClick={handleToggle}
         >
-          {options[selectedIndex] || 'Method'}
+          {selectedMethod || 'Method'}
           <ArrowDropDownIcon />
         </Button>
         <Popper
           sx={{
-            zIndex: 1,
+            zIndex: 1
           }}
           open={open}
           anchorEl={anchorRef.current}
@@ -77,12 +70,12 @@ export default function Search() {
             >
               <Paper>
                 <ClickAwayListener onClickAway={handleClose}>
-                  <MenuList id="split-button-menu" autoFocusItem>
-                    {options.map((option, index) => (
+                  <MenuList id="split-button-menu" autoFocusItem sx={{ zIndex: 9 }}>
+                    {methods.map(option => (
                       <MenuItem
                         key={option}
-                        selected={index === selectedIndex}
-                        onClick={(event) => handleMenuItemClick(event, index)}
+                        selected={option === selectedMethod}
+                        onClick={() => handleMenuItemClick(option)}
                       >
                         {option}
                       </MenuItem>
@@ -93,7 +86,7 @@ export default function Search() {
             </Grow>
           )}
         </Popper>
-        <TextField variant='outlined' fullWidth label={'URL'} placeholder={'http://api.example.com'} />
+        <TextField variant='outlined' defaultValue={url} onChange={onChange} fullWidth label={'URL'} placeholder={'http://api.example.com'} />
       </ButtonGroup>
     </React.Fragment>
   );

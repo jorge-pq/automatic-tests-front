@@ -1,11 +1,5 @@
 import axios from "axios";
 
-const API_HOST = process.env.NEXT_PUBLIC_API;
-
-const getUrl = endpoint => `${API_HOST}/${endpoint}`;
-
-// export const getUrlImage = () => `${process.env.NEXT_PUBLIC_API}/public/`;
-export const getUrlImage = () => `${process.env.NEXT_PUBLIC_API}/`;
 
 export const rget = async (endpoint, jwt) => {
     const headers = jwt
@@ -13,7 +7,7 @@ export const rget = async (endpoint, jwt) => {
             headers: { 'authorization': jwt }
         }
         : null;
-    return await axios.get(getUrl(endpoint), headers);
+    return await axios.get(endpoint, headers);
 };
 
 export const rpost = async (endpoint, data, jwt) => {
@@ -22,7 +16,7 @@ export const rpost = async (endpoint, data, jwt) => {
         : {headers: { "Content-Type": "application/json" }}
     ;
 
-    return await axios.post(getUrl(endpoint), data, headers);
+    return await axios.post(endpoint, data, headers);
 };
 
 
@@ -31,7 +25,7 @@ export const rput = async (endpoint, data, jwt) => {
         ? {headers: {"Content-Type": "application/json", 'authorization': jwt }}
         : {headers: {"Content-Type": "application/json"}}
     ;
-    return await axios.put(getUrl(endpoint), data, headers);
+    return await axios.put(endpoint, data, headers);
 };
 
 export const rdelete = async (endpoint, jwt) => {
@@ -40,7 +34,7 @@ export const rdelete = async (endpoint, jwt) => {
             headers: { 'authorization': jwt }
         }
         : null;
-    return await axios.delete(getUrl(endpoint), headers);
+    return await axios.delete(endpoint, headers);
 };
 
 export const rpostFormData = async (endpoint, data, jwt) => {
@@ -49,5 +43,5 @@ export const rpostFormData = async (endpoint, data, jwt) => {
         ? {headers: {'Content-Type': `multipart/form-data`, 'Authorization': `Bearer ${jwt}` }}
         : {headers: {'Content-Type': `multipart/form-data` }}
     ;
-    return await axios.post(getUrl(endpoint), data, headers);
+    return await axios.post(endpoint, data, headers);
 };
