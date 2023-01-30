@@ -33,6 +33,8 @@ export default function Search({url, onChange, methods, handleMethod, selectedMe
     setOpen(false);
   };
 
+  console.log(url)
+
   return (
     <React.Fragment>
       <ButtonGroup variant="contained" size='small' fullWidth aria-label="split button">
@@ -86,7 +88,7 @@ export default function Search({url, onChange, methods, handleMethod, selectedMe
             </Grow>
           )}
         </Popper>
-        <TextField variant='outlined' defaultValue={url} onChange={onChange} fullWidth label={'URL'} placeholder={'http://api.example.com'} />
+        <TextField variant='outlined' value={url} onChange={onChange} fullWidth label={'URL'} placeholder={'http://api.example.com'} />
       </ButtonGroup>
     </React.Fragment>
   );

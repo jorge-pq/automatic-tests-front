@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import Grid from '@mui/material/Grid';
 import Search from './components/Search';
 import Stack from '@mui/material/Stack';
@@ -23,7 +23,7 @@ import HeadersTab from './components/HeadersTab';
 import BodyTab from './components/BodyTab';
 import Aside from './components/Aside';
 import {rget, rpost, rput, rdelete} from '../../lib/request';
-import {addUrl} from '../../services/test.service';
+import {addUrl, updateUrl} from '../../services/test.service';
 import {useRouter} from 'next/router';
 import { useMutation } from 'react-query';
 import SaveUrlTestDialog from './components/SaveUrlTestDialog'
@@ -40,16 +40,16 @@ const options = ['EQUAL', 'CONTAINS', 'STATUS'];
 
 const methods = ['GET', 'POST', 'PUT', 'DELETE'];
 
-const AutomaticTestsContainer = ({apps}) => {
+const AutomaticTestsContainer = ({apps, test}) => {
 
     const router = useRouter();
 
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = useState(false);
     const anchorRef = React.useRef(null);
 
-    const [saveUrlDialog, setSaveUrlDialog] = React.useState(false);
+    const [saveUrlDialog, setSaveUrlDialog] = useState(false);
 
-    const [selectedMethod, setSelectedMethod] = React.useState('');
+    const [selectedMethod, setSelectedMethod] = useState('');
     const [response, setResponse] = useState('');
     const [expect, setExpect] = useState('');
     const [statusRequest, setStatusRequest] = useState(0);
@@ -64,13 +64,13 @@ const AutomaticTestsContainer = ({apps}) => {
 
     const handleExpect = e => setExpect(e.target.value);
 
-    const [currentTab, setCurrentTab] = React.useState(0);
+    const [currentTab, setCurrentTab] = useState(0);
 
     const handleTabChange = (event, newValue) => {
         setCurrentTab(newValue);
     };
 
-    const [selectedIndex, setSelectedIndex] = React.useState(-1);
+    const [selectedIndex, setSelectedIndex] = useState(-1);
 
     const { mutate: save } = useMutation(addUrl, {
         onSuccess: (data) => {
@@ -82,10 +82,36 @@ const AutomaticTestsContainer = ({apps}) => {
         }
     });
 
+    const { mutate: update } = useMutation(updateUrl, {
+        onSuccess: (data) => {
+            router.reload();
+        },
+        onError: (error) => {
+            alert('Error! ');
+        }
+    });
+
     const handleMenuItemClick = (event, index) => {
         setSelectedIndex(index);
         setOpen(false);
     };
+
+    useEffect(() => {
+        if(test){
+            setSelectedMethod(test.method);
+            setUrl(test.url)
+            setExpect(test.expect);
+            setSelectedIndex(options.findIndex(d=>d===test.typeTest));
+        }
+        
+        return () => {
+            setSelectedMethod('');
+            setUrl('');
+            setExpect('');
+            setSelectedIndex(-1);
+        };
+    }, [test]);
+
 
     const handleToggle = () => {
         setOpen((prevOpen) => !prevOpen);
@@ -178,7 +204,21 @@ const AutomaticTestsContainer = ({apps}) => {
     }
 
     const openDialogSaveUrl = () => {
-        setSaveUrlDialog(true);
+        if(test){
+            update({
+                id: test._id,
+                data: {
+                    description: test.description,
+                    url: url,
+                    method: selectedMethod,
+                    typeTest: options[selectedIndex],
+                    expect: expect,
+                }
+            });
+        }
+        else{
+            setSaveUrlDialog(true);
+        } 
     }
 
     const saveUrl = values => {
