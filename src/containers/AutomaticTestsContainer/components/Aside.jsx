@@ -3,9 +3,9 @@ import TreeView from '@mui/lab/TreeView';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import TreeItem from '@mui/lab/TreeItem';
-import apps from '../../../data/apps.json';
 
-export default function Aside() {
+export default function Aside({apps}) {
+
     return (
         <TreeView
             aria-label="file system navigator"
@@ -17,8 +17,11 @@ export default function Aside() {
             <TreeItem nodeId="root" label="Applications" defaultChecked={true}>
                 {
                     apps.map(item =>
-                        <TreeItem nodeId={item.id.toString()} label={item.name}>
-                             <TreeItem nodeId="8" label="test" />
+                        <TreeItem nodeId={item.code.toString()} label={item.name}>
+                            {
+                                item.tests.map(t => <TreeItem nodeId={t._id.toString()} label={t.description} />)
+                            }
+                             
                         </TreeItem>
                     )
                 }

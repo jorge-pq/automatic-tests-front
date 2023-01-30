@@ -23,6 +23,10 @@ import HeadersTab from './components/HeadersTab';
 import BodyTab from './components/BodyTab';
 import Aside from './components/Aside';
 import {rget, rpost, rput, rdelete} from '../../lib/request';
+import {addUrl} from '../../services/test.service';
+import {useRouter} from 'next/router';
+import { useMutation } from 'react-query';
+import SaveUrlTestDialog from './components/SaveUrlTestDialog'
 
 
 function a11yProps(index) {
@@ -36,10 +40,14 @@ const options = ['EQUAL', 'CONTAINS', 'STATUS'];
 
 const methods = ['GET', 'POST', 'PUT', 'DELETE'];
 
-const AutomaticTestsContainer = () => {
+const AutomaticTestsContainer = ({apps}) => {
+
+    const router = useRouter();
 
     const [open, setOpen] = React.useState(false);
     const anchorRef = React.useRef(null);
+
+    const [saveUrlDialog, setSaveUrlDialog] = React.useState(false);
 
     const [selectedMethod, setSelectedMethod] = React.useState('');
     const [response, setResponse] = useState('');
@@ -50,6 +58,7 @@ const AutomaticTestsContainer = () => {
         type: ''
     });
     const [url, setUrl] = useState('');
+    
 
     const handleUrl = e => setUrl(e.target.value);
 
@@ -62,6 +71,16 @@ const AutomaticTestsContainer = () => {
     };
 
     const [selectedIndex, setSelectedIndex] = React.useState(-1);
+
+    const { mutate: save } = useMutation(addUrl, {
+        onSuccess: (data) => {
+            setSaveUrlDialog(false);
+            router.reload();
+        },
+        onError: (error) => {
+            alert('Error! ');
+        }
+    });
 
     const handleMenuItemClick = (event, index) => {
         setSelectedIndex(index);
@@ -158,11 +177,28 @@ const AutomaticTestsContainer = () => {
         setTestResult({...testResult, message: ''})
     }
 
+    const openDialogSaveUrl = () => {
+        setSaveUrlDialog(true);
+    }
+
+    const saveUrl = values => {
+        save({
+            appId: values.app,
+            data: {
+                description: values.description,
+                url: url,
+                method: selectedMethod,
+                typeTest: options[selectedIndex],
+                expect: expect,
+            }
+        });
+    }
+
     return (
         <Grid container spacing={3}>
             <Grid xs={12} md={3} pt={3} item>
                 <Paper elevation={3} p={1}>
-                    <Aside/>
+                    <Aside apps={apps} />
                 </Paper>
             </Grid>
             <Grid xs={12} md={9} item>
@@ -173,7 +209,7 @@ const AutomaticTestsContainer = () => {
                     <Grid item xs={3}>
                         <Stack direction={'row'} justifyContent={'flex-end'} spacing={2} sx={{ paddingTop: '2px' }}>
                             <Button variant='contained' onClick={send}>{'Send'}</Button>
-                            <Button variant='contained'>{'Save'}</Button>
+                            <Button variant='contained' onClick={openDialogSaveUrl}>{'Save'}</Button>
                         </Stack>
                     </Grid>
                     <Grid item xs={12}>
@@ -258,6 +294,8 @@ const AutomaticTestsContainer = () => {
                     </Grid>
                 </Grid>
             </Grid>
+
+            <SaveUrlTestDialog open={saveUrlDialog} close={()=>setSaveUrlDialog(false)} save={saveUrl} apps={apps} />
         </Grid>
     );
 };
