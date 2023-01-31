@@ -1,39 +1,40 @@
 import * as React from 'react';
-// import TreeView from '@mui/lab/TreeView';
-// import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-// import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-// import TreeItem from '@mui/lab/TreeItem';
-import {useRouter} from 'next/router';
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import Typography from '@mui/material/Typography';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { useRouter } from 'next/router';
 
-export default function Aside({apps}) {
+export default function Aside({ apps }) {
 
-    const router = useRouter();
+  const router = useRouter();
 
-    const goToTest = id => {
-      router.push(`/test/${id}`);
-    }
+  const goToTest = id => {
+    router.push(`/test/${id}`);
+  }
 
-    return (
-        // <TreeView
-        //     aria-label="file system navigator"
-        //     defaultCollapseIcon={<ExpandMoreIcon />}
-        //     defaultExpandIcon={<ChevronRightIcon />}
-        //     sx={{ height: 'auto', flexGrow: 1, maxWidth: 400, overflowY: 'auto' }}
-        //     defaultExpanded={['root']}
-        // >
-        //     <TreeItem nodeId="root" label="Applications" defaultChecked={true}>
-        //         {
-        //             apps.map(item =>
-        //                 <TreeItem nodeId={item.code.toString()} label={item.name}>
-        //                     {
-        //                         item.tests.map(t => <TreeItem onClick={()=>goToTest(t._id)} nodeId={t._id.toString()} label={t.description} />)
-        //                     }
-                             
-        //                 </TreeItem>
-        //             )
-        //         }
-        //     </TreeItem>
-        // </TreeView>
-        <></>
-    );
+  return (
+    <>
+      {
+        apps.map(item =>
+          <Accordion key={item.code.toString()}>
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls="panel1a-content"
+              id="panel1a-header"
+            >
+              <Typography>{item.name}</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              {item.tests.map(t => 
+              <Typography key={t._id.toString()} onClick={()=>goToTest(t._id)} sx={{textDecoration: 'underline', cursor: 'pointer', color: '#0093ff'}}>
+                {t.description}
+              </Typography>)}
+            </AccordionDetails>
+          </Accordion>
+        )
+      }
+    </>
+  );
 }
