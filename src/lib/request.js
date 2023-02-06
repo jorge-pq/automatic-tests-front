@@ -5,6 +5,28 @@ const API_HOST = process.env.NEXT_PUBLIC_API;
 const getUrl = endpoint => `${API_HOST}/${endpoint}`;
 
 
+// ------------------- Custom Request Test -----------------------
+
+export const customget = async (endpoint) => {
+    return await axios.get(endpoint);
+};
+
+export const custompost = async (endpoint, data) => {
+    return await axios.post(endpoint, data);
+};
+
+export const customput = async (endpoint, data) => {
+    return await axios.put(endpoint, data);
+};
+
+export const customdelete = async (endpoint) => {
+    return await axios.delete(endpoint);
+};
+
+
+
+// ------------------- Request app -----------------------
+
 export const rget = async (endpoint, jwt) => {
     const headers = jwt
         ? {

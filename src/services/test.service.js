@@ -20,3 +20,9 @@ export const updateUrl = async (values) => {
     const {data} = await rput('api/test/update/'+values.id, values.data);
     return data;
 };
+
+
+export const runAllTestByApp = async (id) => {
+    const {data} = await rget('api/test/runAll/'+id, null);
+    return data;
+};

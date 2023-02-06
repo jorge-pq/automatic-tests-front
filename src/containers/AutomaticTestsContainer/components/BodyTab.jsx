@@ -15,13 +15,7 @@ import TextField from '@mui/material/TextField';
 import TextareaAutosize from '@mui/material/TextareaAutosize';
 
 
-const BodyTab = () => {
-
-    const [value, setValue] = React.useState('form-data');
-
-    const handleChange = (event) => {
-        setValue(event.target.value);
-    };
+const BodyTab = ({raw, handleRaw, tab, handleTab}) => {
 
     return (
         <Grid container>
@@ -29,8 +23,8 @@ const BodyTab = () => {
                 <FormControl>
                     <RadioGroup
                         row
-                        value={value}
-                        onChange={handleChange}
+                        value={tab}
+                        onChange={handleTab}
                         name="row-radio-buttons-group"
                     >
                         <FormControlLabel value="form-data" control={<Radio />} label="Form Data" />
@@ -40,7 +34,7 @@ const BodyTab = () => {
             </Grid>
             <Grid item xs={12}>
                 {
-                    value === 'form-data' ?
+                    tab === 'form-data' ?
                     <TableContainer component={Paper}>
                         <Table sx={{ minWidth: 650 }} aria-label="simple table">
                             <TableHead>
@@ -65,7 +59,7 @@ const BodyTab = () => {
                             </TableBody>
                         </Table>
                     </TableContainer> :
-                    <TextareaAutosize placeholder="Json" minRows={7} style={{width: '100%'}} />
+                    <TextareaAutosize value={raw} onChange={handleRaw} placeholder="Json" minRows={7} style={{width: '100%'}} />
                 }
             </Grid>
         </Grid>

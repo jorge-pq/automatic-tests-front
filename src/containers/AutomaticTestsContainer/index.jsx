@@ -22,11 +22,12 @@ import AuthorizationTab from './components/AuthorizationTab';
 import HeadersTab from './components/HeadersTab';
 import BodyTab from './components/BodyTab';
 import Aside from './components/Aside';
-import {rget, rpost, rput, rdelete} from '../../lib/request';
+import {customget, custompost, customput, customdelete} from '../../lib/request';
 import {addUrl, updateUrl} from '../../services/test.service';
 import {useRouter} from 'next/router';
 import { useMutation } from 'react-query';
 import SaveUrlTestDialog from './components/SaveUrlTestDialog'
+import {getParameters} from '../../utils/util'
 
 
 function a11yProps(index) {
@@ -57,8 +58,24 @@ const AutomaticTestsContainer = ({apps, test}) => {
         message: '',
         type: ''
     });
+
+    const [bodyTab, setBodyTab] = useState('form-data');
+
+    const [params, setParams] = useState([{
+        key: '',
+        value: '',
+        description: ''
+    }]);
+
+    const handleBodyTab = (event) => {
+        setBodyTab(event.target.value);
+    };
+
     const [url, setUrl] = useState('');
     
+    const [raw, setRaw] = useState('');
+
+    const handleRaw = e => setRaw(e.target.value);
 
     const handleUrl = e => setUrl(e.target.value);
 
@@ -96,6 +113,29 @@ const AutomaticTestsContainer = ({apps, test}) => {
         setOpen(false);
     };
 
+    const addRowToParams = () => {
+        setParams(params => [...params, { 
+            key: '',
+            value: '',
+            description: ''
+        }]);
+    }
+
+    const removeRowToParams = index => {
+         let arr = [...params];
+         arr.splice(index, 1);
+         setParams(arr);
+    }
+
+    const handleParam = (pos, key, value) => {
+        let upd = [...params];
+        let item = upd[pos];
+        item[key] = value;
+        upd[pos] = item;
+        setParams(upd);
+        setUrl(url+getParameters(upd));
+    }
+
     useEffect(() => {
         if(test){
             setSelectedMethod(test.method);
@@ -130,21 +170,30 @@ const AutomaticTestsContainer = ({apps, test}) => {
         if(url){
             switch (selectedMethod) {
                 case methods[0]:
-                    let getResponse = await rget(url, null);
+                    let parameters = getParameters(params);
+                    let getResponse = await customget(url + parameters);
                     setResponse(JSON.stringify(getResponse.data));
                     setStatusRequest(getResponse.status);
                     break;
                 case methods[1]:
-                    let postResponse = await rpost(url, null, null);
+                    let bodyPost = raw;
+                    let postResponse = await custompost(url, bodyPost);
+                    setResponse(JSON.stringify(postResponse.data));
+                    setStatusRequest(postResponse.status);
                     break;
                 case methods[2]:
-                    let putResponse = await rput(url, null, null);
+                    let bodyPut = raw;
+                    let putResponse = await customput(url, bodyPut);
+                    setResponse(JSON.stringify(putResponse.data));
+                    setStatusRequest(putResponse.status);
                     break;
                 case methods[3]:
-                    let delResponse = await rdelete(url, null);
+                    let delResponse = await customdelete(url);
+                    setResponse(JSON.stringify(delResponse.data));
+                    setStatusRequest(delResponse.status);
                     break;
                 default:
-                    let defaultResponse = await rget(url, null);
+                    let defaultResponse = await customget(url);
                     setResponse(JSON.stringify(defaultResponse.data));
                     setStatusRequest(defaultResponse.status);
                     break;
@@ -213,6 +262,7 @@ const AutomaticTestsContainer = ({apps, test}) => {
                     method: selectedMethod,
                     typeTest: options[selectedIndex],
                     expect: expect,
+                    response: response
                 }
             });
         }
@@ -230,9 +280,11 @@ const AutomaticTestsContainer = ({apps, test}) => {
                 method: selectedMethod,
                 typeTest: options[selectedIndex],
                 expect: expect,
+                response: response
             }
         });
     }
+
 
     return (
         <Grid container spacing={3}>
@@ -263,10 +315,10 @@ const AutomaticTestsContainer = ({apps, test}) => {
                         </Box>
                     </Grid>
                     <Grid item xs={12}>
-                        { currentTab === 0 &&  <ParamsTab /> } 
+                        { currentTab === 0 &&  <ParamsTab params={params} addRowToParams={addRowToParams} removeRowToParams={removeRowToParams} handleParam={handleParam} /> } 
                         { currentTab === 1 &&  <AuthorizationTab /> }
                         { currentTab === 2 && <HeadersTab /> }
-                        { currentTab === 3 && <BodyTab /> }
+                        { currentTab === 3 && <BodyTab raw={raw} handleRaw={handleRaw} tab={bodyTab} handleTab={handleBodyTab} /> }
                     </Grid>
                     <Grid item xs={12}>
                         <Typography variant='overline'>{'Test'}</Typography>
