@@ -142,6 +142,8 @@ const AutomaticTestsContainer = ({apps, test}) => {
             setUrl(test.url)
             setExpect(test.expect);
             setSelectedIndex(options.findIndex(d=>d===test.typeTest));
+            setResponse(test.response);
+            setStatusRequest(test.status);
         }
         
         return () => {
@@ -149,6 +151,8 @@ const AutomaticTestsContainer = ({apps, test}) => {
             setUrl('');
             setExpect('');
             setSelectedIndex(-1);
+            setResponse('');
+            setStatusRequest(0);
         };
     }, [test]);
 
@@ -262,7 +266,8 @@ const AutomaticTestsContainer = ({apps, test}) => {
                     method: selectedMethod,
                     typeTest: options[selectedIndex],
                     expect: expect,
-                    response: response
+                    response: response,
+                    status: statusRequest
                 }
             });
         }
@@ -280,7 +285,8 @@ const AutomaticTestsContainer = ({apps, test}) => {
                 method: selectedMethod,
                 typeTest: options[selectedIndex],
                 expect: expect,
-                response: response
+                response: response,
+                status: statusRequest
             }
         });
     }
