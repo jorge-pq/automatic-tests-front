@@ -27,7 +27,7 @@ import {addUrl, updateUrl} from '../../services/test.service';
 import {useRouter} from 'next/router';
 import { useMutation } from 'react-query';
 import SaveUrlTestDialog from './components/SaveUrlTestDialog'
-import {getParameters} from '../../utils/util'
+import {getParameters, getFormData, getHeaders} from '../../utils/util'
 
 
 function a11yProps(index) {
@@ -62,6 +62,18 @@ const AutomaticTestsContainer = ({apps, test}) => {
     const [bodyTab, setBodyTab] = useState('form-data');
 
     const [params, setParams] = useState([{
+        key: '',
+        value: '',
+        description: ''
+    }]);
+
+    const [formData, setFormData] = useState([{
+        key: '',
+        value: '',
+        description: ''
+    }]);
+
+     const [headers, setHeaders] = useState([{
         key: '',
         value: '',
         description: ''
@@ -133,8 +145,52 @@ const AutomaticTestsContainer = ({apps, test}) => {
         item[key] = value;
         upd[pos] = item;
         setParams(upd);
-        setUrl(url+getParameters(upd));
     }
+
+    const addRowToFormData = () => {
+        setFormData(formData => [...formData, { 
+            key: '',
+            value: '',
+            description: ''
+        }]);
+    }
+
+    const removeRowToFormData = index => {
+        let arr = [...formData];
+        arr.splice(index, 1);
+        setFormData(arr);
+   }
+
+   const handleFormData = (pos, key, value) => {
+    let upd = [...formData];
+    let item = upd[pos];
+    item[key] = value;
+    upd[pos] = item;
+    setFormData(upd);
+}
+
+
+const addRowToHeaders = () => {
+    setHeaders(headers => [...headers, { 
+        key: '',
+        value: '',
+        description: ''
+    }]);
+}
+
+const removeRowToHeaders = index => {
+    let arr = [...headers];
+    arr.splice(index, 1);
+    setHeaders(arr);
+}
+
+const handleHeaders = (pos, key, value) => {
+let upd = [...headers];
+let item = upd[pos];
+item[key] = value;
+upd[pos] = item;
+setHeaders(upd);
+}
 
     useEffect(() => {
         if(test){
@@ -180,13 +236,13 @@ const AutomaticTestsContainer = ({apps, test}) => {
                     setStatusRequest(getResponse.status);
                     break;
                 case methods[1]:
-                    let bodyPost = raw;
+                    let bodyPost = bodyTab === 'form-data' ? getFormData(formData) : raw;
                     let postResponse = await custompost(url, bodyPost);
                     setResponse(JSON.stringify(postResponse.data));
                     setStatusRequest(postResponse.status);
                     break;
                 case methods[2]:
-                    let bodyPut = raw;
+                    let bodyPut = bodyTab === 'form-data' ? getFormData(formData) : raw;
                     let putResponse = await customput(url, bodyPut);
                     setResponse(JSON.stringify(putResponse.data));
                     setStatusRequest(putResponse.status);
@@ -323,8 +379,8 @@ const AutomaticTestsContainer = ({apps, test}) => {
                     <Grid item xs={12}>
                         { currentTab === 0 &&  <ParamsTab params={params} addRowToParams={addRowToParams} removeRowToParams={removeRowToParams} handleParam={handleParam} /> } 
                         { currentTab === 1 &&  <AuthorizationTab /> }
-                        { currentTab === 2 && <HeadersTab /> }
-                        { currentTab === 3 && <BodyTab raw={raw} handleRaw={handleRaw} tab={bodyTab} handleTab={handleBodyTab} /> }
+                        { currentTab === 2 && <HeadersTab headers={headers} addRowToHeaders={addRowToHeaders} removeRowToHeaders={removeRowToHeaders} handleHeaders={handleHeaders} /> }
+                        { currentTab === 3 && <BodyTab raw={raw} handleRaw={handleRaw} tab={bodyTab} handleTab={handleBodyTab} formData={formData} addRowToFormData={addRowToFormData} removeRowToFormData={removeRowToFormData} handleFormData={handleFormData} /> }
                     </Grid>
                     <Grid item xs={12}>
                         <Typography variant='overline'>{'Test'}</Typography>

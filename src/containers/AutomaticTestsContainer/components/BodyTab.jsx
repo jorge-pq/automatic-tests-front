@@ -13,9 +13,12 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
 import TextareaAutosize from '@mui/material/TextareaAutosize';
+import IconButton from '@mui/material/IconButton';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 
 
-const BodyTab = ({raw, handleRaw, tab, handleTab}) => {
+const BodyTab = ({raw, handleRaw, tab, handleTab, formData, addRowToFormData, removeRowToFormData, handleFormData}) => {
 
     return (
         <Grid container>
@@ -42,21 +45,40 @@ const BodyTab = ({raw, handleRaw, tab, handleTab}) => {
                                     <TableCell align="center">Key</TableCell>
                                     <TableCell align="center">Value</TableCell>
                                     <TableCell align="center">Description</TableCell>
+                                    <TableCell align="center"></TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                <TableRow>
-                                    <TableCell align="center">
-                                        <TextField size='small' />
-                                    </TableCell>
-                                    <TableCell align="center">
-                                        <TextField size='small' />
-                                    </TableCell>
-                                    <TableCell align="center">
-                                        <TextField size='small' />
-                                    </TableCell>
-                                </TableRow>
-                            </TableBody>
+                    {
+                        formData.map((item, index) =>
+                            <TableRow key={index}>
+                                <TableCell align="center">
+                                    <TextField size='small' value={item.key} onChange={e=>handleFormData(index, 'key', e.target.value)} />
+                                </TableCell>
+                                <TableCell align="center">
+                                    <TextField size='small' value={item.value} onChange={e=>handleFormData(index, 'value', e.target.value)} />
+                                </TableCell>
+                                <TableCell align="center">
+                                    <TextField size='small' value={item.description} onChange={e=>handleFormData(index, 'description', e.target.value)} />
+                                </TableCell>
+                                <TableCell align="center">
+                                    {
+                                        formData.length - 1 > index &&
+                                        <IconButton color="error" component="label" onClick={()=>removeRowToFormData(index)}>
+                                            <RemoveCircleOutlineIcon />
+                                        </IconButton>
+                                    }
+                                    {
+                                        formData.length - 1 === index &&
+                                        <IconButton color="primary" component="label" onClick={addRowToFormData}>
+                                            <AddCircleOutlineIcon />
+                                        </IconButton>
+                                    }
+                                </TableCell>
+                            </TableRow>
+                        )
+                    }
+                </TableBody>
                         </Table>
                     </TableContainer> :
                     <TextareaAutosize value={raw} onChange={handleRaw} placeholder="Json" minRows={7} style={{width: '100%'}} />
