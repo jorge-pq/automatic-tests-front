@@ -7,20 +7,26 @@ const getUrl = endpoint => `${API_HOST}/${endpoint}`;
 
 // ------------------- Custom Request Test -----------------------
 
-export const customget = async (endpoint) => {
-    return await axios.get(endpoint);
+export const customget = async (endpoint, headers) => {
+
+    const config = {headers: headers};
+
+    return await axios.get(endpoint, config);
 };
 
-export const custompost = async (endpoint, data) => {
-    return await axios.post(endpoint, data);
+export const custompost = async (endpoint, data, headers) => {
+    const config = {headers: headers};
+    return await axios.post(endpoint, data, config);
 };
 
-export const customput = async (endpoint, data) => {
-    return await axios.put(endpoint, data);
+export const customput = async (endpoint, data, headers) => {
+    const config = {headers: headers};
+    return await axios.put(endpoint, data, config);
 };
 
-export const customdelete = async (endpoint) => {
-    return await axios.delete(endpoint);
+export const customdelete = async (endpoint, headers) => {
+    const config = {headers: headers};
+    return await axios.delete(endpoint, config);
 };
 
 

@@ -228,32 +228,34 @@ setHeaders(upd);
 
     const send = async () => {
         if(url){
+            let headersRequest = getHeaders(headers);
             switch (selectedMethod) {
                 case methods[0]:
                     let parameters = getParameters(params);
-                    let getResponse = await customget(url + parameters);
+                    let getResponse = await customget(url + parameters, headersRequest);
                     setResponse(JSON.stringify(getResponse.data));
                     setStatusRequest(getResponse.status);
                     break;
                 case methods[1]:
                     let bodyPost = bodyTab === 'form-data' ? getFormData(formData) : raw;
-                    let postResponse = await custompost(url, bodyPost);
+                    let postResponse = await custompost(url, bodyPost, headersRequest);
                     setResponse(JSON.stringify(postResponse.data));
                     setStatusRequest(postResponse.status);
                     break;
                 case methods[2]:
                     let bodyPut = bodyTab === 'form-data' ? getFormData(formData) : raw;
-                    let putResponse = await customput(url, bodyPut);
+                    let putResponse = await customput(url, bodyPut, headersRequest);
                     setResponse(JSON.stringify(putResponse.data));
                     setStatusRequest(putResponse.status);
                     break;
                 case methods[3]:
-                    let delResponse = await customdelete(url);
+                    let delResponse = await customdelete(url, headersRequest);
                     setResponse(JSON.stringify(delResponse.data));
                     setStatusRequest(delResponse.status);
                     break;
                 default:
-                    let defaultResponse = await customget(url);
+                    let defparameters = getParameters(params);
+                    let defaultResponse = await customget(url + defparameters, headersRequest);
                     setResponse(JSON.stringify(defaultResponse.data));
                     setStatusRequest(defaultResponse.status);
                     break;
@@ -370,7 +372,7 @@ setHeaders(upd);
                         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                             <Tabs value={currentTab} onChange={handleTabChange}>
                                 <Tab label="Params" {...a11yProps(0)} />
-                                <Tab label="Authorization" {...a11yProps(1)} />
+                                {/* <Tab label="Authorization" {...a11yProps(1)} /> */}
                                 <Tab label="Headers" {...a11yProps(2)} />
                                 <Tab label="Body" {...a11yProps(3)} />
                             </Tabs>
@@ -378,7 +380,7 @@ setHeaders(upd);
                     </Grid>
                     <Grid item xs={12}>
                         { currentTab === 0 &&  <ParamsTab params={params} addRowToParams={addRowToParams} removeRowToParams={removeRowToParams} handleParam={handleParam} /> } 
-                        { currentTab === 1 &&  <AuthorizationTab /> }
+                        {/* { currentTab === 1 &&  <AuthorizationTab /> } */}
                         { currentTab === 2 && <HeadersTab headers={headers} addRowToHeaders={addRowToHeaders} removeRowToHeaders={removeRowToHeaders} handleHeaders={handleHeaders} /> }
                         { currentTab === 3 && <BodyTab raw={raw} handleRaw={handleRaw} tab={bodyTab} handleTab={handleBodyTab} formData={formData} addRowToFormData={addRowToFormData} removeRowToFormData={removeRowToFormData} handleFormData={handleFormData} /> }
                     </Grid>

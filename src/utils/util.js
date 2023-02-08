@@ -26,5 +26,10 @@ export const getFormData = params => {
  }
 
  export const getHeaders = params => {
-    
+    let headers = {};
+    if(params.length>0){
+        params.map(item => item.key && (headers[item.key] = item.value))
+    }
+
+    return headers;
  }
