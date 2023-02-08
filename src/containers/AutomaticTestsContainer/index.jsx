@@ -200,6 +200,23 @@ setHeaders(upd);
             setSelectedIndex(options.findIndex(d=>d===test.typeTest));
             setResponse(test.response);
             setStatusRequest(test.status);
+           
+            setParams(test.params.length>0 ? test.params : [{
+                key: '',
+                value: '',
+                description: ''
+            }]);
+            setHeaders(test.params.headers>0 ? test.headers : [{
+                key: '',
+                value: '',
+                description: ''
+            }]);
+            setFormData(test.bodyForm.length>0 ? test.bodyForm : [{
+                key: '',
+                value: '',
+                description: ''
+            }]);
+            setRaw(test.bodyRaw);
         }
         
         return () => {
@@ -209,9 +226,24 @@ setHeaders(upd);
             setSelectedIndex(-1);
             setResponse('');
             setStatusRequest(0);
+            setParams({
+                key: '',
+                value: '',
+                description: ''
+            });
+            setHeaders({
+                key: '',
+                value: '',
+                description: ''
+            });
+            setRaw('');
+            setFormData({
+                key: '',
+                value: '',
+                description: ''
+            })
         };
     }, [test]);
-
 
     const handleToggle = () => {
         setOpen((prevOpen) => !prevOpen);
@@ -325,7 +357,11 @@ setHeaders(upd);
                     typeTest: options[selectedIndex],
                     expect: expect,
                     response: response,
-                    status: statusRequest
+                    status: statusRequest,
+                    params: params,
+                    headers: headers,
+                    bodyRaw: raw,
+                    bodyForm: formData
                 }
             });
         }
@@ -344,7 +380,11 @@ setHeaders(upd);
                 typeTest: options[selectedIndex],
                 expect: expect,
                 response: response,
-                status: statusRequest
+                status: statusRequest,
+                params: params,
+                headers: headers,
+                bodyRaw: raw,
+                bodyForm: formData
             }
         });
     }
@@ -373,16 +413,16 @@ setHeaders(upd);
                             <Tabs value={currentTab} onChange={handleTabChange}>
                                 <Tab label="Params" {...a11yProps(0)} />
                                 {/* <Tab label="Authorization" {...a11yProps(1)} /> */}
-                                <Tab label="Headers" {...a11yProps(2)} />
-                                <Tab label="Body" {...a11yProps(3)} />
+                                <Tab label="Headers" {...a11yProps(1)} />
+                                <Tab label="Body" {...a11yProps(2)} />
                             </Tabs>
                         </Box>
                     </Grid>
                     <Grid item xs={12}>
                         { currentTab === 0 &&  <ParamsTab params={params} addRowToParams={addRowToParams} removeRowToParams={removeRowToParams} handleParam={handleParam} /> } 
                         {/* { currentTab === 1 &&  <AuthorizationTab /> } */}
-                        { currentTab === 2 && <HeadersTab headers={headers} addRowToHeaders={addRowToHeaders} removeRowToHeaders={removeRowToHeaders} handleHeaders={handleHeaders} /> }
-                        { currentTab === 3 && <BodyTab raw={raw} handleRaw={handleRaw} tab={bodyTab} handleTab={handleBodyTab} formData={formData} addRowToFormData={addRowToFormData} removeRowToFormData={removeRowToFormData} handleFormData={handleFormData} /> }
+                        { currentTab === 1 && <HeadersTab headers={headers} addRowToHeaders={addRowToHeaders} removeRowToHeaders={removeRowToHeaders} handleHeaders={handleHeaders} /> }
+                        { currentTab === 2 && <BodyTab raw={raw} handleRaw={handleRaw} tab={bodyTab} handleTab={handleBodyTab} formData={formData} addRowToFormData={addRowToFormData} removeRowToFormData={removeRowToFormData} handleFormData={handleFormData} /> }
                     </Grid>
                     <Grid item xs={12}>
                         <Typography variant='overline'>{'Test'}</Typography>
