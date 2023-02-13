@@ -90,7 +90,7 @@ export default function Aside({ apps }) {
                     }
                     disablePadding
                   >
-                    <ListItemButton role={undefined} onClick={() => goToTest(t._id)} dense>
+                    <ListItemButton role={undefined} onClick={() => runAll(item._id)} dense>
                       <ListItemText id={item._id.toString()} primary={<b>Correr todas las pruebas</b>} />
                     </ListItemButton>
                   </ListItem>
