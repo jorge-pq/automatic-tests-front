@@ -49,7 +49,7 @@ export default function Search({url, onChange, methods, handleMethod, selectedMe
           aria-haspopup="menu"
           onClick={handleToggle}
         >
-          {selectedMethod || 'Method'}
+          {selectedMethod || 'Método'}
           <ArrowDropDownIcon />
         </Button>
         <Popper

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
@@ -8,8 +8,14 @@ import { useRouter } from 'next/router';
 import IconButton from '@mui/material/IconButton';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import { useMutation } from 'react-query';
-import {runAllTestByApp} from '../../../services/test.service';
+import { runAllTestByApp } from '../../../services/test.service';
 import RunAllTestsResultDialog from './RunAllTestsResultDialog';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemText from '@mui/material/ListItemText';
+import Divider from '@mui/material/Divider';
+import TextField from '@mui/material/TextField';
 
 
 export default function Aside({ apps }) {
@@ -18,6 +24,8 @@ export default function Aside({ apps }) {
 
   const [openDialog, setOpenDialog] = useState(false);
   const [results, setResults] = useState([]);
+
+  const [search, setSearch] = useState('');
 
   const goToTest = id => {
     router.push(`/test/${id}`);
@@ -29,14 +37,21 @@ export default function Aside({ apps }) {
       setOpenDialog(true);
     },
     onError: (error) => {
-        alert('Error! ');
+      alert('Error! ');
     }
-});
+  });
+
+  const handleSearch = e => setSearch(e.target.value);
+
+  const handleFilter = value => {
+    return String(value.name.toLowerCase()).includes(search.toLowerCase());
+  }
 
   return (
     <>
+    <TextField variant='outlined' value={search} onChange={handleSearch} fullWidth size='small' placeholder='Buscar aplicación'/>
       {
-        apps.map(item =>
+        apps.filter(handleFilter).map(item =>
           <Accordion key={item.code.toString()}>
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
@@ -45,26 +60,48 @@ export default function Aside({ apps }) {
             >
               <Typography>{item.name}</Typography>
             </AccordionSummary>
-            <AccordionDetails>
-              {
-                item.tests.length > 0 &&
-                <IconButton color="primary" component="label" onClick={()=>runAll(item._id)}>
-                  <PlayArrowIcon />
-                  <Typography>
-                    {'Run all tests'}
-                  </Typography>
-                </IconButton>
-              }
-              {item.tests.map(t =>
-                <Typography key={t._id.toString()} onClick={() => goToTest(t._id)} sx={{ textDecoration: 'underline', cursor: 'pointer', color: '#0093ff' }}>
-                  {t.description}
-                </Typography>)}
+            <AccordionDetails sx={{position: 'relative', top: '-20px'}}>
+              <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
+                {item.tests.map(t =>
+                  <ListItem
+                    key={t._id.toString()}
+                    secondaryAction={
+                      <IconButton edge="end" aria-label="prueba" onClick={() => goToTest(t._id)}>
+                        <PlayArrowIcon />
+                      </IconButton>
+                    }
+                    disablePadding
+                  >
+                    <ListItemButton role={undefined} onClick={() => goToTest(t._id)} dense>
+
+                      <ListItemText id={t._id.toString()} primary={t.description} />
+                    </ListItemButton>
+                  </ListItem>
+                )}
+                <Divider />
+                {
+                  item.tests.length > 0 &&
+                  <ListItem
+                    key={item._id.toString()}
+                    secondaryAction={
+                      <IconButton edge="end" aria-label="prueba" onClick={() => runAll(item._id)}>
+                        <PlayArrowIcon />
+                      </IconButton>
+                    }
+                    disablePadding
+                  >
+                    <ListItemButton role={undefined} onClick={() => goToTest(t._id)} dense>
+                      <ListItemText id={item._id.toString()} primary={<b>Correr todas las pruebas</b>} />
+                    </ListItemButton>
+                  </ListItem>
+                }
+              </List>
             </AccordionDetails>
           </Accordion>
         )
       }
 
-      <RunAllTestsResultDialog open={openDialog} close={()=>setOpenDialog(false)} results={results} />
+      <RunAllTestsResultDialog open={openDialog} close={() => setOpenDialog(false)} results={results} />
     </>
   );
 }

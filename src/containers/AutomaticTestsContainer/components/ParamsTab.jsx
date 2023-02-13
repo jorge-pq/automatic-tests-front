@@ -17,9 +17,9 @@ const ParamsTab = ({ params, addRowToParams, removeRowToParams, handleParam }) =
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
                 <TableHead>
                     <TableRow>
-                        <TableCell align="center">Key</TableCell>
-                        <TableCell align="center">Value</TableCell>
-                        <TableCell align="center">Description</TableCell>
+                        <TableCell align="center">Llave</TableCell>
+                        <TableCell align="center">Valor</TableCell>
+                        <TableCell align="center">Descripción</TableCell>
                         <TableCell align="center"></TableCell>
                     </TableRow>
                 </TableHead>

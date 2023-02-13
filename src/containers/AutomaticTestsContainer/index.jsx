@@ -198,9 +198,8 @@ setHeaders(upd);
             setUrl(test.url)
             setExpect(test.expect);
             setSelectedIndex(options.findIndex(d=>d===test.typeTest));
-            setResponse(test.response);
+            setResponse(test.response || '');
             setStatusRequest(test.status);
-           
             setParams(test.params.length>0 ? test.params : [{
                 key: '',
                 value: '',
@@ -389,9 +388,20 @@ setHeaders(upd);
         });
     }
 
+    const goToNewTest = () => router.push('/');
+
 
     return (
         <Grid container spacing={3}>
+            {
+                test &&
+                <Grid xs={12}>
+                    <Grid container justifyContent={'space-between'} pl={3} pt={2}>
+                        <Typography variant='h5'>{test.description}</Typography>
+                        <Button variant='contained' onClick={goToNewTest}>{'Nueva prueba'}</Button>
+                    </Grid>
+                </Grid>
+            }
             <Grid xs={12} md={3} pt={3} item>
                 <Paper elevation={3} p={1}>
                     <Aside apps={apps} />
@@ -404,17 +414,17 @@ setHeaders(upd);
                     </Grid>
                     <Grid item xs={3}>
                         <Stack direction={'row'} justifyContent={'flex-end'} spacing={2} sx={{ paddingTop: '2px' }}>
-                            <Button variant='contained' onClick={send}>{'Send'}</Button>
-                            <Button variant='contained' onClick={openDialogSaveUrl}>{'Save'}</Button>
+                            <Button variant='contained' onClick={send}>{'Enviar'}</Button>
+                            <Button variant='contained' onClick={openDialogSaveUrl}>{'Guardar'}</Button>
                         </Stack>
                     </Grid>
                     <Grid item xs={12}>
                         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                             <Tabs value={currentTab} onChange={handleTabChange}>
-                                <Tab label="Params" {...a11yProps(0)} />
+                                <Tab label="Parámetros" {...a11yProps(0)} />
                                 {/* <Tab label="Authorization" {...a11yProps(1)} /> */}
-                                <Tab label="Headers" {...a11yProps(1)} />
-                                <Tab label="Body" {...a11yProps(2)} />
+                                <Tab label="Encabezados" {...a11yProps(1)} />
+                                <Tab label="Cuerpo" {...a11yProps(2)} />
                             </Tabs>
                         </Box>
                     </Grid>
@@ -425,7 +435,7 @@ setHeaders(upd);
                         { currentTab === 2 && <BodyTab raw={raw} handleRaw={handleRaw} tab={bodyTab} handleTab={handleBodyTab} formData={formData} addRowToFormData={addRowToFormData} removeRowToFormData={removeRowToFormData} handleFormData={handleFormData} /> }
                     </Grid>
                     <Grid item xs={12}>
-                        <Typography variant='overline'>{'Test'}</Typography>
+                        <Typography variant='overline'>{'Prueba'}</Typography>
                        { testResult.message && <Alert severity={testResult.type} onClose={closeAlert}>{testResult.message}</Alert>} 
                     </Grid>
                     <Grid item xs={12}>
@@ -442,7 +452,7 @@ setHeaders(upd);
                                 onClick={handleToggle}
                                 variant={'contained'}
                             >
-                                {options[selectedIndex] || 'Type'}
+                                {options[selectedIndex] || 'Tipo'}
                                 <ArrowDropDownIcon />
                             </Button>
                             <Popper
@@ -481,12 +491,12 @@ setHeaders(upd);
                                     </Grow>
                                 )}
                             </Popper>
-                            <TextField variant='outlined' value={expect} onChange={handleExpect} size='small' fullWidth label={'Expect'} />
-                            <Button variant='contained' onClick={runTest}>{'Test'}</Button>
+                            <TextField variant='outlined' value={expect} onChange={handleExpect} size='small' fullWidth label={'Valor esperado'} />
+                            <Button variant='contained' onClick={runTest}>{'Chequear'}</Button>
                         </Stack>
                     </Grid>
                     <Grid xs={12} item>
-                        <TextareaAutosize value={response} placeholder="Response" minRows={7} disabled style={{width: '100%'}} />                                    
+                        <TextareaAutosize value={response} placeholder="Respuesta" minRows={7} disabled style={{width: '100%'}} />                                    
                     </Grid>
                 </Grid>
             </Grid>
