@@ -33,8 +33,6 @@ export default function Search({url, onChange, methods, handleMethod, selectedMe
     setOpen(false);
   };
 
-  console.log(url)
-
   return (
     <React.Fragment>
       <ButtonGroup variant="contained" size='small' fullWidth aria-label="split button">

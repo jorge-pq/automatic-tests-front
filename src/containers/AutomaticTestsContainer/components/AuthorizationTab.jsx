@@ -21,12 +21,12 @@ const AuthorizationTab = () => {
             <Grid item xs={3}>
                 <Box sx={{ minWidth: 120 }}>
                     <FormControl fullWidth>
-                        <InputLabel id="demo-simple-select-label">Type</InputLabel>
+                        <InputLabel id="demo-simple-select-label">Tipo</InputLabel>
                         <Select
                             labelId="demo-simple-select-label"
                             id="demo-simple-select"
                             value={authSelected}
-                            label="Type"
+                            label="Tipo"
                             onChange={handleChange}
                             size={'small'}
                         >

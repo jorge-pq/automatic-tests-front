@@ -36,15 +36,15 @@ export default function SaveUrlTestDialog({ open, close, save, apps }) {
                             value={app}
                             onChange={(event, op) => handleApp(op)}
                             getOptionLabel={(option) => option.name}
-                            renderInput={(params) => <TextField fullWidth {...params} label="Applications" />} />
+                            renderInput={(params) => <TextField fullWidth {...params} label="Aplicaciones" />} />
                     </Grid>
                     <Grid item xs={12}>
-                        <TextField size={'small'} onChange={handleDescription} fullWidth placeholder={'Description *'} value={description} />
+                        <TextField size={'small'} onChange={handleDescription} fullWidth placeholder={'Descripción *'} value={description} />
                     </Grid>
                 </Grid>
             </DialogContent>
             <DialogActions sx={{ mr: 2 }}>
-                <Button onClick={close}>Cancel</Button>
+                <Button onClick={close}>Cancelar</Button>
                 <Button variant={'contained'} onClick={onSubmit}>Guardar</Button>
             </DialogActions>
         </Dialog >

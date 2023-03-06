@@ -23,8 +23,8 @@ export default function SaveUrlTestDialog({ open, close, results }) {
                     <Table sx={{ minWidth: 650 }} aria-label="simple table">
                         <TableHead>
                             <TableRow>
-                                <TableCell align="left">Description</TableCell>
-                                <TableCell align="left">Result</TableCell>
+                                <TableCell align="left">Descripción</TableCell>
+                                <TableCell align="left">Resultado</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>

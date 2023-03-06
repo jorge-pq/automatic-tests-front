@@ -57,7 +57,7 @@ export default function Layout({ children}) {
               sx={{ flexGrow: 1, cursor: 'pointer' }}
               onClick={goToHome}
             >
-              {'Pruebas automáticas'}
+              {'Pruebas unitarias automatizadas'}
             </Typography>
             {'Administrador'}
           </Toolbar>

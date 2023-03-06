@@ -66,7 +66,7 @@ export default function Aside({ apps }) {
       <Stack direction={'row'} pr={2}>
         <TextField variant='outlined' value={search} onChange={handleSearch} fullWidth size='medium' placeholder='Buscar aplicación' />
         <IconButton edge="end" aria-label="prueba" onClick={()=>setOpenDialogAddApp(true)}>
-          <AddBoxIcon fontSize='large' titleAccess='AGREGAR APLICACION' color='primary' />
+          <AddBoxIcon fontSize='large' titleAccess='AGREGAR APLICACIÓN' color='primary' />
         </IconButton>
       </Stack>
       {

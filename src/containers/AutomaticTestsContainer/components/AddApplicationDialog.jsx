@@ -27,7 +27,7 @@ export default function AddApplicationDialog({ open, close, save }) {
             <DialogContent>
                 <Grid container spacing={1} pt={2}>
                     <Grid item xs={12}>
-                        <TextField size={'small'} onChange={handleCode} fullWidth placeholder={'Codigo *'} value={code} />
+                        <TextField size={'small'} onChange={handleCode} fullWidth placeholder={'Código *'} value={code} />
                     </Grid>
                     <Grid item xs={12}>
                         <TextField size={'small'} onChange={handleName} fullWidth placeholder={'Nombre *'} value={name} />

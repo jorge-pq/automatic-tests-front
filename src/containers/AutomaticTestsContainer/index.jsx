@@ -297,7 +297,7 @@ setHeaders(upd);
 
     const runTest = () => {
         if (selectedIndex === -1 || !expect) {
-            setTestResult({ type: 'error', message: 'Select a type and expect value for the test!' })
+            setTestResult({ type: 'error', message: 'Seleccione un tipo y el valor esperado para esta prueba.' })
         }
         else {
             switch (options[selectedIndex]) {
@@ -316,28 +316,28 @@ setHeaders(upd);
 
     function verifyStatus() {
         if(parseFloat(expect) === parseFloat(statusRequest)){
-            setTestResult({type: 'success', message: 'Test passed successfully!'});
+            setTestResult({type: 'success', message: 'La prueba fue satisfactoria.'});
         }
         else{
-            setTestResult({type: 'error', message: 'Test failed!'});
+            setTestResult({type: 'error', message: 'La prueba ha fallado.'});
         }
     }
 
     function verifyContains() {
         if(String(response).includes(expect)){
-            setTestResult({type: 'success', message: 'Test passed successfully!'});
+            setTestResult({type: 'success', message: 'La prueba fue satisfactoria.'});
         }
         else{
-            setTestResult({type: 'error', message: 'Test failed!'});
+            setTestResult({type: 'error', message: 'La prueba ha fallado.'});
         }
     }
 
     function verifyEqual() {
         if(response === expect){
-            setTestResult({type: 'success', message: 'Test passed successfully!'});
+            setTestResult({type: 'success', message: 'La prueba fue satisfactoria.'});
         }
         else{
-            setTestResult({type: 'error', message: 'Test failed!'});
+            setTestResult({type: 'error', message: 'La prueba ha fallado.'});
         }
     }
 
