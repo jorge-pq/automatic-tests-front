@@ -8,7 +8,7 @@ import { useRouter } from 'next/router';
 import IconButton from '@mui/material/IconButton';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import { useMutation } from 'react-query';
-import { runAllTestByApp } from '../../../services/test.service';
+import { runAllTestByApp, removeTest } from '../../../services/test.service';
 import { saveNewApp } from '../../../services/app.service';
 import RunAllTestsResultDialog from './RunAllTestsResultDialog';
 import AddApplicationDialog from './AddApplicationDialog';
@@ -20,6 +20,8 @@ import Divider from '@mui/material/Divider';
 import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
 import AddBoxIcon from '@mui/icons-material/AddBox';
+import CancelIcon from '@mui/icons-material/Cancel';
+
 
 export default function Aside({ apps }) {
 
@@ -54,18 +56,26 @@ export default function Aside({ apps }) {
     }
   });
 
+  const { mutate: remove } = useMutation(removeTest, {
+    onSuccess: (data) => {
+      router.reload()
+    },
+    onError: (error) => {
+      alert('Error! ');
+    }
+  });
 
   const handleSearch = e => setSearch(e.target.value);
 
   const handleFilter = value => {
-    return String(value.name.toLowerCase()).includes(search.toLowerCase()) && value.tests.length > 0;
+    return String(value?.name?.toLowerCase()).includes(search.toLowerCase()) && value.tests.length > 0;
   }
 
   return (
     <>
       <Stack direction={'row'} pr={2}>
         <TextField variant='outlined' value={search} onChange={handleSearch} fullWidth size='medium' placeholder='Buscar aplicación' />
-        <IconButton edge="end" aria-label="prueba" onClick={()=>setOpenDialogAddApp(true)}>
+        <IconButton edge="end" aria-label="prueba" onClick={() => setOpenDialogAddApp(true)}>
           <AddBoxIcon fontSize='large' titleAccess='AGREGAR APLICACIÓN' color='primary' />
         </IconButton>
       </Stack>
@@ -85,9 +95,14 @@ export default function Aside({ apps }) {
                   <ListItem
                     key={t._id.toString()}
                     secondaryAction={
-                      <IconButton edge="end" aria-label="prueba" onClick={() => goToTest(t._id)}>
-                        <PlayArrowIcon />
-                      </IconButton>
+                      <>
+                        <IconButton edge="end" title='PROBAR' aria-label="prueba" onClick={() => goToTest(t._id)}>
+                          <PlayArrowIcon />
+                        </IconButton>
+                        <IconButton edge="end" color='error' title='ELIMINAR' aria-label="eliminar" onClick={() => remove(t._id)}>
+                          <CancelIcon />
+                        </IconButton>
+                      </>
                     }
                     disablePadding
                   >

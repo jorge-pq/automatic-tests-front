@@ -3,9 +3,6 @@ import Layout from '../layout';
 import {getApps} from '../services/app.service';
 
 const Home = ({apps}) => {
-  
-  console.log('-------Mostrando apps---------')
-  console.log(apps)
 
   return (
     <Layout>

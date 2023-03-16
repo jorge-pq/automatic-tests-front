@@ -1,4 +1,4 @@
-import {rget, rpost, rput} from '../lib/request';
+import {rget, rpost, rput, rdelete} from '../lib/request';
 
 export const getTest = async (id) => {
     const {data} = await rget('api/test/'+id, null);
@@ -24,5 +24,10 @@ export const updateUrl = async (values) => {
 
 export const runAllTestByApp = async (id) => {
     const {data} = await rget('api/test/runAll/'+id, null);
+    return data;
+};
+
+export const removeTest = async (id) => {
+    const {data} = await rdelete('api/test/remove/'+id, null);
     return data;
 };
